@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://bem1038jrh5mu"]
+
+[ext_resource type="Texture2D" uid="uid://dxjdhti37mo5f" path="res://assets/Logo-Simplified.png" id="1_dsno0"]
+[ext_resource type="Script" path="res://scripts/Logo-simplified.gd" id="2_psi2e"]
+[ext_resource type="Texture2D" uid="uid://bdgu15enpnao7" path="res://assets/elephant-logo.png" id="3_r7yl1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0d06y"]
+
+[node name="Loading" type="CanvasLayer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -13.0
+offset_top = -11.0
+offset_right = 1164.0
+offset_bottom = 656.0
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="Loading" type="Label" parent="."]
+offset_left = 525.0
+offset_top = 382.0
+offset_right = 634.0
+offset_bottom = 419.0
+text = "LOADING"
+label_settings = SubResource("LabelSettings_0d06y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Logo Simplified" type="Sprite2D" parent="."]
+position = Vector2(577, 335)
+scale = Vector2(0.605263, 0.605263)
+texture = ExtResource("1_dsno0")
+script = ExtResource("2_psi2e")
+
+[node name="Elephant Logo" type="Sprite2D" parent="."]
+position = Vector2(574, 93)
+scale = Vector2(0.671875, 0.671875)
+texture = ExtResource("3_r7yl1")
