@@ -1,11 +1,11 @@
-[gd_resource type="StyleBoxFlat" format=3 uid="uid://ei7n6jxvwwhx"]
+[gd_resource type="StyleBoxFlat" format=3 uid="uid://dkerwp5wxv4fy"]
 
 [resource]
 content_margin_left = 50.0
 content_margin_top = 10.0
 content_margin_right = 50.0
 content_margin_bottom = 10.0
-bg_color = Color(0.564706, 0.403922, 0, 1)
+bg_color = Color(0.894118, 0.678431, 0.14902, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8

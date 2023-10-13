@@ -2,28 +2,83 @@
 
 [ext_resource type="Texture2D" uid="uid://brup5onl1avfp" path="res://assets/Some Menu.png" id="1_pqdnc"]
 [ext_resource type="Script" path="res://scripts/main_menu_scene.gd" id="1_vs22s"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p0axp"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
+[ext_resource type="StyleBox" uid="uid://dg4y3264mgs5h" path="res://styles/menu_button_styles.tres" id="3_mkowq"]
 
 [node name="MainMenuScene" type="Node2D"]
 script = ExtResource("1_vs22s")
 
 [node name="SomeMenu" type="Sprite2D" parent="."]
-modulate = Color(0.666667, 0.666667, 0.666667, 1)
-position = Vector2(574, 328)
-scale = Vector2(0.299819, 0.299819)
+modulate = Color(0.329412, 0.329412, 0.329412, 1)
+position = Vector2(577, 321)
+scale = Vector2(0.302514, 0.302514)
 texture = ExtResource("1_pqdnc")
 metadata/_edit_lock_ = true
 
 [node name="ExitButton" type="Button" parent="."]
-offset_left = 529.0
-offset_top = 494.0
-offset_right = 648.0
-offset_bottom = 563.0
+offset_left = 424.0
+offset_top = 416.0
+offset_right = 728.0
+offset_bottom = 485.0
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
-theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxFlat_p0axp")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("3_mkowq")
+theme_override_styles/hover = ExtResource("3_mkowq")
 text = "QUIT"
+
+[node name="OptionsButton" type="Button" parent="."]
+offset_left = 424.0
+offset_top = 342.0
+offset_right = 728.0
+offset_bottom = 411.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("3_mkowq")
+theme_override_styles/hover = ExtResource("3_mkowq")
+disabled = true
+text = "OPTIONS"
+flat = true
+
+[node name="StartGameButton" type="Button" parent="."]
+offset_left = 424.0
+offset_top = 270.0
+offset_right = 728.0
+offset_bottom = 339.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("3_mkowq")
+theme_override_styles/hover = ExtResource("3_mkowq")
+disabled = true
+text = "START GAME"
+flat = true
+
+[node name="ContinueButton" type="Button" parent="."]
+offset_left = 424.0
+offset_top = 200.0
+offset_right = 728.0
+offset_bottom = 269.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("3_mkowq")
+theme_override_styles/hover = ExtResource("3_mkowq")
+disabled = true
+text = "CONTINUE"
+flat = true
+
+[node name="Copyright" type="RichTextLabel" parent="."]
+offset_top = 584.0
+offset_right = 1152.0
+offset_bottom = 601.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "[center]©2023, ELEPHANT TEAM"
+fit_content = true
 
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]

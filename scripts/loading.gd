@@ -1,6 +1,6 @@
 extends Node2D
 
-var timer = 10
+var timer = 2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
