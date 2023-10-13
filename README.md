@@ -10,3 +10,5 @@ Ini adalah Github Repository untuk game ELEPHANT
 
 ## Nemu Bug atau Ada Yang Aneh?
 Silahkan buat issue baru di halaman bagian "Issues". Jangan lupa set labelnya sesuai dengan yang kalian temukan atau alasan dibalik bikin Issue
+
+**Terima Kasih, dan selalu semangat teman-teman~!**
