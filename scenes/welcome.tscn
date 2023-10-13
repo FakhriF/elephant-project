@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvfhys38i4bep"]
+
+[ext_resource type="Texture2D" uid="uid://cuvqki3pr5buh" path="res://assets/Welcome Menu.png" id="1_f3145"]
+[ext_resource type="Script" path="res://scripts/welcome.gd" id="1_losro"]
+[ext_resource type="Texture2D" uid="uid://bdgu15enpnao7" path="res://assets/elephant-logo.png" id="2_mc13h"]
+[ext_resource type="StyleBox" uid="uid://ei7n6jxvwwhx" path="res://styles/button_styles.tres" id="3_01qum"]
+
+[node name="WelcomeScene" type="Node2D"]
+script = ExtResource("1_losro")
+
+[node name="SomeMenu" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.486275)
+position = Vector2(573.667, 322)
+scale = Vector2(0.605556, 0.605556)
+texture = ExtResource("1_f3145")
+metadata/_edit_lock_ = true
+
+[node name="Elephant-logo" type="Sprite2D" parent="."]
+position = Vector2(608, 104)
+scale = Vector2(0.570313, 0.570313)
+texture = ExtResource("2_mc13h")
+
+[node name="CreateProfileButton" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.528
+anchor_top = 0.5
+anchor_right = 0.528
+anchor_bottom = 0.5
+offset_left = 542.0
+offset_top = 293.0
+offset_right = 676.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = ExtResource("3_01qum")
+text = "CREATE PROFILE"
+
+[node name="SelectProfileButton" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.528
+anchor_top = 0.5
+anchor_right = 0.528
+anchor_bottom = 0.5
+offset_left = 542.0
+offset_top = 357.0
+offset_right = 676.0
+offset_bottom = 388.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = ExtResource("3_01qum")
+text = "SELECT PROFILE"
+
+[connection signal="pressed" from="CreateProfileButton" to="." method="_on_create_profile_button_pressed"]

@@ -1,20 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://bem1038jrh5mu"]
+[gd_scene load_steps=7 format=3 uid="uid://bem1038jrh5mu"]
 
 [ext_resource type="Texture2D" uid="uid://dxjdhti37mo5f" path="res://assets/Logo-Simplified.png" id="1_dsno0"]
+[ext_resource type="Script" path="res://scripts/loading.gd" id="1_dyouq"]
+[ext_resource type="Texture2D" uid="uid://cbmt4sxms6nq8" path="res://assets/Welcome Screen.png" id="1_g5b8r"]
 [ext_resource type="Script" path="res://scripts/Logo-simplified.gd" id="2_psi2e"]
 [ext_resource type="Texture2D" uid="uid://bdgu15enpnao7" path="res://assets/elephant-logo.png" id="3_r7yl1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0d06y"]
 
-[node name="Loading" type="CanvasLayer"]
+[node name="LoadingScene" type="Node2D"]
+script = ExtResource("1_dyouq")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -13.0
-offset_top = -11.0
-offset_right = 1164.0
-offset_bottom = 656.0
-color = Color(0, 0, 0, 1)
-metadata/_edit_lock_ = true
+[node name="WelcomeScreen" type="Sprite2D" parent="."]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+position = Vector2(576.37, 326.013)
+scale = Vector2(0.303453, 0.303453)
+texture = ExtResource("1_g5b8r")
 
 [node name="Loading" type="Label" parent="."]
 offset_left = 525.0
