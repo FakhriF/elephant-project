@@ -87,6 +87,7 @@ offset_bottom = 648.0
 color = Color(0.192157, 0.192157, 0.192157, 0.811765)
 
 [node name="BackgroundButton" type="Button" parent="CreateProfile/BackgroundColor"]
+layout_mode = 0
 offset_left = 8.0
 offset_top = 5.0
 offset_right = 1160.0
