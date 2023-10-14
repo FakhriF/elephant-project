@@ -13,4 +13,4 @@ func _process(delta):
 	if timer >= 0:
 		timer -= delta
 	else:
-		get_tree().change_scene_to_file("res://scenes/welcome.tscn")
+		get_tree().change_scene_to_file("res://menu/scenes/welcome.tscn")

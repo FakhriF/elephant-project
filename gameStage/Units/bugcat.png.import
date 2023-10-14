@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdgu15enpnao7"
-path="res://.godot/imported/elephant-logo.png-7156fbf435ab23740e761ec79047a236.ctex"
+uid="uid://x4kxxdinjx3r"
+path="res://.godot/imported/bugcat.png-abe0885eaca29af9d64bf8c3840466fc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/elephant-logo.png"
-dest_files=["res://.godot/imported/elephant-logo.png-7156fbf435ab23740e761ec79047a236.ctex"]
+source_file="res://gameStage/Units/bugcat.png"
+dest_files=["res://.godot/imported/bugcat.png-abe0885eaca29af9d64bf8c3840466fc.ctex"]
 
 [params]
 

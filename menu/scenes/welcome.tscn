@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://dvfhys38i4bep"]
 
-[ext_resource type="Texture2D" uid="uid://cuvqki3pr5buh" path="res://assets/Welcome Menu.png" id="1_f3145"]
-[ext_resource type="Script" path="res://scripts/welcome.gd" id="1_losro"]
-[ext_resource type="Texture2D" uid="uid://bdgu15enpnao7" path="res://assets/elephant-logo.png" id="2_mc13h"]
-[ext_resource type="StyleBox" uid="uid://ei7n6jxvwwhx" path="res://styles/button_styles.tres" id="3_01qum"]
-[ext_resource type="StyleBox" uid="uid://dkerwp5wxv4fy" path="res://styles/button_hover_styles.tres" id="5_6kkmw"]
+[ext_resource type="Script" path="res://menu/scripts/welcome.gd" id="1_n55sv"]
+[ext_resource type="Texture2D" uid="uid://cuvqki3pr5buh" path="res://menu/assets/Welcome Menu.png" id="2_q2xfy"]
+[ext_resource type="Texture2D" uid="uid://bdgu15enpnao7" path="res://menu/assets/elephant-logo.png" id="3_fjhmg"]
+[ext_resource type="StyleBox" uid="uid://ei7n6jxvwwhx" path="res://menu/styles/button_styles.tres" id="4_jouy6"]
+[ext_resource type="StyleBox" uid="uid://dkerwp5wxv4fy" path="res://menu/styles/button_hover_styles.tres" id="5_lciwn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_02qbu"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -16,13 +16,13 @@ bg_color = Color(0.74902, 0.552941, 0.407843, 0)
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="WelcomeScene" type="Node2D"]
-script = ExtResource("1_losro")
+script = ExtResource("1_n55sv")
 
 [node name="SomeMenu" type="Sprite2D" parent="."]
 modulate = Color(0.282353, 0.282353, 0.282353, 1)
 position = Vector2(573.667, 322)
 scale = Vector2(0.605556, 0.605556)
-texture = ExtResource("1_f3145")
+texture = ExtResource("2_q2xfy")
 metadata/_edit_lock_ = true
 
 [node name="Welcome" type="Node2D" parent="."]
@@ -30,7 +30,7 @@ metadata/_edit_lock_ = true
 [node name="Elephant-logo" type="Sprite2D" parent="Welcome"]
 position = Vector2(575.016, 74)
 scale = Vector2(0.570313, 0.570313)
-texture = ExtResource("2_mc13h")
+texture = ExtResource("3_fjhmg")
 
 [node name="CreateProfileButton" type="Button" parent="Welcome"]
 anchors_preset = -1
@@ -44,8 +44,8 @@ offset_right = 689.016
 offset_bottom = 378.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = ExtResource("3_01qum")
-theme_override_styles/hover = ExtResource("5_6kkmw")
+theme_override_styles/normal = ExtResource("4_jouy6")
+theme_override_styles/hover = ExtResource("5_lciwn")
 text = "CREATE PROFILE"
 
 [node name="SelectProfileButton" type="Button" parent="Welcome"]
@@ -60,8 +60,8 @@ offset_right = 687.516
 offset_bottom = 442.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = ExtResource("3_01qum")
-theme_override_styles/hover = ExtResource("5_6kkmw")
+theme_override_styles/normal = ExtResource("4_jouy6")
+theme_override_styles/hover = ExtResource("5_lciwn")
 disabled = true
 text = "SELECT PROFILE"
 
@@ -87,6 +87,7 @@ offset_bottom = 648.0
 color = Color(0.192157, 0.192157, 0.192157, 0.811765)
 
 [node name="BackgroundButton" type="Button" parent="CreateProfile/BackgroundColor"]
+layout_mode = 0
 offset_left = 8.0
 offset_top = 5.0
 offset_right = 1160.0
@@ -108,8 +109,8 @@ offset_left = 664.0
 offset_top = 280.0
 offset_right = 787.0
 offset_bottom = 323.0
-theme_override_styles/normal = ExtResource("3_01qum")
-theme_override_styles/hover = ExtResource("5_6kkmw")
+theme_override_styles/normal = ExtResource("4_jouy6")
+theme_override_styles/hover = ExtResource("5_lciwn")
 text = "OK"
 
 [connection signal="pressed" from="Welcome/CreateProfileButton" to="." method="_on_create_profile_button_pressed"]

@@ -1,22 +1,22 @@
 [gd_scene load_steps=7 format=3 uid="uid://bem1038jrh5mu"]
 
-[ext_resource type="Texture2D" uid="uid://dxjdhti37mo5f" path="res://assets/Logo-Simplified.png" id="1_dsno0"]
-[ext_resource type="Script" path="res://scripts/loading.gd" id="1_dyouq"]
-[ext_resource type="Texture2D" uid="uid://cbmt4sxms6nq8" path="res://assets/Welcome Screen.png" id="1_g5b8r"]
-[ext_resource type="Script" path="res://scripts/Logo-simplified.gd" id="2_psi2e"]
-[ext_resource type="Texture2D" uid="uid://bdgu15enpnao7" path="res://assets/elephant-logo.png" id="3_r7yl1"]
+[ext_resource type="Script" path="res://menu/scripts/loading.gd" id="1_hqtgu"]
+[ext_resource type="Texture2D" uid="uid://cbmt4sxms6nq8" path="res://menu/assets/Welcome Screen.png" id="2_e3ben"]
+[ext_resource type="Texture2D" uid="uid://dxjdhti37mo5f" path="res://menu/assets/Logo-Simplified.png" id="3_cn8q7"]
+[ext_resource type="Script" path="res://menu/scripts/Logo-simplified.gd" id="4_yywat"]
+[ext_resource type="Texture2D" uid="uid://bdgu15enpnao7" path="res://menu/assets/elephant-logo.png" id="5_hnjad"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0d06y"]
 
 [node name="LoadingScene" type="Node2D"]
-script = ExtResource("1_dyouq")
+script = ExtResource("1_hqtgu")
 timer = 5
 
 [node name="WelcomeScreen" type="Sprite2D" parent="."]
 modulate = Color(0.333333, 0.333333, 0.333333, 1)
 position = Vector2(576.37, 326.013)
 scale = Vector2(0.303453, 0.303453)
-texture = ExtResource("1_g5b8r")
+texture = ExtResource("2_e3ben")
 
 [node name="Loading" type="Label" parent="."]
 offset_left = 525.0
@@ -31,10 +31,10 @@ vertical_alignment = 1
 [node name="Logo Simplified" type="Sprite2D" parent="."]
 position = Vector2(577, 335)
 scale = Vector2(0.605263, 0.605263)
-texture = ExtResource("1_dsno0")
-script = ExtResource("2_psi2e")
+texture = ExtResource("3_cn8q7")
+script = ExtResource("4_yywat")
 
 [node name="Elephant Logo" type="Sprite2D" parent="."]
 position = Vector2(574, 93)
 scale = Vector2(0.671875, 0.671875)
-texture = ExtResource("3_r7yl1")
+texture = ExtResource("5_hnjad")
