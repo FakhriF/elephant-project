@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbmt4sxms6nq8"
-path="res://.godot/imported/Welcome Screen.png-c92ff060164d44b3fbb3f727100d71b5.ctex"
+uid="uid://b82ermd4qywbt"
+path="res://.godot/imported/arrows.svg-358f758e293c7e334f30970b956262a2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Welcome Screen.png"
-dest_files=["res://.godot/imported/Welcome Screen.png-c92ff060164d44b3fbb3f727100d71b5.ctex"]
+source_file="res://gameStage/arrows.svg"
+dest_files=["res://.godot/imported/arrows.svg-358f758e293c7e334f30970b956262a2.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

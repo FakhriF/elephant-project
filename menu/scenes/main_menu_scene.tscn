@@ -1,17 +1,17 @@
 [gd_scene load_steps=4 format=3 uid="uid://bduytlgxmp5g5"]
 
-[ext_resource type="Texture2D" uid="uid://brup5onl1avfp" path="res://assets/Some Menu.png" id="1_pqdnc"]
-[ext_resource type="Script" path="res://scripts/main_menu_scene.gd" id="1_vs22s"]
-[ext_resource type="StyleBox" uid="uid://dg4y3264mgs5h" path="res://styles/menu_button_styles.tres" id="3_mkowq"]
+[ext_resource type="Script" path="res://menu/scripts/main_menu_scene.gd" id="1_xddbq"]
+[ext_resource type="Texture2D" uid="uid://brup5onl1avfp" path="res://menu/assets/Some Menu.png" id="2_pychn"]
+[ext_resource type="StyleBox" uid="uid://dg4y3264mgs5h" path="res://menu/styles/menu_button_styles.tres" id="3_2vds4"]
 
 [node name="MainMenuScene" type="Node2D"]
-script = ExtResource("1_vs22s")
+script = ExtResource("1_xddbq")
 
 [node name="SomeMenu" type="Sprite2D" parent="."]
 modulate = Color(0.329412, 0.329412, 0.329412, 1)
 position = Vector2(577, 321)
 scale = Vector2(0.302514, 0.302514)
-texture = ExtResource("1_pqdnc")
+texture = ExtResource("2_pychn")
 metadata/_edit_lock_ = true
 
 [node name="ExitButton" type="Button" parent="."]
@@ -21,8 +21,8 @@ offset_right = 728.0
 offset_bottom = 485.0
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
 theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = ExtResource("3_mkowq")
-theme_override_styles/hover = ExtResource("3_mkowq")
+theme_override_styles/normal = ExtResource("3_2vds4")
+theme_override_styles/hover = ExtResource("3_2vds4")
 text = "QUIT"
 
 [node name="OptionsButton" type="Button" parent="."]
@@ -34,8 +34,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
 theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = ExtResource("3_mkowq")
-theme_override_styles/hover = ExtResource("3_mkowq")
+theme_override_styles/normal = ExtResource("3_2vds4")
+theme_override_styles/hover = ExtResource("3_2vds4")
 disabled = true
 text = "OPTIONS"
 flat = true
@@ -49,8 +49,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
 theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = ExtResource("3_mkowq")
-theme_override_styles/hover = ExtResource("3_mkowq")
+theme_override_styles/normal = ExtResource("3_2vds4")
+theme_override_styles/hover = ExtResource("3_2vds4")
 disabled = true
 text = "START GAME"
 flat = true
@@ -64,8 +64,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
 theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = ExtResource("3_mkowq")
-theme_override_styles/hover = ExtResource("3_mkowq")
+theme_override_styles/normal = ExtResource("3_2vds4")
+theme_override_styles/hover = ExtResource("3_2vds4")
 disabled = true
 text = "CONTINUE"
 flat = true

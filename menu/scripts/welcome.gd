@@ -22,7 +22,7 @@ func _on_create_profile_button_pressed():
 func _on_create_profile_ok_button_pressed():
 	print(usernameText.get_text()) #Username Value
 	if (usernameText.get_text() != ""):
-		get_tree().change_scene_to_file("res://scenes/main_menu_scene.tscn")
+		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
 	else:
 		print("Username Masih Kosong!")
 	
