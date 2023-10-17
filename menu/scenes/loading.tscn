@@ -10,7 +10,6 @@
 
 [node name="LoadingScene" type="Node2D"]
 script = ExtResource("1_hqtgu")
-timer = 5
 
 [node name="WelcomeScreen" type="Sprite2D" parent="."]
 modulate = Color(0.333333, 0.333333, 0.333333, 1)
