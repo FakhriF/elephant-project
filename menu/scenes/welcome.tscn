@@ -113,6 +113,36 @@ theme_override_styles/normal = ExtResource("4_jouy6")
 theme_override_styles/hover = ExtResource("5_lciwn")
 text = "OK"
 
+[node name="SelectProfile" type="Node2D" parent="."]
+visible = false
+position = Vector2(464.516, 399.5)
+
+[node name="BackgroundColor" type="ColorRect" parent="SelectProfile"]
+offset_left = -472.516
+offset_top = -404.5
+offset_right = 687.484
+offset_bottom = 248.5
+color = Color(0.192157, 0.192157, 0.192157, 0.811765)
+
+[node name="BackgroundButton" type="Button" parent="SelectProfile/BackgroundColor"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 1160.0
+offset_bottom = 653.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_02qbu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_t77c4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_m3us0")
+
+[node name="Profile1" type="Button" parent="SelectProfile"]
+offset_left = 18.484
+offset_top = -199.5
+offset_right = 207.484
+offset_bottom = -143.5
+
 [connection signal="pressed" from="Welcome/CreateProfileButton" to="." method="_on_create_profile_button_pressed"]
+[connection signal="pressed" from="Welcome/SelectProfileButton" to="." method="_on_select_profile_button_pressed"]
 [connection signal="pressed" from="CreateProfile/BackgroundColor/BackgroundButton" to="." method="_on_background_button_pressed"]
 [connection signal="pressed" from="CreateProfile/CreateProfileOKButton" to="." method="_on_create_profile_ok_button_pressed"]
+[connection signal="pressed" from="SelectProfile/BackgroundColor/BackgroundButton" to="." method="_on_background_button_pressed"]
+[connection signal="pressed" from="SelectProfile/Profile1" to="." method="_on_profile_1_pressed"]
