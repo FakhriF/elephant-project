@@ -9,7 +9,6 @@ func _ready():
 	createProfileNodes.visible = false
 	
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if (createProfileNodes.visible && Input.is_action_pressed("Enter_KEY")):
@@ -22,7 +21,7 @@ func _on_create_profile_button_pressed():
 	
 func _on_create_profile_ok_button_pressed():
 	print(usernameText.get_text()) #Username Value
-	if (usernameText.get_text() != ""):
+	if (usernameText.get_text() != "" && usernameText.get_text() != " "):
 		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
 	else:
 		print("Username Masih Kosong!")
