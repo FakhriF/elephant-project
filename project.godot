@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameSystem="*res://global/game_system.gd"
+Profile="*res://global/scripts/profile.gd"
 
 [display]
 
