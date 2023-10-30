@@ -9,3 +9,7 @@ func _ready():
 func _on_exit_button_pressed():
 	get_tree().change_scene_to_file("res://menu/scenes/quit_confirm.tscn")
 
+
+
+func _on_start_game_button_pressed():
+	get_tree().change_scene_to_file("res://gameStage/MainStage.tscn")
