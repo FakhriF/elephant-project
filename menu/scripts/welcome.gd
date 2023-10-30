@@ -57,7 +57,8 @@ func loadGame():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if (createProfileNodes.visible && Input.is_action_pressed("Enter_KEY")):
+		_on_create_profile_ok_button_pressed()
 
 func _on_create_profile_button_pressed():
 	createProfileNodes.visible = true
@@ -69,7 +70,7 @@ func _on_select_profile_button_pressed():
 	
 func _on_create_profile_ok_button_pressed():
 	print(usernameText.get_text()) #Username Value
-	if (usernameText.get_text() != ""):
+	if (usernameText.get_text() != "" && usernameText.get_text() != " "):
 		saveGame(usernameText)
 		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
 	else:
