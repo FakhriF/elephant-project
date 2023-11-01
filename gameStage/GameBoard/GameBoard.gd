@@ -18,9 +18,39 @@ var _walkable_cells := []
 @onready var _unit_path: UnitPath = $UnitPath
 
 
-func _ready() -> void:
-	_reinitialize()
+var turnManager : TurnManager = TurnManager.new()
 
+
+func _ready() -> void:
+	turnManager.ally_turn_started.connect(_on_ally_turn_started)
+	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
+	turnManager.start()
+	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+
+func _on_ally_turn_started():
+	_get_ally_unit()
+	
+func _on_enemy_turn_started():
+	_get_enemy_unit()
+	
+## Clears, and refills the `_units` dictionary with game objects that are on the board.
+func _get_ally_unit() -> void:
+	_units.clear()
+
+	for child in get_children():
+		var unit := child as Unit
+		if not unit || !unit.name == "Aurel":
+			continue
+		_units[unit.cell] = unit
+
+func _get_enemy_unit() -> void:
+	_units.clear()
+
+	for child in get_children():
+		var unit := child as Unit
+		if not unit || unit.name == "Aurel":
+			continue
+		_units[unit.cell] = unit
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _active_unit and event.is_action_pressed("ui_cancel"):
@@ -43,17 +73,6 @@ func is_occupied(cell: Vector2) -> bool:
 ## Returns an array of cells a given unit can walk using the flood fill algorithm.
 func get_walkable_cells(unit: Unit) -> Array:
 	return _flood_fill(unit.cell, unit.move_range)
-
-
-## Clears, and refills the `_units` dictionary with game objects that are on the board.
-func _reinitialize() -> void:
-	_units.clear()
-
-	for child in get_children():
-		var unit := child as Unit
-		if not unit:
-			continue
-		_units[unit.cell] = unit
 
 
 ## Returns an array with all the coordinates of walkable cells based on the `max_distance`.
@@ -133,9 +152,19 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 		_select_unit(cell)
 	elif _active_unit.is_selected:
 		_move_active_unit(cell)
+		# Make it so that the unit can only move once
+		_units.erase(_active_unit.cell) 
+	if 	_units.is_empty():
+		print("Can't select anymore character, please end turn")
+
 
 
 ## Updates the interactive path's drawing if there's an active and selected unit.
 func _on_Cursor_moved(new_cell: Vector2) -> void:
 	if _active_unit and _active_unit.is_selected:
 		_unit_path.draw(_active_unit.cell, new_cell)
+
+
+func _on_end_turn_pressed():
+	turnManager.advance_turn()
+	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
