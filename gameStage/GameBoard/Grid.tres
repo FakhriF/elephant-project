@@ -1,8 +1,8 @@
-[gd_resource type="Resource" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="Grid" load_steps=2 format=3 uid="uid://dos77avjw27es"]
 
 [ext_resource type="Script" path="res://gameStage/GameBoard/Grid.gd" id="1"]
 
 [resource]
-script = ExtResource( 1 )
-size = Vector2( 20, 20 )
-cell_size = Vector2( 80, 80 )
+script = ExtResource("1")
+size = Vector2(20, 20)
+cell_size = Vector2(80, 80)

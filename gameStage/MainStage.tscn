@@ -1,14 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://2jarj8vtfcng"]
+[gd_scene load_steps=15 format=3 uid="uid://2jarj8vtfcng"]
 
 [ext_resource type="PackedScene" uid="uid://bv1ul1qynrdwd" path="res://gameStage/GameBoard/Cursor/Cursor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d4mhjq651egt" path="res://gameStage/Units/Unit.tscn" id="2"]
 [ext_resource type="Script" path="res://gameStage/GameBoard/GameBoard.gd" id="3"]
-[ext_resource type="Resource" path="res://gameStage/GameBoard/Grid.tres" id="4"]
+[ext_resource type="Resource" uid="uid://dos77avjw27es" path="res://gameStage/GameBoard/Grid.tres" id="4"]
 [ext_resource type="PackedScene" uid="uid://n825j345khoi" path="res://gameStage/UnitOverlay/UnitOverlay.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://dxyfefsgkgc4l" path="res://gameStage/GameBoard/UnitPath.tscn" id="6"]
 [ext_resource type="Texture2D" uid="uid://ceanoo0yxcj8i" path="res://gameStage/Units/squirrel.png" id="7"]
 [ext_resource type="Texture2D" uid="uid://don6rhlapjhye" path="res://gameStage/Units/bear.png" id="8"]
 [ext_resource type="Texture2D" uid="uid://x4kxxdinjx3r" path="res://gameStage/Units/bugcat.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://d0jfyksf1qm0v" path="res://gameStage/Units/Aurel-Sprite.png" id="9_1cexo"]
 [ext_resource type="PackedScene" uid="uid://de53ukdqyusan" path="res://gameStage/Background/Map.tscn" id="10"]
 
 [sub_resource type="Curve2D" id="1"]
@@ -36,11 +37,19 @@ grid = ExtResource("4")
 [node name="Cursor" parent="GameBoard" instance=ExtResource("1")]
 
 [node name="Bear" parent="GameBoard" instance=ExtResource("2")]
-position = Vector2(600, 480)
+position = Vector2(744, 560)
 curve = SubResource("1")
 move_range = 3
 skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
+
+[node name="Aurel" parent="GameBoard" instance=ExtResource("2")]
+position = Vector2(160, 472)
+scale = Vector2(0.5, 0.5)
+curve = SubResource("1")
+move_range = 3
+skin = ExtResource("9_1cexo")
+skin_offset = Vector2(-8, -50)
 
 [node name="Cat" parent="GameBoard" instance=ExtResource("2")]
 position = Vector2(850.293, 412.465)
@@ -50,11 +59,27 @@ skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
 
 [node name="Squirrel" parent="GameBoard" instance=ExtResource("2")]
-position = Vector2(355.298, 298.556)
+position = Vector2(744, 216)
 curve = SubResource("3")
 move_range = 5
 skin = ExtResource("7")
 skin_offset = Vector2(6, 17)
 
+[node name="TurnCounter" type="RichTextLabel" parent="GameBoard"]
+custom_minimum_size = Vector2(334, 211)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_vertical = 4
+theme_override_font_sizes/bold_font_size = 32
+bbcode_enabled = true
+
+[node name="EndTurn" type="Button" parent="."]
+offset_left = 1008.0
+offset_top = 584.0
+offset_right = 1152.0
+offset_bottom = 640.0
+text = "End Turn"
+
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
+[connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
