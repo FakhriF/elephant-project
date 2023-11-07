@@ -11,6 +11,9 @@ const DIRECTIONS = [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]
 
 ## Mapping of coordinates of a cell to a reference to the unit it contains.
 var _units := {}
+var _playerUnits := {}
+var _enemyUnits := {}
+
 var _active_unit: Unit
 var _walkable_cells := []
 
@@ -28,29 +31,121 @@ func _ready() -> void:
 	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
 func _on_ally_turn_started():
-	_get_ally_unit()
-	
+	_playerUnits = _get_ally_unit()
+	print(_playerUnits)
+
 func _on_enemy_turn_started():
-	_get_enemy_unit()
+	_playerUnits = _get_ally_unit()
+	_enemyUnits = _get_enemy_unit()
+	_perform_enemy_turn()
+	
+	
 	
 ## Clears, and refills the `_units` dictionary with game objects that are on the board.
-func _get_ally_unit() -> void:
+func _get_ally_unit() -> Dictionary:
 	_units.clear()
 
 	for child in get_children():
 		var unit := child as Unit
-		if not unit || !unit.name == "Aurel":
+		if not unit || unit.name != "Aurel":
 			continue
 		_units[unit.cell] = unit
+		
 
-func _get_enemy_unit() -> void:
-	_units.clear()
+	return _units
+
+func _get_enemy_unit() -> Dictionary:
+	_enemyUnits.clear()
 
 	for child in get_children():
 		var unit := child as Unit
 		if not unit || unit.name == "Aurel":
 			continue
-		_units[unit.cell] = unit
+		_enemyUnits[unit.cell] = unit
+		
+	return _enemyUnits
+
+func _perform_enemy_turn() -> void:
+	var enemy_units = _enemyUnits.values()
+	var player_units = _playerUnits.values()
+
+	for unit in enemy_units:
+		_walkable_cells = get_walkable_cells(unit)
+		_unit_overlay.draw(_walkable_cells)
+		_unit_path.initialize(_walkable_cells)
+		var target_cell = calculate_enemy_target(unit, _playerUnits)  # Implement your logic to calculate the target cell.
+		
+		var move_delay = 0.5
+		if target_cell in _walkable_cells:
+			print("Bisa Bergerak")
+			await _delayed_enemy_movement(unit, target_cell, move_delay)
+		else:
+			print("Tidak bisa bergerak")
+			await _delayed_enemy_movement(unit, _walkable_cells[randi_range(0, _walkable_cells.size() - 1)], move_delay)
+	turnManager.advance_turn()
+	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+
+				
+		
+	
+
+func _delayed_enemy_movement(unit, target, delay):
+	await get_tree().create_timer(delay).timeout
+
+	if is_occupied(target) or not target in _walkable_cells:
+		return
+
+	# Remove the unit from its current cell in _enemyUnits
+	_enemyUnits.erase(unit.cell)
+
+	# Update the unit's cell to the new target cell
+	unit.cell = target
+
+	# Add the unit to the new cell in _enemyUnits
+	_enemyUnits[target] = unit
+
+	# Calculate the path to the target cell
+	var path_to_target = [unit.cell, target]  # Create a path with only two points: the unit's current cell and the target cell
+	_unit_overlay.clear()
+	_unit_path.stop()
+	# Set the unit's path and make it start moving
+	unit.walk_along(path_to_target)
+
+	# Wait for the unit to finish moving
+	await unit.walk_finished
+	_clear_active_unit()
+
+
+
+	
+func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vector2:
+	var nearest_distance = float("inf")
+	var nearest_target: Vector2 = Vector2.ZERO
+
+	for player_unit in player_units.values():
+		var player_cell = player_unit.cell
+		var enemy_cell = enemy_unit.cell
+		var distance = enemy_cell.distance_to(player_cell)
+
+		# if distance < nearest_distance:
+		nearest_distance = distance
+		nearest_target = player_cell
+
+	# Adjust the nearest_target if it's occupied
+	if is_occupied(nearest_target):
+		nearest_target.x += 1
+
+
+
+	if nearest_target != Vector2.ZERO:
+		return nearest_target
+	else:
+		print("No valid target found")
+		return Vector2.ZERO
+
+
+
+	
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _active_unit and event.is_action_pressed("ui_cancel"):
@@ -156,6 +251,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 		_units.erase(_active_unit.cell) 
 	if 	_units.is_empty():
 		print("Can't select anymore character, please end turn")
+		
 
 
 

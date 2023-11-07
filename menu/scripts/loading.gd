@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var timer = 2
+@export var timer = 3
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,4 +13,5 @@ func _process(delta):
 	if timer >= 0:
 		timer -= delta
 	else:
+		# get_tree().change_scene_to_file("res://menu/scenes/welcome.tscn")
 		get_tree().change_scene_to_file("res://menu/scenes/welcome.tscn")
