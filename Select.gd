@@ -3,10 +3,10 @@ extends Node2D
 # Preload the Character script
 const Character = preload("res://Class/Character.gd")
 
-var character_1 = Character.new("Character 1", "res://character_1.png", {"HP": 100, "EP": 10})
-var character_2 = Character.new("Character 2", "res://character_2.png", {"HP": 300, "EP": 7})
-var character_3 = Character.new("Character 3", "res://character_3.png", {"HP": 80, "EP": 25})
-var character_4 = Character.new("Character 4", "res://character_4.png", {"HP": 90, "EP": 15})
+var character_1 = Character.new("Character 1", "res://menu/assets/character_1.png", {"HP": 100, "EP": 10})
+var character_2 = Character.new("Character 2", "res://menu/assets/character_2.png", {"HP": 300, "EP": 7})
+var character_3 = Character.new("Character 3", "res://menu/assets/character_3.png", {"HP": 80, "EP": 25})
+var character_4 = Character.new("Character 4", "res://menu/assets/character_4.png", {"HP": 90, "EP": 15})
 
 var start_button
 var back_button
