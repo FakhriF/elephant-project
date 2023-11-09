@@ -10,39 +10,47 @@
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="8_bg8i2"]
 
 [node name="SelectCharacterScene" type="Node2D"]
+scale = Vector2(0.79, 0.79)
 
 [node name="BGpolos" type="Sprite2D" parent="."]
-position = Vector2(961, 540)
+position = Vector2(729.661, 409.485)
+scale = Vector2(0.758924, 0.75365)
 texture = ExtResource("1_6gswc")
+metadata/_edit_lock_ = true
 
 [node name="Back Button" type="Button" parent="."]
 offset_left = 2.0
 offset_top = 2.0
 offset_right = 288.0
 offset_bottom = 136.0
+scale = Vector2(0.79, 0.79)
 theme_override_colors/font_color = Color(0.929412, 0.490196, 0.192157, 1)
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 60
 theme_override_styles/normal = ExtResource("2_3yt3f")
 theme_override_styles/hover = ExtResource("2_3yt3f")
 text = "BACK"
+metadata/_edit_use_anchors_ = true
 
 [node name="?" type="RichTextLabel" parent="."]
-offset_left = 763.0
-offset_top = 408.0
-offset_right = 819.0
-offset_bottom = 545.0
+offset_left = 520.253
+offset_top = 288.848
+offset_right = 576.253
+offset_bottom = 425.848
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
 text = "?"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Stats2" type="RichTextLabel" parent="."]
-offset_left = 720.0
-offset_top = 72.0
-offset_right = 1283.0
-offset_bottom = 190.0
+offset_left = 503.798
+offset_top = 51.8987
+offset_right = 1066.8
+offset_bottom = 169.899
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
@@ -50,24 +58,28 @@ theme_override_font_sizes/normal_font_size = 70
 bbcode_enabled = true
 text = "Select Character"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Stats" type="RichTextLabel" parent="."]
-offset_left = 1004.0
-offset_top = 347.0
-offset_right = 1184.0
-offset_bottom = 465.0
+offset_left = 761.253
+offset_top = 227.848
+offset_right = 941.253
+offset_bottom = 345.848
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 70
 bbcode_enabled = true
 text = "Stats"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="HP" type="RichTextLabel" parent="."]
-offset_left = 1004.0
-offset_top = 465.0
-offset_right = 1273.0
-offset_bottom = 528.0
+offset_left = 761.253
+offset_top = 345.848
+offset_right = 1030.25
+offset_bottom = 408.848
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
@@ -75,12 +87,14 @@ theme_override_font_sizes/normal_font_size = 45
 bbcode_enabled = true
 text = "HP"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="isi" type="RichTextLabel" parent="HP"]
 offset_left = 109.0
 offset_top = -25.0
 offset_right = 289.0
 offset_bottom = 93.0
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 70
@@ -88,12 +102,14 @@ bbcode_enabled = true
 text = "...
 "
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="EP" type="RichTextLabel" parent="."]
-offset_left = 1004.0
-offset_top = 529.0
-offset_right = 1273.0
-offset_bottom = 592.0
+offset_left = 761.253
+offset_top = 409.848
+offset_right = 1030.25
+offset_bottom = 472.848
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
@@ -101,12 +117,14 @@ theme_override_font_sizes/normal_font_size = 45
 bbcode_enabled = true
 text = "EP"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="isi" type="RichTextLabel" parent="EP"]
 offset_left = 109.0
 offset_top = -25.0
 offset_right = 289.0
 offset_bottom = 93.0
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 70
@@ -114,6 +132,7 @@ bbcode_enabled = true
 text = "...
 "
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Button Character 8" type="Button" parent="."]
 offset_left = 5417.5
@@ -122,14 +141,16 @@ offset_right = 5425.5
 offset_bottom = 4220.5
 
 [node name="BgCharacter4" type="Sprite2D" parent="Button Character 8"]
-position = Vector2(-3781, -3370)
+position = Vector2(-4388.07, -3555.22)
+scale = Vector2(0.624375, 0.624375)
 texture = ExtResource("3_nb7k1")
 
 [node name="?" type="RichTextLabel" parent="Button Character 8/BgCharacter4"]
-offset_left = -13.5
-offset_top = -44.5
-offset_right = 19.5
-offset_bottom = 45.5
+offset_left = -8.39282
+offset_top = -37.9963
+offset_right = 24.6072
+offset_bottom = 52.0037
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
@@ -137,6 +158,7 @@ theme_override_font_sizes/normal_font_size = 65
 bbcode_enabled = true
 text = "?"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Button Character 7" type="Button" parent="."]
 offset_left = 3250.5
@@ -145,14 +167,16 @@ offset_right = 3258.5
 offset_bottom = 2535.5
 
 [node name="BgCharacter3" type="Sprite2D" parent="Button Character 7"]
-position = Vector2(-1798, -1685)
+position = Vector2(-2331.83, -1869.59)
+scale = Vector2(0.632875, 0.632875)
 texture = ExtResource("3_nb7k1")
 
 [node name="?" type="RichTextLabel" parent="Button Character 7/BgCharacter3"]
-offset_left = -13.5
-offset_top = -44.5
-offset_right = 19.5
-offset_bottom = 45.5
+offset_left = -7.50476
+offset_top = -37.507
+offset_right = 25.4952
+offset_bottom = 52.493
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
@@ -160,6 +184,7 @@ theme_override_font_sizes/normal_font_size = 65
 bbcode_enabled = true
 text = "?"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Button Character 6" type="Button" parent="."]
 offset_left = 2167.0
@@ -168,14 +193,16 @@ offset_right = 2175.0
 offset_bottom = 1693.0
 
 [node name="BgCharacter2" type="Sprite2D" parent="Button Character 6"]
-position = Vector2(-899.5, -842.5)
+position = Vector2(-1360.35, -1026.45)
+scale = Vector2(0.624377, 0.624377)
 texture = ExtResource("3_nb7k1")
 
 [node name="?" type="RichTextLabel" parent="Button Character 6/BgCharacter2"]
-offset_left = -15.0
-offset_top = -43.0
-offset_right = 18.0
-offset_bottom = 47.0
+offset_left = -8.62085
+offset_top = -37.0035
+offset_right = 24.3792
+offset_bottom = 52.9965
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
@@ -183,14 +210,19 @@ theme_override_font_sizes/normal_font_size = 65
 bbcode_enabled = true
 text = "?"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Button Character 5" type="Button" parent="."]
 offset_left = 1083.5
 offset_top = 842.5
 offset_right = 1091.5
 offset_bottom = 850.5
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
 
 [node name="BgCharacter" type="Sprite2D" parent="Button Character 5"]
+position = Vector2(73.762, -234.858)
+scale = Vector2(0.79, 0.79)
 texture = ExtResource("3_nb7k1")
 
 [node name="?" type="RichTextLabel" parent="Button Character 5/BgCharacter"]
@@ -198,6 +230,7 @@ offset_left = -14.0
 offset_top = -40.0
 offset_right = 19.0
 offset_bottom = 50.0
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
@@ -205,55 +238,78 @@ theme_override_font_sizes/normal_font_size = 65
 bbcode_enabled = true
 text = "?"
 fit_content = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Button Character 4" type="Button" parent="."]
 offset_right = 8.0
 offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
 
 [node name="Character4" type="Sprite2D" parent="Button Character 4"]
-position = Vector2(894.5, 842.5)
+position = Vector2(881.235, 834.769)
+scale = Vector2(0.79, 0.79)
 texture = ExtResource("4_pmudm")
 
 [node name="Button Character 3" type="Button" parent="."]
 offset_right = 8.0
 offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
 
 [node name="Character3" type="Sprite2D" parent="Button Character 3"]
-position = Vector2(708.5, 840.5)
+position = Vector2(741.702, 837.576)
+scale = Vector2(0.79, 0.79)
 texture = ExtResource("5_62wfx")
 
 [node name="Button Character 2" type="Button" parent="."]
 offset_right = 8.0
 offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
 
 [node name="Character2" type="Sprite2D" parent="Button Character 2"]
-position = Vector2(524.5, 840.5)
+position = Vector2(604.169, 837.576)
+scale = Vector2(0.79, 0.79)
 texture = ExtResource("6_yvebi")
 
 [node name="Button Character 1" type="Button" parent="."]
 offset_right = 8.0
 offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
 
 [node name="Character1" type="Sprite2D" parent="Button Character 1"]
-position = Vector2(336.5, 840.5)
+position = Vector2(462.636, 837.576)
+scale = Vector2(0.79, 0.79)
 texture = ExtResource("7_imgcm")
 
 [node name="Start Button" type="Button" parent="."]
 offset_right = 8.0
 offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
 
 [node name="Start" type="Sprite2D" parent="Start Button"]
-position = Vector2(1736, 679)
+position = Vector2(1650.38, 672.969)
+scale = Vector2(0.79, 0.79)
 texture = ExtResource("8_bg8i2")
 
 [node name="Select Charater" type="RichTextLabel" parent="Start Button/Start"]
-offset_left = -94.0
-offset_top = -51.0
-offset_right = 106.0
-offset_bottom = 67.0
+anchors_preset = -1
+anchor_left = -0.000820556
+anchor_top = -0.00212507
+anchor_right = -0.000820556
+anchor_bottom = -0.3032
+offset_left = -79.8022
+offset_top = -36.8024
+offset_right = 120.198
+offset_bottom = 81.1976
+scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 65
 bbcode_enabled = true
 text = "START"
 fit_content = true
+metadata/_edit_use_anchors_ = true
