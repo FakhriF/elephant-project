@@ -1,0 +1,184 @@
+[gd_scene load_steps=11 format=3 uid="uid://4s05blamcfv7"]
+
+[ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_yxebu"]
+[ext_resource type="Texture2D" uid="uid://bqx5smaxdfaii" path="res://menu/assets/BGpilihstage.png" id="2_nigco"]
+[ext_resource type="Texture2D" uid="uid://cn3ukk34l5ac8" path="res://menu/assets/Random Stage.png" id="3_jjjtq"]
+[ext_resource type="Texture2D" uid="uid://bvuegg6ycbfjr" path="res://menu/assets/Fillmap.png" id="4_7ms08"]
+[ext_resource type="Texture2D" uid="uid://dhaosjslfrx3b" path="res://menu/assets/Forest.png" id="5_jn0vw"]
+[ext_resource type="Texture2D" uid="uid://bwovjhkqqem5i" path="res://menu/assets/Dust.png" id="6_h281m"]
+[ext_resource type="Texture2D" uid="uid://duhhottt5n7oa" path="res://menu/assets/Snow.png" id="7_updhs"]
+[ext_resource type="Texture2D" uid="uid://dgllxe1cpu4fj" path="res://menu/assets/random.png" id="8_0rfmw"]
+[ext_resource type="Texture2D" uid="uid://d157i26bm4x4g" path="res://menu/assets/next.png" id="9_8cl6a"]
+[ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="10_5jgvq"]
+
+[node name="SelectMapScene" type="Node2D"]
+
+[node name="BGpolos" type="Sprite2D" parent="."]
+position = Vector2(576, 324.5)
+scale = Vector2(0.6, 0.600926)
+texture = ExtResource("1_yxebu")
+metadata/_edit_lock_ = true
+
+[node name="BGpilihstage" type="Sprite2D" parent="BGpolos"]
+position = Vector2(-2.31482, 0.00012207)
+scale = Vector2(1.00106, 0.996918)
+texture = ExtResource("2_nigco")
+metadata/_edit_lock_ = true
+
+[node name="RandomStage" type="Sprite2D" parent="."]
+position = Vector2(337, 259)
+scale = Vector2(0.413534, 0.413534)
+texture = ExtResource("3_jjjtq")
+
+[node name="Random" type="RichTextLabel" parent="RandomStage"]
+anchors_preset = -1
+anchor_left = 0.000314932
+anchor_top = -0.0010524
+anchor_right = 0.408906
+anchor_bottom = 0.000827302
+offset_left = -186.515
+offset_top = -55.0583
+offset_right = -130.515
+offset_bottom = 81.9417
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 100
+bbcode_enabled = true
+text = "RANDOM"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Fillmap" type="Sprite2D" parent="."]
+position = Vector2(576, 534)
+scale = Vector2(0.581439, 0.581439)
+texture = ExtResource("4_7ms08")
+
+[node name="Button Forest" type="Button" parent="."]
+offset_left = -1.52588e-05
+offset_right = 7.99998
+offset_bottom = 8.0
+
+[node name="Forest" type="Sprite2D" parent="Button Forest"]
+position = Vector2(244, 546)
+scale = Vector2(0.531065, 0.531065)
+texture = ExtResource("5_jn0vw")
+
+[node name="FOREST" type="RichTextLabel" parent="Button Forest/Forest"]
+offset_left = -65.9053
+offset_top = -146.875
+offset_right = 70.0947
+offset_bottom = -97.8746
+theme_override_font_sizes/normal_font_size = 35
+text = "FOREST"
+fit_content = true
+
+[node name="Button Dust" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Dust" type="Sprite2D" parent="Button Dust"]
+position = Vector2(453, 547)
+scale = Vector2(0.569527, 0.569527)
+texture = ExtResource("6_h281m")
+
+[node name="Dust" type="RichTextLabel" parent="Button Dust/Dust"]
+offset_left = -59.6987
+offset_top = -142.223
+offset_right = 37.3013
+offset_bottom = -93.2234
+theme_override_font_sizes/normal_font_size = 35
+text = "DUST"
+fit_content = true
+
+[node name="Button Snow" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Snow" type="Sprite2D" parent="Button Snow"]
+position = Vector2(675, 550)
+scale = Vector2(0.606509, 0.606509)
+texture = ExtResource("7_updhs")
+
+[node name="Snow" type="RichTextLabel" parent="Button Snow/Snow"]
+offset_left = -62.6537
+offset_top = -140.147
+offset_right = 51.3463
+offset_bottom = -91.1465
+theme_override_font_sizes/normal_font_size = 35
+text = "SNOW"
+fit_content = true
+
+[node name="Button Random" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Random" type="Sprite2D" parent="Button Random"]
+position = Vector2(901, 549)
+scale = Vector2(0.588757, 0.588757)
+texture = ExtResource("8_0rfmw")
+
+[node name="Randowm" type="RichTextLabel" parent="Button Random/Random"]
+offset_left = -83.2263
+offset_top = -139.276
+offset_right = 82.7737
+offset_bottom = -90.2765
+theme_override_font_sizes/normal_font_size = 35
+text = "RANDOM"
+fit_content = true
+
+[node name="Dificulty" type="RichTextLabel" parent="."]
+offset_left = 766.0
+offset_top = 112.0
+offset_right = 948.0
+offset_bottom = 161.0
+theme_override_font_sizes/normal_font_size = 35
+text = "DIFICULTY"
+fit_content = true
+
+[node name="Button maju" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="maju2" type="Sprite2D" parent="Button maju"]
+position = Vector2(1011, 259)
+scale = Vector2(0.793209, 0.79321)
+texture = ExtResource("9_8cl6a")
+flip_h = true
+
+[node name="Button Mundur" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="mundur" type="Sprite2D" parent="Button Mundur"]
+position = Vector2(696, 258)
+scale = Vector2(0.801887, 0.801887)
+texture = ExtResource("9_8cl6a")
+
+[node name="Randowm3" type="RichTextLabel" parent="."]
+offset_left = 807.0
+offset_top = 236.0
+offset_right = 893.0
+offset_bottom = 285.0
+theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
+theme_override_font_sizes/normal_font_size = 35
+text = "EASY"
+fit_content = true
+
+[node name="Button Next" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="NEXT" type="Sprite2D" parent="Button Next"]
+position = Vector2(849.52, 388.375)
+scale = Vector2(0.637097, 0.637097)
+texture = ExtResource("10_5jgvq")
+
+[node name="next" type="RichTextLabel" parent="Button Next/NEXT"]
+offset_left = -66.4303
+offset_top = -35.2911
+offset_right = 74.5697
+offset_bottom = 33.7089
+theme_override_font_sizes/normal_font_size = 50
+text = "NEXT"
+fit_content = true
