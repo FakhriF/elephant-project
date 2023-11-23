@@ -13,3 +13,8 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Savegames
+savegame1.bin
+savegame2.bin
+savegame3.bin
