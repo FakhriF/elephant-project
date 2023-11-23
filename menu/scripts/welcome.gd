@@ -5,9 +5,13 @@ extends Node2D
 @onready var ProfileButton = $Welcome/SelectProfileButton
 @onready var welcomeNodes = $Welcome
 @onready var usernameText = $CreateProfile/ProfileTextfield
+@onready var errorText = $CreateProfile/ErrorText
+
+var timer 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	errorText.visible = false
 	createProfileNodes.visible = false
 	SelectProfileNodes.visible = false
 	if (FileAccess.file_exists("res://savegame1.bin") == true) or (FileAccess.file_exists("res://savegame2.bin") == true) or (FileAccess.file_exists("res://savegame3.bin") == true) :
@@ -31,11 +35,12 @@ func saveGame(Username: Control):
 		file.store_line(jstr)
 		Profile.profileList.append(Username.get_text())
 		i += 1  # Increment i
+		return true
 		break
 
 	# Check for the maximum number of profiles.
 	if i == 3:
-		print("Maximum Number of Profiles")
+		return false
 
 func loadGame():
 	for i in range(3):
@@ -59,25 +64,52 @@ func loadGame():
 func _process(delta):
 	if (createProfileNodes.visible && Input.is_action_pressed("Enter_KEY")):
 		_on_create_profile_ok_button_pressed()
+	if (errorText.visible == true):
+		if timer >= 0:
+			print(timer)
+			timer -= delta
+		else:	
+			errorText.visible = false
 
 func _on_create_profile_button_pressed():
 	createProfileNodes.visible = true
 
 func _on_select_profile_button_pressed():
 	loadGame()
-		
 
 	
 func _on_create_profile_ok_button_pressed():
 	print(usernameText.get_text()) #Username Value
 	if (usernameText.get_text() != "" && usernameText.get_text() != " "):
-		saveGame(usernameText)
-		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
+		var usernameValidity = usernameText.get_text().split()
+		var bannedLetter = "&=_'-+,><?/:;[]{}|!@#$%^&*()`~"
+		var usernameSafety = true
+		for letter in usernameValidity:
+			if letter in bannedLetter.split():
+				usernameErrorStatusCode(1)
+				usernameSafety = false
+				break
+		if usernameSafety:
+			if saveGame(usernameText):
+				get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
+			else:
+				usernameErrorStatusCode(2)
 	else:
-		print("Username Masih Kosong!")
+		usernameErrorStatusCode(0)
 	
-
-
+func usernameErrorStatusCode(code):
+	timer = 3
+	if code == 0:
+		print("Username masih kosong!")
+		errorText.text = "Username still empty!"
+	elif code == 1:
+		print("Terdapat karakter invalid! Gunakan huruf alfabet dan angka")
+		errorText.text = "Invalid characters"
+	elif code == 2:
+		print("Maximum Number of Profiles")
+		errorText.text = "Maximum Number of Profiles"
+	errorText.visible = true
+	
 func _on_background_button_pressed():
 	createProfileNodes.visible = false
 	SelectProfileNodes.visible = false

@@ -15,10 +15,10 @@ texture = ExtResource("2_pychn")
 metadata/_edit_lock_ = true
 
 [node name="ExitButton" type="Button" parent="."]
-offset_left = 424.0
-offset_top = 416.0
-offset_right = 728.0
-offset_bottom = 485.0
+offset_left = 1002.0
+offset_top = 561.0
+offset_right = 1132.0
+offset_bottom = 630.0
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = ExtResource("3_2vds4")
@@ -26,6 +26,7 @@ theme_override_styles/hover = ExtResource("3_2vds4")
 text = "QUIT"
 
 [node name="OptionsButton" type="Button" parent="."]
+visible = false
 offset_left = 424.0
 offset_top = 342.0
 offset_right = 728.0
@@ -42,9 +43,9 @@ flat = true
 
 [node name="StartGameButton" type="Button" parent="."]
 offset_left = 424.0
-offset_top = 270.0
+offset_top = 334.0
 offset_right = 728.0
-offset_bottom = 339.0
+offset_bottom = 403.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
@@ -56,9 +57,9 @@ flat = true
 
 [node name="ContinueButton" type="Button" parent="."]
 offset_left = 424.0
-offset_top = 200.0
+offset_top = 264.0
 offset_right = 728.0
-offset_bottom = 269.0
+offset_bottom = 333.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.721569, 0, 1)
@@ -70,9 +71,9 @@ text = "CONTINUE"
 flat = true
 
 [node name="Copyright" type="RichTextLabel" parent="."]
-offset_top = 584.0
+offset_top = 615.0
 offset_right = 1152.0
-offset_bottom = 601.0
+offset_bottom = 632.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 12
