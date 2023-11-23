@@ -78,7 +78,6 @@ text = "[center]©2023, ELEPHANT TEAM"
 fit_content = true
 
 [node name="CreateProfile" type="Node2D" parent="."]
-visible = false
 
 [node name="BackgroundColor" type="ColorRect" parent="CreateProfile"]
 offset_left = -8.0
@@ -114,7 +113,21 @@ theme_override_styles/normal = ExtResource("4_jouy6")
 theme_override_styles/hover = ExtResource("5_lciwn")
 text = "OK"
 
+[node name="ErrorText" type="RichTextLabel" parent="CreateProfile"]
+offset_left = 383.0
+offset_top = 325.0
+offset_right = 639.0
+offset_bottom = 348.0
+theme_override_colors/default_color = Color(0.941176, 0, 0, 1)
+bbcode_enabled = true
+text = "[center]Ini Pesan Error!"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+
 [node name="SelectProfile" type="Node2D" parent="."]
+visible = false
 position = Vector2(464.516, 399.5)
 
 [node name="BackgroundColor" type="ColorRect" parent="SelectProfile"]
