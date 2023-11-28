@@ -30,4 +30,7 @@ func _on_button_random_pressed():
 
 
 func _on_button_next_pressed():
-	get_tree().change_scene_to_file("res://menu/scenes/Select_Character.tscn")
+	if Profile.stage_select == "":
+		print("please select a stage first!")
+	else:
+		get_tree().change_scene_to_file("res://menu/scenes/Select_Character.tscn")
