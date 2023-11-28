@@ -15,6 +15,11 @@ signal walk_finished
 ## The unit's move speed when it's moving along a path.
 @export var move_speed := 600.0
 
+@export var hp := 100
+@export var energy := 100
+
+
+
 ## Texture representing the unit.
 @export var skin: Texture:
 	set(value):
@@ -23,6 +28,7 @@ signal walk_finished
 			# This will resume execution after this node's _ready()
 			await ready
 		_sprite.texture = value
+		
 ## Offset to apply to the `skin` sprite in pixels.
 @export var skin_offset := Vector2.ZERO:
 	set(value):
@@ -52,6 +58,7 @@ var _is_walking := false:
 		set_process(_is_walking)
 
 @onready var _sprite: Sprite2D = $PathFollow2D/Sprite
+@onready var _aura: Sprite2D = $PathFollow2D/Aura
 @onready var _anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _path_follow: PathFollow2D = $PathFollow2D
 

@@ -12,7 +12,8 @@ func _on_exit_button_pressed():
 
 
 func _on_start_game_button_pressed():
-	get_tree().change_scene_to_file("res://menu/scenes/Select_Character.tscn")
+	get_tree().change_scene_to_file("res://menu/scenes/select_map_scene.tscn")
+	
 
 
 func _on_continue_button_pressed():

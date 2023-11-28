@@ -25,10 +25,19 @@ var turnManager : TurnManager = TurnManager.new()
 
 
 func _ready() -> void:
+	_check_stage()
 	turnManager.ally_turn_started.connect(_on_ally_turn_started)
 	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
 	turnManager.start()
 	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+
+func _check_stage():
+	if Profile.stage_select == "Forest":
+		$"../Map".visible = true
+	if Profile.stage_select == "Desert":
+		$"../Desert".visible = true
+	if Profile.stage_select == "Snow":
+		$"../Snow".visible = true
 
 func _on_ally_turn_started():
 	_playerUnits = _get_ally_unit()

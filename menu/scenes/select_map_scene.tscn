@@ -1,5 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://4s05blamcfv7"]
+[gd_scene load_steps=12 format=3 uid="uid://4s05blamcfv7"]
 
+[ext_resource type="Script" path="res://menu/scripts/select_map_scene.gd" id="1_ryw3e"]
 [ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_yxebu"]
 [ext_resource type="Texture2D" uid="uid://bqx5smaxdfaii" path="res://menu/assets/BGpilihstage.png" id="2_nigco"]
 [ext_resource type="Texture2D" uid="uid://cn3ukk34l5ac8" path="res://menu/assets/Random Stage.png" id="3_jjjtq"]
@@ -12,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="10_5jgvq"]
 
 [node name="SelectMapScene" type="Node2D"]
+script = ExtResource("1_ryw3e")
 
 [node name="BGpolos" type="Sprite2D" parent="."]
 position = Vector2(576, 324.5)
@@ -54,13 +56,14 @@ position = Vector2(576, 534)
 scale = Vector2(0.581439, 0.581439)
 texture = ExtResource("4_7ms08")
 
-[node name="Button Forest" type="Button" parent="."]
-offset_left = -1.52588e-05
-offset_right = 7.99998
-offset_bottom = 8.0
+[node name="Button Forest" type="Button" parent="." groups=["StageSelection"]]
+offset_left = 144.0
+offset_top = 495.0
+offset_right = 337.0
+offset_bottom = 589.0
 
 [node name="Forest" type="Sprite2D" parent="Button Forest"]
-position = Vector2(244, 546)
+position = Vector2(96, 47)
 scale = Vector2(0.531065, 0.531065)
 texture = ExtResource("5_jn0vw")
 
@@ -73,12 +76,14 @@ theme_override_font_sizes/normal_font_size = 35
 text = "FOREST"
 fit_content = true
 
-[node name="Button Dust" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="Button Dust" type="Button" parent="." groups=["StageSelection"]]
+offset_left = 352.0
+offset_top = 494.0
+offset_right = 557.0
+offset_bottom = 596.0
 
 [node name="Dust" type="Sprite2D" parent="Button Dust"]
-position = Vector2(453, 547)
+position = Vector2(103, 51.0001)
 scale = Vector2(0.569527, 0.569527)
 texture = ExtResource("6_h281m")
 
@@ -91,12 +96,14 @@ theme_override_font_sizes/normal_font_size = 35
 text = "DUST"
 fit_content = true
 
-[node name="Button Snow" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="Button Snow" type="Button" parent="." groups=["StageSelection"]]
+offset_left = 569.0
+offset_top = 494.0
+offset_right = 785.0
+offset_bottom = 599.0
 
 [node name="Snow" type="Sprite2D" parent="Button Snow"]
-position = Vector2(675, 550)
+position = Vector2(108, 53)
 scale = Vector2(0.606509, 0.606509)
 texture = ExtResource("7_updhs")
 
@@ -109,12 +116,14 @@ theme_override_font_sizes/normal_font_size = 35
 text = "SNOW"
 fit_content = true
 
-[node name="Button Random" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="Button Random" type="Button" parent="." groups=["StageSelection"]]
+offset_left = 802.0
+offset_top = 496.0
+offset_right = 1010.0
+offset_bottom = 601.0
 
 [node name="Random" type="Sprite2D" parent="Button Random"]
-position = Vector2(901, 549)
+position = Vector2(104, 52)
 scale = Vector2(0.588757, 0.588757)
 texture = ExtResource("8_0rfmw")
 
@@ -166,11 +175,15 @@ text = "EASY"
 fit_content = true
 
 [node name="Button Next" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 771.0
+offset_top = 343.0
+offset_right = 926.0
+offset_bottom = 404.0
+text = "Next"
 
 [node name="NEXT" type="Sprite2D" parent="Button Next"]
-position = Vector2(849.52, 388.375)
+visible = false
+position = Vector2(78, 30)
 scale = Vector2(0.637097, 0.637097)
 texture = ExtResource("10_5jgvq")
 
@@ -182,3 +195,10 @@ offset_bottom = 33.7089
 theme_override_font_sizes/normal_font_size = 50
 text = "NEXT"
 fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="Button Forest" to="." method="_on_button_forest_pressed"]
+[connection signal="pressed" from="Button Dust" to="." method="_on_button_dust_pressed"]
+[connection signal="pressed" from="Button Snow" to="." method="_on_button_snow_pressed"]
+[connection signal="pressed" from="Button Random" to="." method="_on_button_random_pressed"]
+[connection signal="pressed" from="Button Next" to="." method="_on_button_next_pressed"]

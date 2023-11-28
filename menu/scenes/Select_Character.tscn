@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://cb8searn43yql"]
+[gd_scene load_steps=11 format=3 uid="uid://cb8searn43yql"]
 
-[ext_resource type="Script" path="res://menu/scenes/Select_Character.gd" id="1_5cd4b"]
 [ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_6gswc"]
+[ext_resource type="Script" path="res://menu/scripts/Select_Character.gd" id="1_sqsc7"]
 [ext_resource type="StyleBox" uid="uid://dg4y3264mgs5h" path="res://menu/styles/menu_button_styles.tres" id="2_3yt3f"]
 [ext_resource type="Texture2D" uid="uid://btefsoaygpxlc" path="res://menu/assets/BGCharacter.png" id="3_nb7k1"]
 [ext_resource type="Texture2D" uid="uid://dbijgm8n562ic" path="res://menu/assets/character_4.png" id="4_pmudm"]
@@ -9,10 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://dy2hnwq3r0hig" path="res://menu/assets/character_2.png" id="6_yvebi"]
 [ext_resource type="Texture2D" uid="uid://db7riqy47p000" path="res://menu/assets/character_1.png" id="7_imgcm"]
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="8_bg8i2"]
+[ext_resource type="Texture2D" uid="uid://7t1re6nequh" path="res://gameStage/Units/Aurel-SplashArt.png" id="9_rjl0q"]
 
 [node name="SelectCharacterScene" type="Node2D"]
 scale = Vector2(0.79, 0.79)
-script = ExtResource("1_5cd4b")
+script = ExtResource("1_sqsc7")
 
 [node name="BGpolos" type="Sprite2D" parent="."]
 position = Vector2(729.661, 409.485)
@@ -34,6 +35,7 @@ text = "BACK"
 metadata/_edit_use_anchors_ = true
 
 [node name="?" type="RichTextLabel" parent="."]
+visible = false
 offset_left = 520.253
 offset_top = 288.848
 offset_right = 576.253
@@ -289,6 +291,12 @@ toggle_mode = true
 position = Vector2(64.0923, 65.6946)
 scale = Vector2(0.79, 0.79)
 texture = ExtResource("7_imgcm")
+
+[node name="Aurel-splashArt" type="Sprite2D" parent="Button Character 1"]
+visible = false
+position = Vector2(261.176, -342.894)
+scale = Vector2(0.146446, 0.146446)
+texture = ExtResource("9_rjl0q")
 
 [node name="Start Button" type="Button" parent="."]
 offset_left = 1245.57
