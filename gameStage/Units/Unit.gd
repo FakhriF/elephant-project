@@ -62,6 +62,8 @@ var _is_walking := false:
 @onready var _anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _path_follow: PathFollow2D = $PathFollow2D
 
+@onready var _anim = get_node("AnimationPlayer")
+
 
 func _ready() -> void:
 	set_process(false)
@@ -95,6 +97,8 @@ func _process(delta: float) -> void:
 		else:
 			move_speed += 150.0
 
+func hurt_anim():
+	_anim.play("hurt")
 
 ## Starts walking along the `path`.
 ## `path` is an array of grid coordinates that the function converts to map coordinates.
