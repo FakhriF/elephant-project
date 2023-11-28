@@ -32,7 +32,7 @@ func _ready() -> void:
 
 func _on_ally_turn_started():
 	_playerUnits = _get_ally_unit()
-	print(_playerUnits)
+	_enemyUnits = _get_enemy_unit()
 
 func _on_enemy_turn_started():
 	_playerUnits = _get_ally_unit()
@@ -42,17 +42,20 @@ func _on_enemy_turn_started():
 	
 	
 ## Clears, and refills the `_units` dictionary with game objects that are on the board.
-func _get_ally_unit() -> Dictionary:
+func _get_ally_unit():
 	_units.clear()
 
 	for child in get_children():
 		var unit := child as Unit
-		if not unit || unit.name != "Aurel":
+		if not unit:
 			continue
-		_units[unit.cell] = unit
-		
+		if unit.name in Profile.character_select:
+			print("hello")
+			unit.visible = true
+			_units[unit.cell] = unit
 
 	return _units
+
 
 func _get_enemy_unit() -> Dictionary:
 	_enemyUnits.clear()
@@ -61,6 +64,7 @@ func _get_enemy_unit() -> Dictionary:
 		var unit := child as Unit
 		if not unit || unit.name == "Aurel":
 			continue
+		unit.visible = true
 		_enemyUnits[unit.cell] = unit
 		
 	return _enemyUnits
@@ -74,7 +78,8 @@ func _perform_enemy_turn() -> void:
 		_unit_overlay.draw(_walkable_cells)
 		_unit_path.initialize(_walkable_cells)
 		var target_cell = calculate_enemy_target(unit, _playerUnits)  # Implement your logic to calculate the target cell.
-		
+#		if target_cell == unit.cell:
+#			continue
 		var move_delay = 0.5
 		if target_cell in _walkable_cells:
 			print("Bisa Bergerak")
@@ -82,6 +87,8 @@ func _perform_enemy_turn() -> void:
 		else:
 			print("Tidak bisa bergerak")
 			await _delayed_enemy_movement(unit, _walkable_cells[randi_range(0, _walkable_cells.size() - 1)], move_delay)
+		print(_enemyUnits)
+		_enemyUnits.erase(unit.cell) 
 	turnManager.advance_turn()
 	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
@@ -92,7 +99,7 @@ func _perform_enemy_turn() -> void:
 func _delayed_enemy_movement(unit, target, delay):
 	await get_tree().create_timer(delay).timeout
 
-	if is_occupied(target) or not target in _walkable_cells:
+	if is_occupied(target) or not target in _walkable_cells or target == unit.cell:
 		return
 
 	# Remove the unit from its current cell in _enemyUnits
@@ -144,7 +151,11 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 		return Vector2.ZERO
 
 
-
+func areCharactersNextToEachOther(character1_position, character2_position):
+	if abs(character1_position.x - character2_position.x) <= 1 && abs(character1_position.y - character2_position.y) == 0 || abs(character1_position.y - character2_position.y) <= 1 && abs(character1_position.x - character2_position.x) == 0:
+		return true
+	else:
+		return false
 	
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -162,7 +173,7 @@ func _get_configuration_warning() -> String:
 
 ## Returns `true` if the cell is occupied by a unit.
 func is_occupied(cell: Vector2) -> bool:
-	return _units.has(cell)
+	return _units.has(cell) or _enemyUnits.has(cell)
 
 
 ## Returns an array of cells a given unit can walk using the flood fill algorithm.
@@ -262,5 +273,8 @@ func _on_Cursor_moved(new_cell: Vector2) -> void:
 
 
 func _on_end_turn_pressed():
+	_playerUnits.clear()
+	_units.clear()
+	_enemyUnits.clear()
 	turnManager.advance_turn()
 	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
