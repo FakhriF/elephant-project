@@ -30,7 +30,7 @@ func _ready() -> void:
 	turnManager.ally_turn_started.connect(_on_ally_turn_started)
 	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
 	turnManager.start()
-	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
 func _check_stage():
 	if Profile.stage_select == "Forest":
@@ -41,6 +41,7 @@ func _check_stage():
 		$"../Snow".visible = true
 
 func _on_ally_turn_started():
+	$"../CanvasLayer/ColorRect2/RichTextLabel".text = "HP\t%s\nEP\t%s" % [str($Aurel.hp), str($Aurel.energy)]
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
 
@@ -94,6 +95,7 @@ func _perform_enemy_turn() -> void:
 			if is_occupied(target_cell):
 				target_cell.x -= 1
 				var unit_target = get_target(target_cell)
+				unit_target.hurt_anim()
 				unit_target.take_damage(15)
 				print(unit_target.hp)
 				continue
@@ -106,7 +108,7 @@ func _perform_enemy_turn() -> void:
 		print(_enemyUnits)
 		_enemyUnits.erase(unit.cell) 
 	turnManager.advance_turn()
-	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
 
 func _delayed_enemy_movement(unit, target, delay):
@@ -236,7 +238,6 @@ func _move_active_unit(new_cell: Vector2) -> void:
 	_deselect_active_unit()
 	_active_unit.walk_along(_unit_path.current_path)
 	await _active_unit.walk_finished
-	_active_unit.hurt_anim()
 	_clear_active_unit()
 
 func get_target(cell: Vector2) -> Unit:
@@ -296,4 +297,4 @@ func _on_end_turn_pressed():
 	_units.clear()
 	_enemyUnits.clear()
 	turnManager.advance_turn()
-	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
