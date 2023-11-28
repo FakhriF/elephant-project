@@ -1,8 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://2jarj8vtfcng"]
+[gd_scene load_steps=17 format=3 uid="uid://2jarj8vtfcng"]
 
 [ext_resource type="PackedScene" uid="uid://bv1ul1qynrdwd" path="res://gameStage/GameBoard/Cursor/Cursor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d4mhjq651egt" path="res://gameStage/Units/Unit.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://dq2ijvay8rb8" path="res://menu/assets/StatsBar.png" id="2_d7p3j"]
 [ext_resource type="Script" path="res://gameStage/GameBoard/GameBoard.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://b5jt8otr2cmut" path="res://menu/assets/HPBarProgress.png" id="3_kowaf"]
 [ext_resource type="Resource" uid="uid://dos77avjw27es" path="res://gameStage/GameBoard/Grid.tres" id="4"]
 [ext_resource type="PackedScene" uid="uid://n825j345khoi" path="res://gameStage/UnitOverlay/UnitOverlay.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://dxyfefsgkgc4l" path="res://gameStage/GameBoard/UnitPath.tscn" id="6"]
@@ -59,20 +61,41 @@ color = Color(0.309804, 0.290196, 0.270588, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
-layout_mode = 0
-offset_left = 64.0
-offset_right = 189.0
-offset_bottom = 111.0
-scale = Vector2(1.02581, 1.0823)
+layout_mode = 2
+anchor_left = 0.25
+anchor_top = 0.109
+anchor_right = 0.25
+anchor_bottom = 0.109
+offset_left = -32.0
+offset_top = -31.808
+offset_right = 104.0
+offset_bottom = 32.192
 theme_override_font_sizes/bold_font_size = 0
 bbcode_enabled = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -97.984
+offset_top = -7.744
+offset_right = 98.016
+offset_bottom = 8.256
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_kowaf")
 
 [node name="TurnCounter" type="RichTextLabel" parent="CanvasLayer"]
 custom_minimum_size = Vector2(334, 211)
 offset_left = -40.0
-offset_top = 8.0
+offset_top = -32.0
 offset_right = 294.0
-offset_bottom = 219.0
+offset_bottom = 179.0
 size_flags_vertical = 4
 theme_override_font_sizes/bold_font_size = 32
 bbcode_enabled = true

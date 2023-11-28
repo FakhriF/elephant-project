@@ -42,6 +42,7 @@ func _check_stage():
 
 func _on_ally_turn_started():
 	$"../CanvasLayer/ColorRect2/RichTextLabel".text = "HP\t%s\nEP\t%s" % [str($Aurel.hp), str($Aurel.energy)]
+	$"../CanvasLayer/ColorRect2/TextureProgressBar".value = $Aurel.hp
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
 
@@ -96,6 +97,7 @@ func _perform_enemy_turn() -> void:
 				target_cell.x -= 1
 				var unit_target = get_target(target_cell)
 				unit_target.hurt_anim()
+				
 				unit_target.take_damage(15)
 				print(unit_target.hp)
 				continue
