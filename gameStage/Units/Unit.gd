@@ -7,6 +7,8 @@ extends Path2D
 
 ## Emitted when the unit reached the end of a path along which it was walking.
 signal walk_finished
+signal dead
+signal health_changed(life)
 
 ## Shared resource of type Grid, used to calculate map coordinates.
 @export var grid: Resource
@@ -18,8 +20,14 @@ signal walk_finished
 @export var hp := 100
 @export var energy := 100
 
-
-
+func take_damage(damage):
+	hp = hp - damage
+	if hp <= 0:
+		emit_signal("dead")
+	else:
+		emit_signal("health_changed", hp)
+	
+	
 ## Texture representing the unit.
 @export var skin: Texture:
 	set(value):

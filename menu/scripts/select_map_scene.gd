@@ -17,7 +17,7 @@ func _on_button_forest_pressed():
 
 
 func _on_button_dust_pressed():
-	Profile.stage_select = "Dust"
+	Profile.stage_select = "Desert"
 
 func _on_button_snow_pressed():
 	Profile.stage_select = "Snow"

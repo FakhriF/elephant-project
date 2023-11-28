@@ -15,6 +15,7 @@ var _playerUnits := {}
 var _enemyUnits := {}
 
 var _active_unit: Unit
+var _target_unit: Unit 
 var _walkable_cells := []
 
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
@@ -87,12 +88,18 @@ func _perform_enemy_turn() -> void:
 		_unit_overlay.draw(_walkable_cells)
 		_unit_path.initialize(_walkable_cells)
 		var target_cell = calculate_enemy_target(unit, _playerUnits)  # Implement your logic to calculate the target cell.
-#		if target_cell == unit.cell:
-#			continue
+		print(target_cell)
 		var move_delay = 0.5
 		if target_cell in _walkable_cells:
-			print("Bisa Bergerak")
-			await _delayed_enemy_movement(unit, target_cell, move_delay)
+			if is_occupied(target_cell):
+				target_cell.x -= 1
+				var unit_target = get_target(target_cell)
+				unit_target.take_damage(15)
+				print(unit_target.hp)
+				continue
+			else:
+				print("Bisa Bergerak")
+				await _delayed_enemy_movement(unit, target_cell, move_delay)
 		else:
 			print("Tidak bisa bergerak")
 			await _delayed_enemy_movement(unit, _walkable_cells[randi_range(0, _walkable_cells.size() - 1)], move_delay)
@@ -101,9 +108,6 @@ func _perform_enemy_turn() -> void:
 	turnManager.advance_turn()
 	$TurnCounter.text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
-				
-		
-	
 
 func _delayed_enemy_movement(unit, target, delay):
 	await get_tree().create_timer(delay).timeout
@@ -234,6 +238,11 @@ func _move_active_unit(new_cell: Vector2) -> void:
 	await _active_unit.walk_finished
 	_active_unit.hurt_anim()
 	_clear_active_unit()
+
+func get_target(cell: Vector2) -> Unit:
+	_target_unit = _units[cell]
+	return _target_unit
+	
 
 
 ## Selects the unit in the `cell` if there's one there.
