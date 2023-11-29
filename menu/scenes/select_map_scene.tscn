@@ -30,23 +30,25 @@ scale = Vector2(0.600636, 0.599074)
 texture = ExtResource("2_nigco")
 metadata/_edit_lock_ = true
 
-[node name="Dust-background" type="Sprite2D" parent="."]
+[node name="Dust-background" type="Sprite2D" parent="." groups=["Stage Background"]]
 visible = false
 position = Vector2(584, 344)
 scale = Vector2(0.307813, 0.311594)
 texture = ExtResource("4_yse0i")
 
-[node name="Snow-background" type="Sprite2D" parent="."]
+[node name="Snow-background" type="Sprite2D" parent="." groups=["Stage Background"]]
 visible = false
 position = Vector2(584.174, 345)
 scale = Vector2(0.307065, 0.307971)
 texture = ExtResource("5_8s8qd")
 
-[node name="Grassland-background" type="Sprite2D" parent="."]
+[node name="Grassland-background" type="Sprite2D" parent="." groups=["Stage Background"]]
 visible = false
 position = Vector2(582.391, 348.5)
 scale = Vector2(0.30813, 0.307518)
 texture = ExtResource("6_yadvi")
+
+[node name="Timer" type="Timer" parent="."]
 
 [node name="BackgroundColor" type="ColorRect" parent="."]
 offset_left = -8.0
