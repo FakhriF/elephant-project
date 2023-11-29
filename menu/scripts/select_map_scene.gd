@@ -13,15 +13,22 @@ func _process(delta):
 
 func _on_button_forest_pressed():
 	Profile.stage_select = "Forest"
-	print(Profile.stage_select)
+	$"Grassland-background".visible = true
+	$"Dust-background".visible = false
+	$"Snow-background".visible = false
 
 
 func _on_button_dust_pressed():
 	Profile.stage_select = "Desert"
+	$"Grassland-background".visible = false
+	$"Dust-background".visible = true
+	$"Snow-background".visible = false
 
 func _on_button_snow_pressed():
 	Profile.stage_select = "Snow"
-
+	$"Grassland-background".visible = false
+	$"Dust-background".visible = false
+	$"Snow-background".visible = true
 
 func _on_button_random_pressed():
 	var stage_options = ["Snow", "Forest", "Desert"]

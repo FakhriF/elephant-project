@@ -40,7 +40,7 @@ layer_0/tile_data = PackedInt32Array(-65538, 65538, 9, -65537, 131074, 9, -13107
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1
-anchor_left = 0.00694444
+anchor_left = -0.0364583
 anchor_right = -0.0364583
 anchor_bottom = 0.00154321
 offset_left = -8.0
@@ -52,6 +52,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1
+anchor_left = -0.0434028
+anchor_top = -0.0108025
 anchor_right = -0.0434028
 anchor_bottom = -0.0108025
 offset_top = 136.0
