@@ -195,6 +195,8 @@ func _perform_enemy_turn() -> void:
 				print(unit_target)
 				attack(unit_target)
 				print("Bisa Nyerang")
+				_unit_overlay.clear()
+				_unit_path.stop()
 				continue
 			else:
 				print("Bisa Bergerak")
