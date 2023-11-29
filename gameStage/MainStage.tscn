@@ -124,8 +124,7 @@ skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
 [node name="Aurel" parent="GameBoard" instance=ExtResource("2")]
-visible = false
-position = Vector2(375, 470)
+position = Vector2(290, 470)
 scale = Vector2(0.5, 0.35)
 curve = SubResource("1")
 move_range = 3
@@ -143,7 +142,7 @@ skin_offset = Vector2(-8, -20)
 
 [node name="Thea" parent="GameBoard" instance=ExtResource("2")]
 visible = false
-position = Vector2(350, 210)
+position = Vector2(350, 175)
 scale = Vector2(0.4, 0.3)
 curve = SubResource("1")
 move_range = 3

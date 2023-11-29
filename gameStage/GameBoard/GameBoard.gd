@@ -10,7 +10,8 @@ const DIRECTIONS = [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]
 @export var grid: Resource
 
 ## Mapping of coordinates of a cell to a reference to the unit it contains.
-var first_initialization := false
+var first_ally := false
+var first_enemy := false
 
 var _units := {}
 var _playerUnits := {}
@@ -72,9 +73,14 @@ func _get_ally_unit():
 		if unit.name in Profile.character_select:
 			print(unit)
 			unit.visible = true
+			if first_ally == false:
+				unit.position.x = randi_range(290, 735)
+				unit.position.y = randi_range(0, 600)
+				unit.cell = grid.calculate_grid_coordinates(unit.position)
+				unit.position = grid.calculate_map_position(unit.cell)
 			_units[unit.cell] = unit
 #			unit.aura = Color(0, 0, 1, 1)
-
+	first_ally = true
 	return _units
 
 func _get_current_enemies(unitName: String) -> void:
@@ -85,7 +91,7 @@ func _get_enemy_unit() -> Dictionary:
 	_enemyUnits.clear()
 	var eligibleUnits = []
 	
-	if first_initialization == false:
+	if first_enemy == false:
 		for child in get_children():
 			var unit := child as Unit
 			if not unit or unit.name in Profile.character_select:
@@ -96,6 +102,11 @@ func _get_enemy_unit() -> Dictionary:
 			var randomIndex = randi() % eligibleUnits.size()
 			var randomUnit = eligibleUnits[randomIndex]
 			_get_current_enemies(str(randomUnit.name))  # Corrected to pass the unit name
+			
+			randomUnit.position.x = randi_range(735, 1125)
+			randomUnit.position.y = randi_range(0, 600)
+			randomUnit.cell = grid.calculate_grid_coordinates(randomUnit.position)
+			randomUnit.position = grid.calculate_map_position(randomUnit.cell)
 			_enemyUnits[randomUnit.cell] = randomUnit
 #			randomUnit.aura = Color(1, 0, 0, 1)
 			randomUnit.visible = true
@@ -115,7 +126,7 @@ func _get_enemy_unit() -> Dictionary:
 
 		
 	
-	first_initialization = true
+	first_enemy = true
 	return _enemyUnits
 	
 
