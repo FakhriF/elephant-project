@@ -1,9 +1,19 @@
-[gd_scene load_steps=10 format=3 uid="uid://d4mhjq651egt"]
+[gd_scene load_steps=11 format=3 uid="uid://d4mhjq651egt"]
 
 [ext_resource type="Script" path="res://gameStage/Units/Unit.gd" id="1"]
 [ext_resource type="Resource" uid="uid://dos77avjw27es" path="res://gameStage/GameBoard/Grid.tres" id="2"]
 [ext_resource type="Texture2D" uid="uid://b5ghlcxjxmmgw" path="res://gameStage/Units/unit_shadow.svg" id="3"]
 [ext_resource type="Shader" path="res://gameStage/Units/shaders/aura.gdshader" id="4_f3dqi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1mif4"]
+shader = ExtResource("4_f3dqi")
+shader_parameter/aura_width = 20.0
+shader_parameter/aura_color = Color(1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6vdj7"]
+shader = ExtResource("4_f3dqi")
+shader_parameter/aura_width = 4.0
+shader_parameter/aura_color = Color(0.462745, 0.717647, 1, 1)
 
 [sub_resource type="Animation" id="Animation_21mkf"]
 resource_name = "hurt"
@@ -58,20 +68,9 @@ _data = {
 "selected": SubResource("2")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6vdj7"]
-shader = ExtResource("4_f3dqi")
-shader_parameter/aura_width = 4.0
-shader_parameter/aura_color = Color(0.462745, 0.717647, 1, 1)
-
 [node name="Unit" type="Path2D"]
 script = ExtResource("1")
 grid = ExtResource("2")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
-libraries = {
-"": SubResource("AnimationLibrary_5dan3")
-}
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
 rotates = false
@@ -84,6 +83,7 @@ texture = ExtResource("3")
 
 [node name="Sprite" type="Sprite2D" parent="PathFollow2D"]
 texture_filter = 4
+material = SubResource("ShaderMaterial_1mif4")
 position = Vector2(2, 0)
 scale = Vector2(0.24, 0.24)
 offset = Vector2(-3.8147e-06, -185)
@@ -92,3 +92,10 @@ offset = Vector2(-3.8147e-06, -185)
 visible = false
 texture_filter = 4
 material = SubResource("ShaderMaterial_6vdj7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PathFollow2D"]
+root_node = NodePath("../..")
+autoplay = "idle"
+libraries = {
+"": SubResource("AnimationLibrary_5dan3")
+}

@@ -10,6 +10,8 @@ const DIRECTIONS = [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]
 @export var grid: Resource
 
 ## Mapping of coordinates of a cell to a reference to the unit it contains.
+var first_initialization := false
+
 var _units := {}
 var _playerUnits := {}
 var _enemyUnits := {}
@@ -17,6 +19,7 @@ var _enemyUnits := {}
 var _active_unit: Unit
 var _target_unit: Unit 
 var _walkable_cells := []
+var _currentEnemies := []
 
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
 @onready var _unit_path: UnitPath = $UnitPath
@@ -45,15 +48,20 @@ func _on_ally_turn_started():
 	$"../CanvasLayer/ColorRect2/TextureProgressBar".value = $Aurel.hp
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
+	print(_enemyUnits)
 
 func _on_enemy_turn_started():
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
 	_perform_enemy_turn()
 	
-	
-	
-## Clears, and refills the `_units` dictionary with game objects that are on the board.
+func attack(target):
+	target.take_damage(10)
+	target.hurt_anim()
+	emit_signal("turn_finished")
+
+# ============================== Turn Manager ==============================
+
 func _get_ally_unit():
 	_units.clear()
 
@@ -62,29 +70,106 @@ func _get_ally_unit():
 		if not unit:
 			continue
 		if unit.name in Profile.character_select:
-			print("hello")
+			print(unit)
 			unit.visible = true
 			_units[unit.cell] = unit
+#			unit.aura = Color(0, 0, 1, 1)
 
 	return _units
 
+func _get_current_enemies(unitName: String) -> void:
+	if _currentEnemies.size() < 3:
+		_currentEnemies.append(unitName)
 
 func _get_enemy_unit() -> Dictionary:
 	_enemyUnits.clear()
-
-	for child in get_children():
-		var unit := child as Unit
-		if not unit || unit.name == "Aurel":
-			continue
-		unit.visible = true
-		_enemyUnits[unit.cell] = unit
+	var eligibleUnits = []
+	
+	if first_initialization == false:
+		for child in get_children():
+			var unit := child as Unit
+			if not unit or unit.name in Profile.character_select:
+				continue
+			eligibleUnits.append(unit)
+			
+		while _enemyUnits.size() < 3:
+			var randomIndex = randi() % eligibleUnits.size()
+			var randomUnit = eligibleUnits[randomIndex]
+			_get_current_enemies(str(randomUnit.name))  # Corrected to pass the unit name
+			_enemyUnits[randomUnit.cell] = randomUnit
+#			randomUnit.aura = Color(1, 0, 0, 1)
+			randomUnit.visible = true
+			# Remove the selected unit from eligibleUnits
+			eligibleUnits.remove_at(randomIndex)
+			
+	else:
+		for child in get_children():
+			var unit := child as Unit
+			if not unit or unit.name in Profile.character_select:
+				continue
+			print(_currentEnemies)
+			print(_enemyUnits)
+			if unit.name in _currentEnemies:
+				_enemyUnits[unit.cell] = unit
 		
+
+		
+	
+	first_initialization = true
 	return _enemyUnits
+	
+
+func _on_end_turn_pressed():
+	_playerUnits.clear()
+	_units.clear()
+	_enemyUnits.clear()
+	turnManager.advance_turn()
+	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+
+# ============================== Player Action ==============================
+## Selects the unit in the `cell` if there's one there.
+## Sets it as the `_active_unit` and draws its walkable cells and interactive move path. 
+func _select_unit(cell: Vector2) -> void:
+	if not _units.has(cell):
+		return
+	
+	_active_unit = _units[cell]
+	_active_unit.is_selected = true
+	_walkable_cells = get_walkable_cells(_active_unit)
+	_unit_overlay.draw(_walkable_cells)
+	_unit_path.initialize(_walkable_cells)
+
+
+## Deselects the active unit, clearing the cells overlay and interactive path drawing.
+func _deselect_active_unit() -> void:
+	_active_unit.is_selected = false
+	_unit_overlay.clear()
+	_unit_path.stop()
+
+
+## Clears the reference to the _active_unit and the corresponding walkable cells.
+func _clear_active_unit() -> void:
+	_active_unit = null
+	_walkable_cells.clear()
+
+## Selects or moves a unit based on where the cursor is.
+func _on_Cursor_accept_pressed(cell: Vector2) -> void:
+	if not _active_unit:
+		_select_unit(cell)
+	elif _active_unit.is_selected:
+		_move_active_unit(cell)
+		# Make it so that the unit can only move once
+		_units.erase(_active_unit.cell) 
+	if 	_units.is_empty():
+		print("Can't select anymore character, please end turn")
+
+# ============================== Enemy Action ==============================
+
 
 func _perform_enemy_turn() -> void:
 	var enemy_units = _enemyUnits.values()
 	var player_units = _playerUnits.values()
-
+	print("Turn Enemy")
 	for unit in enemy_units:
 		_walkable_cells = get_walkable_cells(unit)
 		_unit_overlay.draw(_walkable_cells)
@@ -96,10 +181,9 @@ func _perform_enemy_turn() -> void:
 			if is_occupied(target_cell):
 				target_cell.x -= 1
 				var unit_target = get_target(target_cell)
-				unit_target.hurt_anim()
-				
-				unit_target.take_damage(15)
-				print(unit_target.hp)
+				print(unit_target)
+				attack(unit_target)
+				print("Bisa Nyerang")
 				continue
 			else:
 				print("Bisa Bergerak")
@@ -140,8 +224,6 @@ func _delayed_enemy_movement(unit, target, delay):
 	_clear_active_unit()
 
 
-
-	
 func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vector2:
 	var nearest_distance = float("inf")
 	var nearest_target: Vector2 = Vector2.ZERO
@@ -160,12 +242,15 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 		nearest_target.x += 1
 
 
-
 	if nearest_target != Vector2.ZERO:
 		return nearest_target
 	else:
 		print("No valid target found")
 		return Vector2.ZERO
+
+func get_target(cell: Vector2) -> Unit:
+	_target_unit = _units[cell]
+	return _target_unit
 
 
 func areCharactersNextToEachOther(character1_position, character2_position):
@@ -174,18 +259,7 @@ func areCharactersNextToEachOther(character1_position, character2_position):
 	else:
 		return false
 	
-
-func _unhandled_input(event: InputEvent) -> void:
-	if _active_unit and event.is_action_pressed("ui_cancel"):
-		_deselect_active_unit()
-		_clear_active_unit()
-
-
-func _get_configuration_warning() -> String:
-	var warning := ""
-	if not grid:
-		warning = "You need a Grid resource for this node to work."
-	return warning
+# ============================== Movement ==============================
 
 
 ## Returns `true` if the cell is occupied by a unit.
@@ -241,62 +315,23 @@ func _move_active_unit(new_cell: Vector2) -> void:
 	_active_unit.walk_along(_unit_path.current_path)
 	await _active_unit.walk_finished
 	_clear_active_unit()
-
-func get_target(cell: Vector2) -> Unit:
-	_target_unit = _units[cell]
-	return _target_unit
-	
-
-
-## Selects the unit in the `cell` if there's one there.
-## Sets it as the `_active_unit` and draws its walkable cells and interactive move path. 
-func _select_unit(cell: Vector2) -> void:
-	if not _units.has(cell):
-		return
-	
-	_active_unit = _units[cell]
-	_active_unit.is_selected = true
-	_walkable_cells = get_walkable_cells(_active_unit)
-	_unit_overlay.draw(_walkable_cells)
-	_unit_path.initialize(_walkable_cells)
-
-
-## Deselects the active unit, clearing the cells overlay and interactive path drawing.
-func _deselect_active_unit() -> void:
-	_active_unit.is_selected = false
-	_unit_overlay.clear()
-	_unit_path.stop()
-
-
-## Clears the reference to the _active_unit and the corresponding walkable cells.
-func _clear_active_unit() -> void:
-	_active_unit = null
-	_walkable_cells.clear()
-
-
-## Selects or moves a unit based on where the cursor is.
-func _on_Cursor_accept_pressed(cell: Vector2) -> void:
-	if not _active_unit:
-		_select_unit(cell)
-	elif _active_unit.is_selected:
-		_move_active_unit(cell)
-		# Make it so that the unit can only move once
-		_units.erase(_active_unit.cell) 
-	if 	_units.is_empty():
-		print("Can't select anymore character, please end turn")
 		
-
-
 
 ## Updates the interactive path's drawing if there's an active and selected unit.
 func _on_Cursor_moved(new_cell: Vector2) -> void:
 	if _active_unit and _active_unit.is_selected:
 		_unit_path.draw(_active_unit.cell, new_cell)
 
+# ============================== System ==============================
 
-func _on_end_turn_pressed():
-	_playerUnits.clear()
-	_units.clear()
-	_enemyUnits.clear()
-	turnManager.advance_turn()
-	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+func _unhandled_input(event: InputEvent) -> void:
+	if _active_unit and event.is_action_pressed("ui_cancel"):
+		_deselect_active_unit()
+		_clear_active_unit()
+
+
+func _get_configuration_warning() -> String:
+	var warning := ""
+	if not grid:
+		warning = "You need a Grid resource for this node to work."
+	return warning

@@ -27,6 +27,11 @@ func take_damage(damage):
 	else:
 		emit_signal("health_changed", hp)
 	
+func heal(amount):
+	hp += amount
+	hp = clamp(hp, hp, 100)
+	emit_signal("health_changed", hp)
+	
 	
 ## Texture representing the unit.
 @export var skin: Texture:
@@ -44,6 +49,14 @@ func take_damage(damage):
 		if not _sprite:
 			await ready
 		_sprite.position = value
+
+#@export var aura: Color:
+#	set(value):
+#		aura = value
+#		if not _sprite:
+#			# This will resume execution after this node's _ready()
+#			await ready
+#		_sprite.material.set("shader_param/aura_color", value) 
 
 ## Coordinates of the current cell the cursor moved to.
 var cell := Vector2.ZERO:
@@ -66,11 +79,15 @@ var _is_walking := false:
 		set_process(_is_walking)
 
 @onready var _sprite: Sprite2D = $PathFollow2D/Sprite
-@onready var _aura: Sprite2D = $PathFollow2D/Aura
 @onready var _anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _path_follow: PathFollow2D = $PathFollow2D
 
+#@onready var _aura: Color = $PathFollow2D/Sprite.material.get("shader_parameter/aura_color");
+
 @onready var _anim = get_node("AnimationPlayer")
+
+
+
 
 
 func _ready() -> void:
