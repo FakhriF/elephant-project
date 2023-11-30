@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cb8searn43yql"]
+[gd_scene load_steps=11 format=3 uid="uid://cb8searn43yql"]
 
 [ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_6gswc"]
+[ext_resource type="Script" path="res://menu/scripts/Select_Character.gd" id="1_sqsc7"]
 [ext_resource type="StyleBox" uid="uid://dg4y3264mgs5h" path="res://menu/styles/menu_button_styles.tres" id="2_3yt3f"]
 [ext_resource type="Texture2D" uid="uid://btefsoaygpxlc" path="res://menu/assets/BGCharacter.png" id="3_nb7k1"]
 [ext_resource type="Texture2D" uid="uid://dbijgm8n562ic" path="res://menu/assets/character_4.png" id="4_pmudm"]
@@ -8,9 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://dy2hnwq3r0hig" path="res://menu/assets/character_2.png" id="6_yvebi"]
 [ext_resource type="Texture2D" uid="uid://db7riqy47p000" path="res://menu/assets/character_1.png" id="7_imgcm"]
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="8_bg8i2"]
+[ext_resource type="Texture2D" uid="uid://7t1re6nequh" path="res://gameStage/Units/Aurel-SplashArt.png" id="9_rjl0q"]
 
 [node name="SelectCharacterScene" type="Node2D"]
 scale = Vector2(0.79, 0.79)
+script = ExtResource("1_sqsc7")
 
 [node name="BGpolos" type="Sprite2D" parent="."]
 position = Vector2(729.661, 409.485)
@@ -32,6 +35,7 @@ text = "BACK"
 metadata/_edit_use_anchors_ = true
 
 [node name="?" type="RichTextLabel" parent="."]
+visible = false
 offset_left = 520.253
 offset_top = 288.848
 offset_right = 576.253
@@ -90,6 +94,7 @@ fit_content = true
 metadata/_edit_use_anchors_ = true
 
 [node name="isi" type="RichTextLabel" parent="HP"]
+layout_mode = 0
 offset_left = 109.0
 offset_top = -25.0
 offset_right = 289.0
@@ -120,6 +125,7 @@ fit_content = true
 metadata/_edit_use_anchors_ = true
 
 [node name="isi" type="RichTextLabel" parent="EP"]
+layout_mode = 0
 offset_left = 109.0
 offset_top = -25.0
 offset_right = 289.0
@@ -241,24 +247,28 @@ fit_content = true
 metadata/_edit_use_anchors_ = true
 
 [node name="Button Character 4" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 653.165
+offset_top = 615.19
+offset_right = 772.165
+offset_bottom = 730.19
 scale = Vector2(0.79, 0.79)
-metadata/_edit_use_anchors_ = true
+toggle_mode = true
 
 [node name="Character4" type="Sprite2D" parent="Button Character 4"]
-position = Vector2(881.235, 834.769)
+position = Vector2(59.2853, 56.0807)
 scale = Vector2(0.79, 0.79)
 texture = ExtResource("4_pmudm")
 
 [node name="Button Character 3" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 540.506
+offset_top = 612.658
+offset_right = 659.506
+offset_bottom = 729.658
 scale = Vector2(0.79, 0.79)
-metadata/_edit_use_anchors_ = true
+toggle_mode = true
 
 [node name="Character3" type="Sprite2D" parent="Button Character 3"]
-position = Vector2(741.702, 837.576)
+position = Vector2(59.2853, 57.6831)
 scale = Vector2(0.79, 0.79)
 texture = ExtResource("5_62wfx")
 
@@ -274,23 +284,34 @@ scale = Vector2(0.79, 0.79)
 texture = ExtResource("6_yvebi")
 
 [node name="Button Character 1" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 313.924
+offset_top = 615.19
+offset_right = 436.924
+offset_bottom = 740.19
 scale = Vector2(0.79, 0.79)
-metadata/_edit_use_anchors_ = true
+toggle_mode = true
 
 [node name="Character1" type="Sprite2D" parent="Button Character 1"]
-position = Vector2(462.636, 837.576)
+position = Vector2(64.0923, 65.6946)
 scale = Vector2(0.79, 0.79)
 texture = ExtResource("7_imgcm")
 
+[node name="Aurel-splashArt" type="Sprite2D" parent="Button Character 1"]
+visible = false
+position = Vector2(261.176, -342.894)
+scale = Vector2(0.146446, 0.146446)
+texture = ExtResource("9_rjl0q")
+
 [node name="Start Button" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 1245.57
+offset_top = 536.709
+offset_right = 1399.57
+offset_bottom = 602.709
 scale = Vector2(0.79, 0.79)
-metadata/_edit_use_anchors_ = true
+text = "Start"
 
 [node name="Start" type="Sprite2D" parent="Start Button"]
+visible = false
 position = Vector2(1650.38, 672.969)
 scale = Vector2(0.79, 0.79)
 texture = ExtResource("8_bg8i2")
@@ -298,7 +319,7 @@ texture = ExtResource("8_bg8i2")
 [node name="Select Charater" type="RichTextLabel" parent="Start Button/Start"]
 anchors_preset = -1
 anchor_left = -0.000820556
-anchor_top = -0.00212507
+anchor_top = -0.3032
 anchor_right = -0.000820556
 anchor_bottom = -0.3032
 offset_left = -79.8022
@@ -313,3 +334,8 @@ bbcode_enabled = true
 text = "START"
 fit_content = true
 metadata/_edit_use_anchors_ = true
+
+[connection signal="toggled" from="Button Character 4" to="." method="_on_button_character_4_toggled"]
+[connection signal="toggled" from="Button Character 3" to="." method="_on_button_character_3_toggled"]
+[connection signal="toggled" from="Button Character 1" to="." method="_on_button_character_1_toggled"]
+[connection signal="pressed" from="Start Button" to="." method="_on_start_button_pressed"]

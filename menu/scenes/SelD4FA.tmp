@@ -1,0 +1,335 @@
+[gd_scene load_steps=11 format=3 uid="uid://cb8searn43yql"]
+
+[ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_6gswc"]
+[ext_resource type="Script" path="res://menu/scripts/Select_Character.gd" id="1_sqsc7"]
+[ext_resource type="StyleBox" uid="uid://dg4y3264mgs5h" path="res://menu/styles/menu_button_styles.tres" id="2_3yt3f"]
+[ext_resource type="Texture2D" uid="uid://btefsoaygpxlc" path="res://menu/assets/BGCharacter.png" id="3_nb7k1"]
+[ext_resource type="Texture2D" uid="uid://dbijgm8n562ic" path="res://menu/assets/character_4.png" id="4_pmudm"]
+[ext_resource type="Texture2D" uid="uid://c4hinws517u6s" path="res://menu/assets/character_3.png" id="5_62wfx"]
+[ext_resource type="Texture2D" uid="uid://dy2hnwq3r0hig" path="res://menu/assets/character_2.png" id="6_yvebi"]
+[ext_resource type="Texture2D" uid="uid://db7riqy47p000" path="res://menu/assets/character_1.png" id="7_imgcm"]
+[ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="8_bg8i2"]
+[ext_resource type="Texture2D" uid="uid://7t1re6nequh" path="res://gameStage/Units/Aurel-SplashArt.png" id="9_rjl0q"]
+
+[node name="SelectCharacterScene" type="Node2D"]
+scale = Vector2(0.79, 0.79)
+script = ExtResource("1_sqsc7")
+
+[node name="BGpolos" type="Sprite2D" parent="."]
+position = Vector2(729.661, 409.485)
+scale = Vector2(0.758924, 0.75365)
+texture = ExtResource("1_6gswc")
+metadata/_edit_lock_ = true
+
+[node name="Back Button" type="Button" parent="."]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 288.0
+offset_bottom = 136.0
+scale = Vector2(0.79, 0.79)
+theme_override_colors/font_color = Color(0.929412, 0.490196, 0.192157, 1)
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = ExtResource("2_3yt3f")
+theme_override_styles/hover = ExtResource("2_3yt3f")
+text = "BACK"
+metadata/_edit_use_anchors_ = true
+
+[node name="?" type="RichTextLabel" parent="."]
+visible = false
+offset_left = 520.253
+offset_top = 288.848
+offset_right = 576.253
+offset_bottom = 425.848
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 100
+bbcode_enabled = true
+text = "?"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Stats2" type="RichTextLabel" parent="."]
+offset_left = 503.798
+offset_top = 51.8987
+offset_right = 1066.8
+offset_bottom = 169.899
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
+theme_override_font_sizes/normal_font_size = 70
+bbcode_enabled = true
+text = "Select Character"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Stats" type="RichTextLabel" parent="."]
+offset_left = 761.253
+offset_top = 227.848
+offset_right = 941.253
+offset_bottom = 345.848
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 70
+bbcode_enabled = true
+text = "Stats"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="HP" type="RichTextLabel" parent="."]
+offset_left = 761.253
+offset_top = 345.848
+offset_right = 1030.25
+offset_bottom = 408.848
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
+theme_override_font_sizes/normal_font_size = 45
+bbcode_enabled = true
+text = "HP"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="isi" type="RichTextLabel" parent="HP"]
+layout_mode = 0
+offset_left = 109.0
+offset_top = -25.0
+offset_right = 289.0
+offset_bottom = 93.0
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 70
+bbcode_enabled = true
+text = "...
+"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="EP" type="RichTextLabel" parent="."]
+offset_left = 761.253
+offset_top = 409.848
+offset_right = 1030.25
+offset_bottom = 472.848
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
+theme_override_font_sizes/normal_font_size = 45
+bbcode_enabled = true
+text = "EP"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="isi" type="RichTextLabel" parent="EP"]
+layout_mode = 0
+offset_left = 109.0
+offset_top = -25.0
+offset_right = 289.0
+offset_bottom = 93.0
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 70
+bbcode_enabled = true
+text = "...
+"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button Character 8" type="Button" parent="."]
+offset_left = 5417.5
+offset_top = 4212.5
+offset_right = 5425.5
+offset_bottom = 4220.5
+
+[node name="BgCharacter4" type="Sprite2D" parent="Button Character 8"]
+position = Vector2(-4388.07, -3555.22)
+scale = Vector2(0.624375, 0.624375)
+texture = ExtResource("3_nb7k1")
+
+[node name="?" type="RichTextLabel" parent="Button Character 8/BgCharacter4"]
+offset_left = -8.39282
+offset_top = -37.9963
+offset_right = 24.6072
+offset_bottom = 52.0037
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
+theme_override_font_sizes/normal_font_size = 65
+bbcode_enabled = true
+text = "?"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button Character 7" type="Button" parent="."]
+offset_left = 3250.5
+offset_top = 2527.5
+offset_right = 3258.5
+offset_bottom = 2535.5
+
+[node name="BgCharacter3" type="Sprite2D" parent="Button Character 7"]
+position = Vector2(-2331.83, -1869.59)
+scale = Vector2(0.632875, 0.632875)
+texture = ExtResource("3_nb7k1")
+
+[node name="?" type="RichTextLabel" parent="Button Character 7/BgCharacter3"]
+offset_left = -7.50476
+offset_top = -37.507
+offset_right = 25.4952
+offset_bottom = 52.493
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
+theme_override_font_sizes/normal_font_size = 65
+bbcode_enabled = true
+text = "?"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button Character 6" type="Button" parent="."]
+offset_left = 2167.0
+offset_top = 1685.0
+offset_right = 2175.0
+offset_bottom = 1693.0
+
+[node name="BgCharacter2" type="Sprite2D" parent="Button Character 6"]
+position = Vector2(-1360.35, -1026.45)
+scale = Vector2(0.624377, 0.624377)
+texture = ExtResource("3_nb7k1")
+
+[node name="?" type="RichTextLabel" parent="Button Character 6/BgCharacter2"]
+offset_left = -8.62085
+offset_top = -37.0035
+offset_right = 24.3792
+offset_bottom = 52.9965
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
+theme_override_font_sizes/normal_font_size = 65
+bbcode_enabled = true
+text = "?"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button Character 5" type="Button" parent="."]
+offset_left = 1083.5
+offset_top = 842.5
+offset_right = 1091.5
+offset_bottom = 850.5
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
+
+[node name="BgCharacter" type="Sprite2D" parent="Button Character 5"]
+position = Vector2(73.762, -234.858)
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("3_nb7k1")
+
+[node name="?" type="RichTextLabel" parent="Button Character 5/BgCharacter"]
+offset_left = -14.0
+offset_top = -40.0
+offset_right = 19.0
+offset_bottom = 50.0
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.309804, 0.290196, 0.270588, 1)
+theme_override_font_sizes/normal_font_size = 65
+bbcode_enabled = true
+text = "?"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button Character 4" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
+
+[node name="Character4" type="Sprite2D" parent="Button Character 4"]
+position = Vector2(881.235, 834.769)
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("4_pmudm")
+
+[node name="Button Character 3" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
+
+[node name="Character3" type="Sprite2D" parent="Button Character 3"]
+position = Vector2(741.702, 837.576)
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("5_62wfx")
+
+[node name="Button Character 2" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+scale = Vector2(0.79, 0.79)
+metadata/_edit_use_anchors_ = true
+
+[node name="Character2" type="Sprite2D" parent="Button Character 2"]
+position = Vector2(604.169, 837.576)
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("6_yvebi")
+
+[node name="Button Character 1" type="Button" parent="."]
+offset_left = 313.924
+offset_top = 615.19
+offset_right = 436.924
+offset_bottom = 740.19
+scale = Vector2(0.79, 0.79)
+toggle_mode = true
+
+[node name="Character1" type="Sprite2D" parent="Button Character 1"]
+position = Vector2(64.0923, 65.6946)
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("7_imgcm")
+
+[node name="Aurel-splashArt" type="Sprite2D" parent="Button Character 1"]
+visible = false
+position = Vector2(261.176, -342.894)
+scale = Vector2(0.146446, 0.146446)
+texture = ExtResource("9_rjl0q")
+
+[node name="Start Button" type="Button" parent="."]
+offset_left = 1245.57
+offset_top = 536.709
+offset_right = 1399.57
+offset_bottom = 602.709
+scale = Vector2(0.79, 0.79)
+text = "Start"
+
+[node name="Start" type="Sprite2D" parent="Start Button"]
+visible = false
+position = Vector2(1650.38, 672.969)
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("8_bg8i2")
+
+[node name="Select Charater" type="RichTextLabel" parent="Start Button/Start"]
+anchors_preset = -1
+anchor_left = -0.000820556
+anchor_top = -0.3032
+anchor_right = -0.000820556
+anchor_bottom = -0.3032
+offset_left = -79.8022
+offset_top = -36.8024
+offset_right = 120.198
+offset_bottom = 81.1976
+scale = Vector2(0.79, 0.79)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 65
+bbcode_enabled = true
+text = "START"
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[connection signal="toggled" from="Button Character 1" to="." method="_on_button_character_1_toggled"]
+[connection signal="pressed" from="Start Button" to="." method="_on_start_button_pressed"]

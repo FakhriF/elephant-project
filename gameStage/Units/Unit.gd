@@ -7,6 +7,8 @@ extends Path2D
 
 ## Emitted when the unit reached the end of a path along which it was walking.
 signal walk_finished
+signal dead
+signal health_changed(life)
 
 ## Shared resource of type Grid, used to calculate map coordinates.
 @export var grid: Resource
@@ -15,6 +17,22 @@ signal walk_finished
 ## The unit's move speed when it's moving along a path.
 @export var move_speed := 600.0
 
+@export var hp := 100
+@export var energy := 100
+
+func take_damage(damage):
+	hp = hp - damage
+	if hp <= 0:
+		emit_signal("dead")
+	else:
+		emit_signal("health_changed", hp)
+	
+func heal(amount):
+	hp += amount
+	hp = clamp(hp, hp, 100)
+	emit_signal("health_changed", hp)
+	
+	
 ## Texture representing the unit.
 @export var skin: Texture:
 	set(value):
@@ -23,6 +41,7 @@ signal walk_finished
 			# This will resume execution after this node's _ready()
 			await ready
 		_sprite.texture = value
+		
 ## Offset to apply to the `skin` sprite in pixels.
 @export var skin_offset := Vector2.ZERO:
 	set(value):
@@ -30,6 +49,14 @@ signal walk_finished
 		if not _sprite:
 			await ready
 		_sprite.position = value
+
+#@export var aura: Color:
+#	set(value):
+#		aura = value
+#		if not _sprite:
+#			# This will resume execution after this node's _ready()
+#			await ready
+#		_sprite.material.set("shader_param/aura_color", value) 
 
 ## Coordinates of the current cell the cursor moved to.
 var cell := Vector2.ZERO:
@@ -54,6 +81,13 @@ var _is_walking := false:
 @onready var _sprite: Sprite2D = $PathFollow2D/Sprite
 @onready var _anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _path_follow: PathFollow2D = $PathFollow2D
+
+#@onready var _aura: Color = $PathFollow2D/Sprite.material.get("shader_parameter/aura_color");
+
+@onready var _anim = get_node("AnimationPlayer")
+
+
+
 
 
 func _ready() -> void:
@@ -88,6 +122,8 @@ func _process(delta: float) -> void:
 		else:
 			move_speed += 150.0
 
+func hurt_anim():
+	_anim.play("hurt")
 
 ## Starts walking along the `path`.
 ## `path` is an array of grid coordinates that the function converts to map coordinates.
