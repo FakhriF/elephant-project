@@ -59,7 +59,7 @@ func _on_enemy_turn_started():
 func attack(target):
 	target.take_damage(10)
 	target.hurt_anim()
-	emit_signal("turn_finished")
+
 
 # ============================== Turn Manager ==============================
 
@@ -70,7 +70,7 @@ func _get_ally_unit():
 		var unit := child as Unit
 		if not unit:
 			continue
-		if unit.name in Profile.character_select:
+		if (unit.name in Profile.character_select) and (unit.hp > 0):
 			print(unit)
 			unit.visible = true
 			if first_ally == false:
@@ -195,6 +195,8 @@ func _perform_enemy_turn() -> void:
 				print(unit_target)
 				attack(unit_target)
 				print("Bisa Nyerang")
+				if (unit_target.hp <= 0):
+					unit_target.visible = false
 				_unit_overlay.clear()
 				_unit_path.stop()
 				continue
@@ -348,3 +350,22 @@ func _get_configuration_warning() -> String:
 	if not grid:
 		warning = "You need a Grid resource for this node to work."
 	return warning
+
+#func _save_game():
+#	var saveName
+#	match Profile.gameProgress:
+#		"Profile 1":
+#			saveName = "res://savegame1.bin"
+#		"Profile 2":
+#			saveName = "res://savegame2.bin"
+#		"Profile 3":
+#			saveName = "res://savegame3.bin"
+#	var file = FileAccess.open(saveName, FileAccess.WRITE)
+#
+#	var saveData: Dictionary = {
+#			"units": _units,
+#			"playerUnits": _playerUnits,
+#			"turnManager": turnManager
+#		}
+#
+	

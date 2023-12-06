@@ -124,8 +124,9 @@ skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
 [node name="Aurel" parent="GameBoard" instance=ExtResource("2")]
-position = Vector2(290, 470)
-scale = Vector2(0.5, 0.35)
+visible = false
+position = Vector2(360, 470)
+scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
 skin = ExtResource("9_1cexo")
