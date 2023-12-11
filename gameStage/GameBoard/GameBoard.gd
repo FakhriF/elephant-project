@@ -52,13 +52,16 @@ func _on_ally_turn_started():
 		if not unit:
 			continue
 		if unit.name == Profile.character_select[0]:
-			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t%s\nEP\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/Character Name 1".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
 			$"../CanvasLayer/ColorRect2/HP Bar".value = unit.hp
 		if unit.name == Profile.character_select[1]:
-			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t%s\nEP\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/Character Name 2".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
 			$"../CanvasLayer/ColorRect2/HP Bar 2".value = unit.hp
 		if unit.name == Profile.character_select[2]:
-			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t%s\nEP\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
 			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
 
 func _on_enemy_turn_started():
@@ -84,7 +87,7 @@ func _get_ally_unit():
 			print(unit)
 			unit.visible = true
 			if first_ally == false:
-				unit.position.x = randi_range(290, 735)
+				unit.position.x = randi_range(355, 740)
 				unit.position.y = randi_range(0, 600)
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
 				unit.position = grid.calculate_map_position(unit.cell)
@@ -113,7 +116,7 @@ func _get_enemy_unit() -> Dictionary:
 			var randomUnit = eligibleUnits[randomIndex]
 			_get_current_enemies(str(randomUnit.name))  # Corrected to pass the unit name
 			
-			randomUnit.position.x = randi_range(735, 1125)
+			randomUnit.position.x = randi_range(805, 1125)
 			randomUnit.position.y = randi_range(0, 600)
 			randomUnit.cell = grid.calculate_grid_coordinates(randomUnit.position)
 			randomUnit.position = grid.calculate_map_position(randomUnit.cell)

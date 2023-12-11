@@ -1,8 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://2jarj8vtfcng"]
+[gd_scene load_steps=21 format=3 uid="uid://2jarj8vtfcng"]
 
 [ext_resource type="PackedScene" uid="uid://bv1ul1qynrdwd" path="res://gameStage/GameBoard/Cursor/Cursor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d4mhjq651egt" path="res://gameStage/Units/Unit.tscn" id="2"]
 [ext_resource type="Texture2D" uid="uid://dq2ijvay8rb8" path="res://menu/assets/StatsBar.png" id="2_d7p3j"]
+[ext_resource type="FontFile" uid="uid://b2fi24lhb3wna" path="res://menu/assets/LibreFranklin-Black.ttf" id="2_jfk3k"]
+[ext_resource type="FontFile" uid="uid://dqvsh46novvk1" path="res://menu/assets/LibreFranklin-ExtraBold.ttf" id="2_ym5on"]
 [ext_resource type="Script" path="res://gameStage/GameBoard/GameBoard.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://b5jt8otr2cmut" path="res://menu/assets/HPBarProgress.png" id="3_kowaf"]
 [ext_resource type="Resource" uid="uid://dos77avjw27es" path="res://gameStage/GameBoard/Grid.tres" id="4"]
@@ -43,7 +45,7 @@ layer_0/tile_data = PackedInt32Array(-65538, 65538, 9, -65537, 131074, 9, -13107
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1
 anchor_left = -0.0364583
-anchor_right = -0.0364583
+anchor_right = 0.0190972
 anchor_bottom = 0.00154321
 offset_left = -8.0
 offset_top = -2.0
@@ -56,13 +58,21 @@ metadata/_edit_use_anchors_ = true
 anchors_preset = -1
 anchor_left = -0.0434028
 anchor_top = -0.0108025
-anchor_right = -0.0434028
+anchor_right = 0.0121528
 anchor_bottom = -0.0108025
 offset_top = 136.0
 offset_right = 306.0
 offset_bottom = 655.0
 color = Color(0.309804, 0.290196, 0.270588, 1)
 metadata/_edit_use_anchors_ = true
+
+[node name="Character Name 1" type="Label" parent="CanvasLayer/ColorRect2"]
+offset_left = 74.0
+offset_top = -1.0
+offset_right = 178.0
+offset_bottom = 22.0
+theme_override_fonts/font = ExtResource("2_ym5on")
+theme_override_font_sizes/font_size = 18
 
 [node name="HP and EP" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 2
@@ -74,25 +84,34 @@ offset_left = -32.0
 offset_top = -31.808
 offset_right = 104.0
 offset_bottom = 32.192
-theme_override_font_sizes/bold_font_size = 0
+theme_override_fonts/normal_font = ExtResource("2_jfk3k")
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 
 [node name="HP Bar" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.664
-anchor_top = 0.062
-anchor_right = 0.664
-anchor_bottom = 0.062
-offset_left = -97.184
-offset_top = -9.17798
-offset_right = 98.816
-offset_bottom = 6.82202
+anchor_left = 0.681
+anchor_top = 0.075
+anchor_right = 0.681
+anchor_bottom = 0.075
+offset_left = -97.97
+offset_top = -15.925
+offset_right = 98.03
+offset_bottom = 0.0749969
 min_value = 1.0
 value = 1.0
 rounded = true
 texture_under = ExtResource("2_d7p3j")
 texture_progress = ExtResource("3_kowaf")
+
+[node name="Character Name 2" type="Label" parent="CanvasLayer/ColorRect2"]
+offset_left = 74.0
+offset_top = 159.0
+offset_right = 178.0
+offset_bottom = 182.0
+theme_override_fonts/font = ExtResource("2_ym5on")
+theme_override_font_sizes/font_size = 18
 
 [node name="HP and EP2" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 2
@@ -101,10 +120,11 @@ anchor_top = 0.109
 anchor_right = 0.25
 anchor_bottom = 0.109
 offset_left = -26.5
-offset_top = 78.429
+offset_top = 126.429
 offset_right = 109.5
-offset_bottom = 142.429
-theme_override_font_sizes/bold_font_size = 0
+offset_bottom = 190.429
+theme_override_fonts/normal_font = ExtResource("2_jfk3k")
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 
 [node name="HP Bar 2" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
@@ -114,15 +134,23 @@ anchor_left = 0.664
 anchor_top = 0.062
 anchor_right = 0.664
 anchor_bottom = 0.062
-offset_left = -97.184
-offset_top = 102.822
-offset_right = 98.816
-offset_bottom = 119.822
+offset_left = -91.68
+offset_top = 150.822
+offset_right = 104.32
+offset_bottom = 167.822
 min_value = 1.0
 value = 1.0
 rounded = true
 texture_under = ExtResource("2_d7p3j")
 texture_progress = ExtResource("3_kowaf")
+
+[node name="Character Name 3" type="Label" parent="CanvasLayer/ColorRect2"]
+offset_left = 74.0
+offset_top = 319.0
+offset_right = 178.0
+offset_bottom = 342.0
+theme_override_fonts/font = ExtResource("2_ym5on")
+theme_override_font_sizes/font_size = 18
 
 [node name="HP and EP3" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 2
@@ -131,11 +159,11 @@ anchor_top = 0.109
 anchor_right = 0.25
 anchor_bottom = 0.109
 offset_left = -26.5
-offset_top = 198.429
+offset_top = 286.429
 offset_right = 109.5
-offset_bottom = 262.429
-theme_override_font_sizes/bold_font_size = 0
-bbcode_enabled = true
+offset_bottom = 350.429
+theme_override_fonts/normal_font = ExtResource("2_jfk3k")
+theme_override_font_sizes/normal_font_size = 14
 
 [node name="HP Bar 3" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
 layout_mode = 1
@@ -144,10 +172,10 @@ anchor_left = 0.664
 anchor_top = 0.062
 anchor_right = 0.664
 anchor_bottom = 0.062
-offset_left = -97.184
-offset_top = 222.822
-offset_right = 98.816
-offset_bottom = 239.822
+offset_left = -91.68
+offset_top = 310.822
+offset_right = 104.32
+offset_bottom = 327.822
 min_value = 1.0
 value = 1.0
 rounded = true
@@ -157,10 +185,9 @@ texture_progress = ExtResource("3_kowaf")
 [node name="TurnCounter" type="RichTextLabel" parent="CanvasLayer"]
 visible = false
 custom_minimum_size = Vector2(334, 211)
-offset_left = -24.0
-offset_top = 56.0
-offset_right = 310.0
-offset_bottom = 267.0
+offset_left = -16.0
+offset_right = 318.0
+offset_bottom = 211.0
 size_flags_vertical = 4
 theme_override_font_sizes/bold_font_size = 32
 bbcode_enabled = true
@@ -185,8 +212,7 @@ skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
 [node name="Aurel" parent="GameBoard" instance=ExtResource("2")]
-visible = false
-position = Vector2(360, 470)
+position = Vector2(805, 470)
 scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
