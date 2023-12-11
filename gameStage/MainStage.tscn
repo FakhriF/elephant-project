@@ -215,6 +215,7 @@ offset_bottom = 648.0
 color = Color(0.192157, 0.192157, 0.192157, 0.811765)
 
 [node name="ExittoMenu" type="Button" parent="CanvasLayer/BackgroundColor"]
+layout_mode = 0
 offset_left = 8.0
 offset_top = 5.0
 offset_right = 1152.0
@@ -303,7 +304,15 @@ offset_right = 1137.0
 offset_bottom = 632.0
 text = "End Turn"
 
+[node name="Button" type="Button" parent="."]
+offset_left = 1000.0
+offset_top = 8.0
+offset_right = 1144.0
+offset_bottom = 56.0
+text = "Exit Game (TEMP)"
+
 [connection signal="pressed" from="CanvasLayer/BackgroundColor/ExittoMenu" to="GameBoard" method="_on_exitto_menu_pressed"]
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
+[connection signal="pressed" from="Button" to="GameBoard" method="_on_button_pressed"]

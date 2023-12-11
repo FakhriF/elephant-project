@@ -33,6 +33,8 @@ var turnManager : TurnManager = TurnManager.new()
 func _ready() -> void:
 	$"../CanvasLayer/ColorRect".color = "5F94BA"
 	_check_stage()
+	if Profile.gameProgress == "true":
+		Profile.gameProgress = false
 	turnManager.ally_turn_started.connect(_on_ally_turn_started)
 	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
 	turnManager.start()
@@ -398,31 +400,62 @@ func _unhandled_input(event: InputEvent) -> void:
 		_clear_active_unit()
 
 
-func _get_configuration_warning() -> String:
-	var warning := ""
-	if not grid:
-		warning = "You need a Grid resource for this node to work."
-	return warning
-
 func _save_game():
 	var saveName
 	match Profile.gameProgress:
 		"Profile 1":
 			saveName = "res://savegame1.bin"
 		"Profile 2":
-			saveName = "res://savegame2.bin"
+			saveName = "res://savegame2.bin"       
 		"Profile 3":
 			saveName = "res://savegame3.bin"
-	var file = FileAccess.open(saveName, FileAccess.WRITE)
 
-	var saveData: Dictionary = {
-			"units": _units,
-			"playerUnits": _playerUnits,
-			"turnManager": turnManager
+	var file = FileAccess.open(saveName, FileAccess.READ_WRITE)
+
+	if file:
+		var fileContents = file.get_as_text()
+		file.close()
+
+		# Construct the save data
+		var saveData: Dictionary = {
+			"username": Profile.profileList,
+			"gameData": {
+				"turnCounter": turnManager.turnCounter,
+				"unitData": []
+			}
 		}
+
+		# Collect data for each unit
+		for unit in _units.values():
+			var unitData: Dictionary = {
+				"cell": str(unit.cell),  # Convert Vector2 to string for JSON
+				"hp": unit.hp
+			}
+			saveData["gameData"]["unitData"].append(unitData)
+
+		# Convert saveData to JSON format
+		var saveString = JSON.stringify(saveData)
+
+		# Write the save data to the file
+		file = FileAccess.open(saveName, FileAccess.WRITE)
+
+		if file:
+			file.store_string(saveString)
+			file.close()
+			print("Game saved successfully.")
+		else:
+			print("Error opening file.")
+	else:
+		print("Error reading file.")
+
+
 
 	
 
 
 func _on_exitto_menu_pressed():
 	get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
+
+
+func _on_button_pressed():
+	_save_game() # Replace with function body.
