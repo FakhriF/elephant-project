@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://m4w1j8p63dwc"]
+
+[ext_resource type="Script" path="res://gameStage/GameBoard/Skill/Skill.gd" id="1_qkvy0"]
+
+[resource]
+script = ExtResource("1_qkvy0")
+name = ""
+cost = 0
+power = 0
+heal = 0
+targetType = 0
