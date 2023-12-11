@@ -5,6 +5,7 @@ extends Node2D
 func _ready():
 	if _check_progress():
 		$ContinueButton.disabled = false
+		Profile.hasSave = true
 
 
 func _on_exit_button_pressed():

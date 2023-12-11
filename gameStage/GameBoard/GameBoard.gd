@@ -33,11 +33,14 @@ var turnManager : TurnManager = TurnManager.new()
 func _ready() -> void:
 	$"../CanvasLayer/ColorRect".color = "5F94BA"
 	_check_stage()
-	if Profile.gameProgress == "true":
-		Profile.gameProgress = false
-	turnManager.ally_turn_started.connect(_on_ally_turn_started)
-	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
-	turnManager.start()
+	if Profile.hasSave:
+		print("Hello")
+		_load_game()
+		print(Profile.character_select)
+		Profile.hasSave = false
+#	turnManager.ally_turn_started.connect(_on_ally_turn_started)
+#	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
+#	turnManager.start()
 	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
 func _check_stage():
@@ -51,7 +54,7 @@ func _check_stage():
 func _on_ally_turn_started():
 	if turnManager.turnCounter == 1:
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
-	elif turnManager.turnCounter % 2 == 0:
+	elif turnManager.currentTurn == "Ally Turn":
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
 	else: 
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
@@ -61,22 +64,22 @@ func _on_ally_turn_started():
 		var unit := child as Unit
 		if not unit:
 			continue
-		if unit.name == Profile.character_select[0]:
-			$"../CanvasLayer/ColorRect2/Character Name 1".text = unit.name
-			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-			$"../CanvasLayer/ColorRect2/HP Bar".value = unit.hp
-		if unit.name == Profile.character_select[1]:
-			$"../CanvasLayer/ColorRect2/Character Name 2".text = unit.name
-			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-			$"../CanvasLayer/ColorRect2/HP Bar 2".value = unit.hp
-		if unit.name == Profile.character_select[2]:
-			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
-			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
+#		if unit.name == Profile.character_select[0]:
+#			$"../CanvasLayer/ColorRect2/Character Name 1".text = unit.name
+#			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+#			$"../CanvasLayer/ColorRect2/HP Bar".value = unit.hp
+#		if unit.name == Profile.character_select[1]:
+#			$"../CanvasLayer/ColorRect2/Character Name 2".text = unit.name
+#			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+#			$"../CanvasLayer/ColorRect2/HP Bar 2".value = unit.hp
+#		if unit.name == Profile.character_select[2]:
+#			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
+#			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+#			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
 	print(areAllAlliedUnitsDefeated)
 
 func _on_enemy_turn_started():
-	if turnManager.turnCounter % 2 == 0:
+	if turnManager.currentTurn == "Ally Turn":
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
 	else: 
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
@@ -419,8 +422,10 @@ func _save_game():
 		# Construct the save data
 		var saveData: Dictionary = {
 			"username": Profile.profileList,
+			"characterSelect": Profile.character_select,
 			"gameData": {
 				"turnCounter": turnManager.turnCounter,
+				"currentTurn": turnManager.currentTurn,
 				"unitData": []
 			}
 		}
@@ -447,6 +452,75 @@ func _save_game():
 			print("Error opening file.")
 	else:
 		print("Error reading file.")
+		
+func get_unit_at_cell(cell: Vector2) -> Unit:
+	# Iterate through all units and find the one at the specified cell
+	for child in get_children():
+		var unit = child as Unit
+		if unit and unit.cell == cell:
+			return unit
+
+	# Return null if no unit is found at the specified cell
+	return null
+
+
+# Function to initialize or update units based on loaded data
+func initialize_or_update_unit(cell: Vector2, hp: int) -> void:
+	# Your logic to initialize or update units based on the cell and hp data
+	# Check if the cell is occupied by a unit in your game and update it
+	# Example: 
+	# Assuming you have a method to retrieve the unit at a given cell
+	var unitToUpdate = get_unit_at_cell(cell)
+	if unitToUpdate != null:
+		unitToUpdate.hp = hp  # Update the unit's health
+
+# Function to convert cell string to Vector2
+func parse_cell_string(cellStr: String) -> Vector2:
+	var coordinates = cellStr.split(",")
+	return Vector2(float(coordinates[0]), float(coordinates[1]))
+
+func _load_game():
+	var saveName
+	match Profile.gameProgress:
+		"Profile 1":
+			saveName = "res://savegame1.bin"
+		"Profile 2":
+			saveName = "res://savegame2.bin"       
+		"Profile 3":
+			saveName = "res://savegame3.bin"
+
+	var file = FileAccess.open(saveName, FileAccess.READ)
+	
+	if file:
+		var fileContents = file.get_as_text()
+		file.close()
+
+		var jsonData = JSON.parse_string(fileContents)
+
+		if jsonData.has("username"):
+			Profile.profileList = jsonData["username"]
+
+		if jsonData.has("characterSelect"):
+			Profile.character_select = jsonData["characterSelect"]
+
+		if jsonData.has("gameData"):
+			var gameData = jsonData["gameData"]
+			if gameData.has("turnCounter"):
+				turnManager.turnCounter = gameData["turnCounter"]
+				turnManager.currentTurn = gameData["currentTurn"]
+				print(gameData["turnCounter"])
+				print(turnManager.turnCounter)
+				$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+
+			if gameData.has("unitData"):
+				var unitData = gameData["unitData"]
+				for unitInfo in unitData:
+					if unitInfo.has("cell") and unitInfo.has("hp"):
+						var cellStr = unitInfo["cell"]
+						var hp = unitInfo["hp"]
+						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
+						initialize_or_update_unit(cell, hp)  # Your function to initialize/update units
+				print("Game loaded successfully.")
 
 
 

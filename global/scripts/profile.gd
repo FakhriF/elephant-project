@@ -7,4 +7,6 @@ var character_select = []
 
 var stage_select = ""
 
-var gameProgress = false
+var gameProgress
+
+var hasSave = false
