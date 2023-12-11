@@ -16,6 +16,7 @@ var first_enemy := false
 var _units := {}
 var _playerUnits := {}
 var _enemyUnits := {}
+var _defeatedUnit := {}
 
 var _active_unit: Unit
 var _target_unit: Unit 
@@ -30,6 +31,7 @@ var turnManager : TurnManager = TurnManager.new()
 
 
 func _ready() -> void:
+	$"../CanvasLayer/ColorRect".color = "5F94BA"
 	_check_stage()
 	turnManager.ally_turn_started.connect(_on_ally_turn_started)
 	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
@@ -45,6 +47,12 @@ func _check_stage():
 		$"../Snow".visible = true
 
 func _on_ally_turn_started():
+	if turnManager.turnCounter == 1:
+		$"../CanvasLayer/ColorRect".color = "5F94BA"
+	elif turnManager.turnCounter % 2 == 0:
+		$"../CanvasLayer/ColorRect".color = "5F94BA"
+	else: 
+		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
 	for child in get_children():
@@ -63,15 +71,26 @@ func _on_ally_turn_started():
 			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
 			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
 			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
+	print(areAllAlliedUnitsDefeated)
 
 func _on_enemy_turn_started():
+	if turnManager.turnCounter % 2 == 0:
+		$"../CanvasLayer/ColorRect".color = "5F94BA"
+	else: 
+		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
 	_perform_enemy_turn()
 	
 func attack(target):
-	target.take_damage(10)
+	target.take_damage(50)
 	target.hurt_anim()
+
+func areAllAlliedUnitsDefeated() -> bool:
+	for unit in _playerUnits.values():
+		if unit.hp > 0:
+			return false 
+	return true  
 
 
 # ============================== Turn Manager ==============================
@@ -83,8 +102,12 @@ func _get_ally_unit():
 		var unit := child as Unit
 		if not unit:
 			continue
+		if (unit.name in Profile.character_select) and (unit.hp <= 0):
+			_defeatedUnit[unit.cell] = unit
+			if _defeatedUnit.size() == Profile.character_select.size():
+				$"../CanvasLayer/BackgroundColor".visible = true
+				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
 		if (unit.name in Profile.character_select) and (unit.hp > 0):
-			print(unit)
 			unit.visible = true
 			if first_ally == false:
 				unit.position.x = randi_range(355, 740)
@@ -94,6 +117,7 @@ func _get_ally_unit():
 			_units[unit.cell] = unit
 #			unit.aura = Color(0, 0, 1, 1)
 	first_ally = true
+	
 	return _units
 
 func _get_current_enemies(unitName: String) -> void:
@@ -398,3 +422,7 @@ func _save_game():
 		}
 
 	
+
+
+func _on_exitto_menu_pressed():
+	get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")

@@ -199,15 +199,13 @@ texture_progress = ExtResource("3_kowaf")
 [node name="TurnCounter" type="RichTextLabel" parent="CanvasLayer"]
 custom_minimum_size = Vector2(334, 211)
 offset_left = -16.0
-offset_top = 16.0
-offset_right = 336.0
-offset_bottom = 227.0
+offset_right = 318.0
+offset_bottom = 211.0
 size_flags_vertical = 4
 theme_override_font_sizes/bold_font_size = 32
 bbcode_enabled = true
 
 [node name="BackgroundColor" type="ColorRect" parent="CanvasLayer"]
-visible = false
 offset_left = -8.0
 offset_top = -5.0
 offset_right = 1152.0
@@ -225,7 +223,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_g8y63")
 
 [node name="Text" type="Label" parent="CanvasLayer/BackgroundColor"]
 layout_mode = 0
-offset_left = 328.0
+offset_left = 336.0
 offset_top = 229.0
 offset_right = 840.0
 offset_bottom = 445.0
