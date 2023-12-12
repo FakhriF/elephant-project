@@ -310,19 +310,26 @@ offset_left = 1000.0
 offset_top = 8.0
 offset_right = 1144.0
 offset_bottom = 56.0
-text = "Save Game
-"
+text = "Quick Save"
 
-[node name="Button2" type="Button" parent="."]
+[node name="ExitandSaveGame" type="Button" parent="."]
 offset_left = 768.0
 offset_top = 8.0
 offset_right = 984.0
 offset_bottom = 56.0
 text = "Exit and Save Game"
 
+[node name="LoadGame" type="Button" parent="."]
+offset_left = 1000.0
+offset_top = 64.0
+offset_right = 1144.0
+offset_bottom = 112.0
+text = "Quick Load"
+
 [connection signal="pressed" from="CanvasLayer/BackgroundColor/ExittoMenu" to="GameBoard" method="_on_exitto_menu_pressed"]
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
 [connection signal="pressed" from="SaveGame" to="GameBoard" method="_on_button_pressed"]
-[connection signal="pressed" from="Button2" to="GameBoard" method="_on_button_2_pressed"]
+[connection signal="pressed" from="ExitandSaveGame" to="GameBoard" method="_on_button_2_pressed"]
+[connection signal="pressed" from="LoadGame" to="GameBoard" method="_on_load_game_pressed"]

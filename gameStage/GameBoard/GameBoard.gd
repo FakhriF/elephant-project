@@ -655,3 +655,7 @@ func _on_button_pressed():
 func _on_button_2_pressed():
 	_save_game() 
 	get_tree().quit()
+
+
+func _on_load_game_pressed():
+	_load_game()
