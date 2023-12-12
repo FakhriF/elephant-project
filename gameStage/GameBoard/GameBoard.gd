@@ -23,6 +23,7 @@ var _target_unit: Unit
 var _walkable_cells := []
 var _currentEnemies := []
 
+
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
 @onready var _unit_path: UnitPath = $UnitPath
 
@@ -77,16 +78,19 @@ func _on_ally_turn_started():
 			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
 			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
 			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
-	print(areAllAlliedUnitsDefeated)
 
 func _on_enemy_turn_started():
+	print("THIS IS ENEMY TURN")
 	if turnManager.currentTurn == "Ally Turn":
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
 	else: 
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
+	print(_playerUnits)
+	print(_enemyUnits)
 	_perform_enemy_turn()
+	
 	
 func attack(target):
 	target.take_damage(50)
@@ -109,11 +113,24 @@ func _get_ally_unit():
 		if not unit:
 			continue
 		if (unit.name in Profile.character_select) and (unit.hp <= 0):
-			_defeatedUnit[unit.cell] = unit
+			if _defeatedUnit.is_empty():
+				_defeatedUnit[unit.cell] = unit
+			else:
+				var isUnique = true
+				for unit_info in _defeatedUnit.values():
+					var value = str(unit_info)
+					var unit_name = value.split(":")[0].strip_edges()
+					if unit.name == unit_name:
+						isUnique = false
+						break
+				if isUnique:
+					_defeatedUnit[unit.cell] = unit
+			print(_defeatedUnit)
 			if _defeatedUnit.size() == Profile.character_select.size():
 				$"../CanvasLayer/BackgroundColor".visible = true
 				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
 		if (unit.name in Profile.character_select) and (unit.hp > 0):
+			print("GEL ALLY ", unit.name)
 			unit.visible = true
 			if first_ally == false:
 				unit.position.x = randi_range(355, 740)
@@ -428,23 +445,37 @@ func _save_game():
 		var saveData: Dictionary = {
 			"username": Profile.profileList[idx],
 			"characterSelect": Profile.character_select,
+			"enemySelection": _currentEnemies,  
 			"gameData": {
 				"stageSelect": Profile.stage_select,
 				"turnCounter": turnManager.turnCounter,
 				"currentTurn": turnManager.currentTurn,
-				"unitData": []
+				"unitData": [],
+				"enemyData": [],
+				"defeatedUnits": _defeatedUnit 
 			}
 		}
 
 		# Collect data for each unit
-		for unit in _units.values():
+		for unit in _playerUnits.values():
 			var unitData: Dictionary = {
+				"name": unit.name,
 				"cell": str(unit.cell),  # Convert Vector2 to string for JSON
 				"pos_x": unit.position.x,
 				"pos_y": unit.position.y,
 				"hp": unit.hp
 			}
 			saveData["gameData"]["unitData"].append(unitData)
+		
+		for enemyUnit in _enemyUnits.values():
+			var enemyInfo: Dictionary = {
+				"enemy_name": enemyUnit.name,
+				"cell": str(enemyUnit.cell),
+				"pos_x": enemyUnit.position.x,
+				"pos_y": enemyUnit.position.y,
+				"hp": enemyUnit.hp  # Include the updated HP here
+			}
+			saveData["gameData"]["enemyData"].append(enemyInfo)
 
 		# Convert saveData to JSON format
 		var saveString = JSON.stringify(saveData)
@@ -465,22 +496,47 @@ func get_unit_at_cell(cell: Vector2) -> Unit:
 	# Iterate through all units and find the one at the specified cell
 	for child in get_children():
 		var unit = child as Unit
-		if unit and unit.cell == cell:
+		if not unit:
+			continue
+		if (unit.name in Profile.character_select) and (unit.hp > 0):
 			return unit
 
 	# Return null if no unit is found at the specified cell
 	return null
 
+func find_unit_by_name(name: String) -> Unit:
+	# Iterate through all units and find the one with the specified name
+	for child in get_children():
+		var unit = child as Unit
+		if unit and unit.name == name:
+			return unit
+
+	# Return null if no unit is found with the specified name
+	return null
+
 
 # Function to initialize or update units based on loaded data
-func initialize_or_update_unit(cell: Vector2, hp: int) -> void:
-	# Your logic to initialize or update units based on the cell and hp data
-	# Check if the cell is occupied by a unit in your game and update it
-	# Example: 
-	# Assuming you have a method to retrieve the unit at a given cell
-	var unitToUpdate = get_unit_at_cell(cell)
-	if unitToUpdate != null:
-		unitToUpdate.hp = hp  # Update the unit's health
+func initialize_or_update_unit(cell: Vector2, name: String, hp: int, posX: float, posY: float, type: String) -> void:
+
+	var unitToUpdate = find_unit_by_name(name)
+	if unitToUpdate != null && hp > 0:
+		print("UNIT TO UPDAYE IS:", unitToUpdate)
+		unitToUpdate.cell = cell
+		unitToUpdate.name = name
+		unitToUpdate.hp = hp
+		unitToUpdate.position.x = posX
+		unitToUpdate.position.y = posY
+		unitToUpdate.cell = grid.calculate_grid_coordinates(unitToUpdate.position)
+		unitToUpdate.position = grid.calculate_map_position(unitToUpdate.cell)
+		if type == "Ally":
+			_playerUnits[unitToUpdate.cell] = unitToUpdate  # Add or update the unit in _playerUnits
+			_units[unitToUpdate.cell] = unitToUpdate
+		elif type == "Enemy":
+			_enemyUnits[unitToUpdate.cell] = unitToUpdate
+			unitToUpdate.visible = true
+			
+
+			
 
 # Function to convert cell string to Vector2
 func parse_cell_string(cellStr: String) -> Vector2:
@@ -508,8 +564,9 @@ func _load_game():
 		if jsonData.has("username"):
 			Profile.profileList = jsonData["username"]
 
-		if jsonData.has("characterSelect"):
+		if jsonData.has("characterSelect") && jsonData.has("enemySelection") :
 			Profile.character_select = jsonData["characterSelect"]
+			_currentEnemies = jsonData["enemySelection"]
 
 		if jsonData.has("gameData"):
 			var gameData = jsonData["gameData"]
@@ -520,15 +577,66 @@ func _load_game():
 				print(gameData["turnCounter"])
 				print(turnManager.turnCounter)
 				$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+#			if gameData.has("units"):
+#					_units = gameData["units"]
+#					print("THIS IS _UNITS")
+#					print(_units)
+#			if gameData.has("playerUnits"):
+#				_playerUnits = gameData["playerUnits"]
+#			if gameData.has("enemyUnits"):
+#				_enemyUnits = gameData["enemyUnits"]
+
+			if gameData.has("defeatedUnits"):
+				var loadedDefeatedUnits = gameData["defeatedUnits"]
+				_defeatedUnit.clear()  # Clear the existing defeated units dictionary
+				for key in loadedDefeatedUnits.keys():
+					_defeatedUnit[key] = loadedDefeatedUnits[key]
+				print("DEFEATED :", _defeatedUnit)
+				# Other logic
+
+			if gameData.has("defeatedUnits"):
+				var loadedDefeatedUnits = gameData["defeatedUnits"]
+				_defeatedUnit.clear()
+				for key in loadedDefeatedUnits.keys():
+					_defeatedUnit[key] = loadedDefeatedUnits[key]
+				print("DEFEATED :", _defeatedUnit)
+				for unit_info in _defeatedUnit.values():
+					var unit_name = unit_info.split(":")[0].strip_edges()
+					print("Unit Name:", unit_name)
+					for child in get_children():
+						var unit := child as Unit
+						if not unit:
+							continue
+						if unit.name == unit_name:
+							unit.hp = 0
+
+
 
 			if gameData.has("unitData"):
 				var unitData = gameData["unitData"]
 				for unitInfo in unitData:
 					if unitInfo.has("cell") and unitInfo.has("hp"):
+						var unitName = unitInfo["name"]
 						var cellStr = unitInfo["cell"]
+						var pos_x = unitInfo["pos_x"]
+						var pos_y = unitInfo["pos_y"]
 						var hp = unitInfo["hp"]
+						print("NAME", unitName, hp)
 						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
-#						initialize_or_update_unit(cell, hp)  # Your function to initialize/update units
+						initialize_or_update_unit(cell, unitName, hp, pos_x, pos_y, "Ally") 
+			
+			if gameData.has("enemyData"): 
+				var enemyData = gameData["enemyData"]
+				for enemyInfo in enemyData:
+					if enemyInfo.has("cell") and enemyInfo.has("hp"):
+						var name = enemyInfo["enemy_name"]
+						var cellStr = enemyInfo["cell"]
+						var pos_x = enemyInfo["pos_x"]
+						var pos_y = enemyInfo["pos_y"]
+						var hp = enemyInfo["hp"]
+					
+						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
+						initialize_or_update_unit(cell, name, hp, pos_x, pos_y, "Enemy")  
 				print("Game loaded successfully.")
 
 
@@ -542,3 +650,8 @@ func _on_exitto_menu_pressed():
 
 func _on_button_pressed():
 	_save_game() # Replace with function body.
+
+
+func _on_button_2_pressed():
+	_save_game() 
+	get_tree().quit()

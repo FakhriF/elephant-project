@@ -254,6 +254,7 @@ skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
 [node name="Aurel" parent="GameBoard" instance=ExtResource("2")]
+visible = false
 position = Vector2(805, 470)
 scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
@@ -304,15 +305,24 @@ offset_right = 1137.0
 offset_bottom = 632.0
 text = "End Turn"
 
-[node name="Button" type="Button" parent="."]
+[node name="SaveGame" type="Button" parent="."]
 offset_left = 1000.0
 offset_top = 8.0
 offset_right = 1144.0
 offset_bottom = 56.0
-text = "Exit Game (TEMP)"
+text = "Save Game
+"
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 768.0
+offset_top = 8.0
+offset_right = 984.0
+offset_bottom = 56.0
+text = "Exit and Save Game"
 
 [connection signal="pressed" from="CanvasLayer/BackgroundColor/ExittoMenu" to="GameBoard" method="_on_exitto_menu_pressed"]
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
-[connection signal="pressed" from="Button" to="GameBoard" method="_on_button_pressed"]
+[connection signal="pressed" from="SaveGame" to="GameBoard" method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="GameBoard" method="_on_button_2_pressed"]
