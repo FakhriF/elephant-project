@@ -34,6 +34,7 @@ func saveGame(Username: Control):
 		var jstr = JSON.stringify(profile_data)
 		file.store_line(jstr)
 		Profile.profileList.append(Username.get_text())
+		Profile.gameProgress = "Profile " + str(i + 1)
 		i += 1  # Increment i
 		return true
 		break
@@ -118,14 +119,18 @@ func _on_background_button_pressed():
 
 func _on_profile_1_pressed():
 	if FileAccess.file_exists("res://savegame1.bin"):
+		Profile.gameProgress = "Profile 1"
 		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
 
 
 func _on_profile_2_pressed():
 	if FileAccess.file_exists("res://savegame2.bin"):
+		Profile.gameProgress = "Profile 1"
 		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
+		
 
 
 func _on_profile_3_pressed():
 	if FileAccess.file_exists("res://savegame3.bin"):
+		Profile.gameProgress = "Profile 1"
 		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")

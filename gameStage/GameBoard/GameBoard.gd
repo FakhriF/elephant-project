@@ -16,6 +16,7 @@ var first_enemy := false
 var _units := {}
 var _playerUnits := {}
 var _enemyUnits := {}
+var _defeatedUnit := {}
 
 var _active_unit: Unit
 var _target_unit: Unit 
@@ -30,6 +31,7 @@ var turnManager : TurnManager = TurnManager.new()
 
 
 func _ready() -> void:
+	$"../CanvasLayer/ColorRect".color = "5F94BA"
 	_check_stage()
 	turnManager.ally_turn_started.connect(_on_ally_turn_started)
 	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
@@ -45,21 +47,51 @@ func _check_stage():
 		$"../Snow".visible = true
 
 func _on_ally_turn_started():
-	$"../CanvasLayer/ColorRect2/RichTextLabel".text = "HP\t%s\nEP\t%s" % [str($Aurel.hp), str($Aurel.energy)]
-	$"../CanvasLayer/ColorRect2/TextureProgressBar".value = $Aurel.hp
+	if turnManager.turnCounter == 1:
+		$"../CanvasLayer/ColorRect".color = "5F94BA"
+	elif turnManager.turnCounter % 2 == 0:
+		$"../CanvasLayer/ColorRect".color = "5F94BA"
+	else: 
+		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
-	print(_enemyUnits)
+	for child in get_children():
+		var unit := child as Unit
+		if not unit:
+			continue
+		if unit.name == Profile.character_select[0]:
+			$"../CanvasLayer/ColorRect2/Character Name 1".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/HP Bar".value = unit.hp
+		if unit.name == Profile.character_select[1]:
+			$"../CanvasLayer/ColorRect2/Character Name 2".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/HP Bar 2".value = unit.hp
+		if unit.name == Profile.character_select[2]:
+			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
+	print(areAllAlliedUnitsDefeated)
 
 func _on_enemy_turn_started():
+	if turnManager.turnCounter % 2 == 0:
+		$"../CanvasLayer/ColorRect".color = "5F94BA"
+	else: 
+		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
 	_perform_enemy_turn()
 	
 func attack(target):
-	target.take_damage(10)
+	target.take_damage(50)
 	target.hurt_anim()
-	emit_signal("turn_finished")
+
+func areAllAlliedUnitsDefeated() -> bool:
+	for unit in _playerUnits.values():
+		if unit.hp > 0:
+			return false 
+	return true  
+
 
 # ============================== Turn Manager ==============================
 
@@ -70,17 +102,22 @@ func _get_ally_unit():
 		var unit := child as Unit
 		if not unit:
 			continue
-		if unit.name in Profile.character_select:
-			print(unit)
+		if (unit.name in Profile.character_select) and (unit.hp <= 0):
+			_defeatedUnit[unit.cell] = unit
+			if _defeatedUnit.size() == Profile.character_select.size():
+				$"../CanvasLayer/BackgroundColor".visible = true
+				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
+		if (unit.name in Profile.character_select) and (unit.hp > 0):
 			unit.visible = true
 			if first_ally == false:
-				unit.position.x = randi_range(290, 735)
+				unit.position.x = randi_range(355, 740)
 				unit.position.y = randi_range(0, 600)
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
 				unit.position = grid.calculate_map_position(unit.cell)
 			_units[unit.cell] = unit
 #			unit.aura = Color(0, 0, 1, 1)
 	first_ally = true
+	
 	return _units
 
 func _get_current_enemies(unitName: String) -> void:
@@ -103,7 +140,7 @@ func _get_enemy_unit() -> Dictionary:
 			var randomUnit = eligibleUnits[randomIndex]
 			_get_current_enemies(str(randomUnit.name))  # Corrected to pass the unit name
 			
-			randomUnit.position.x = randi_range(735, 1125)
+			randomUnit.position.x = randi_range(805, 1125)
 			randomUnit.position.y = randi_range(0, 600)
 			randomUnit.cell = grid.calculate_grid_coordinates(randomUnit.position)
 			randomUnit.position = grid.calculate_map_position(randomUnit.cell)
@@ -118,8 +155,6 @@ func _get_enemy_unit() -> Dictionary:
 			var unit := child as Unit
 			if not unit or unit.name in Profile.character_select:
 				continue
-			print(_currentEnemies)
-			print(_enemyUnits)
 			if unit.name in _currentEnemies:
 				_enemyUnits[unit.cell] = unit
 		
@@ -169,10 +204,24 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 		_select_unit(cell)
 	elif _active_unit.is_selected:
 		_move_active_unit(cell)
+		
+		# Make sure to check if the target cell is occupied by an ally unit
+		if is_occupied_by_ally(cell):
+			print("Target cell is occupied by an ally unit. Cannot move.")
+			_deselect_active_unit()
+			_clear_active_unit()
+			return
+
 		# Make it so that the unit can only move once
-		_units.erase(_active_unit.cell) 
-	if 	_units.is_empty():
-		print("Can't select anymore character, please end turn")
+		_units.erase(_active_unit.cell)
+		
+		if _units.is_empty():
+			print("Can't select any more characters, please end turn")
+
+# ...
+
+func is_occupied_by_ally(cell: Vector2) -> bool:
+	return _playerUnits.has(cell)
 
 # ============================== Enemy Action ==============================
 
@@ -192,9 +241,10 @@ func _perform_enemy_turn() -> void:
 			if is_occupied(target_cell):
 				target_cell.x -= 1
 				var unit_target = get_target(target_cell)
-				print(unit_target)
 				attack(unit_target)
 				print("Bisa Nyerang")
+				if (unit_target.hp <= 0):
+					unit_target.visible = false
 				_unit_overlay.clear()
 				_unit_path.stop()
 				continue
@@ -204,7 +254,6 @@ func _perform_enemy_turn() -> void:
 		else:
 			print("Tidak bisa bergerak")
 			await _delayed_enemy_movement(unit, _walkable_cells[randi_range(0, _walkable_cells.size() - 1)], move_delay)
-		print(_enemyUnits)
 		_enemyUnits.erase(unit.cell) 
 	turnManager.advance_turn()
 	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
@@ -246,7 +295,9 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 		var enemy_cell = enemy_unit.cell
 		var distance = enemy_cell.distance_to(player_cell)
 
-		# if distance < nearest_distance:
+		print("Player Cell:", player_cell, "Distance:", distance)
+
+#		if distance < nearest_distance:
 		nearest_distance = distance
 		nearest_target = player_cell
 
@@ -254,12 +305,16 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 	if is_occupied(nearest_target):
 		nearest_target.x += 1
 
-
 	if nearest_target != Vector2.ZERO:
+		print("Selected Target:", nearest_target)
 		return nearest_target
 	else:
 		print("No valid target found")
 		return Vector2.ZERO
+
+
+
+
 
 func get_target(cell: Vector2) -> Unit:
 	_target_unit = _units[cell]
@@ -348,3 +403,26 @@ func _get_configuration_warning() -> String:
 	if not grid:
 		warning = "You need a Grid resource for this node to work."
 	return warning
+
+func _save_game():
+	var saveName
+	match Profile.gameProgress:
+		"Profile 1":
+			saveName = "res://savegame1.bin"
+		"Profile 2":
+			saveName = "res://savegame2.bin"
+		"Profile 3":
+			saveName = "res://savegame3.bin"
+	var file = FileAccess.open(saveName, FileAccess.WRITE)
+
+	var saveData: Dictionary = {
+			"units": _units,
+			"playerUnits": _playerUnits,
+			"turnManager": turnManager
+		}
+
+	
+
+
+func _on_exitto_menu_pressed():
+	get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
