@@ -609,6 +609,7 @@ func _load_game():
 							continue
 						if unit.name == unit_name:
 							unit.hp = 0
+							_units.erase(unit.cell)
 
 
 
