@@ -20,6 +20,7 @@ func _on_start_button_pressed():
 	if Profile.character_select.size() < 3:
 		print("Please select another character")
 	else:
+		Profile.hasSave = false
 		get_tree().change_scene_to_file("res://gameStage/MainStage.tscn")
 
 func _on_button_character_1_toggled(button_pressed):

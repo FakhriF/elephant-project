@@ -32,15 +32,16 @@ var turnManager : TurnManager = TurnManager.new()
 
 func _ready() -> void:
 	$"../CanvasLayer/ColorRect".color = "5F94BA"
-	_check_stage()
 	if Profile.hasSave:
 		print("Hello")
+		first_enemy = true   
+		first_ally = true
 		_load_game()
 		print(Profile.character_select)
-		Profile.hasSave = false
-#	turnManager.ally_turn_started.connect(_on_ally_turn_started)
-#	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
-#	turnManager.start()
+	_check_stage()
+	turnManager.ally_turn_started.connect(_on_ally_turn_started)
+	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
+	turnManager.start()
 	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
 func _check_stage():
@@ -64,18 +65,18 @@ func _on_ally_turn_started():
 		var unit := child as Unit
 		if not unit:
 			continue
-#		if unit.name == Profile.character_select[0]:
-#			$"../CanvasLayer/ColorRect2/Character Name 1".text = unit.name
-#			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-#			$"../CanvasLayer/ColorRect2/HP Bar".value = unit.hp
-#		if unit.name == Profile.character_select[1]:
-#			$"../CanvasLayer/ColorRect2/Character Name 2".text = unit.name
-#			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-#			$"../CanvasLayer/ColorRect2/HP Bar 2".value = unit.hp
-#		if unit.name == Profile.character_select[2]:
-#			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
-#			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-#			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
+		if unit.name == Profile.character_select[0]:
+			$"../CanvasLayer/ColorRect2/Character Name 1".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/HP Bar".value = unit.hp
+		if unit.name == Profile.character_select[1]:
+			$"../CanvasLayer/ColorRect2/Character Name 2".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/HP Bar 2".value = unit.hp
+		if unit.name == Profile.character_select[2]:
+			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
+			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
 	print(areAllAlliedUnitsDefeated)
 
 func _on_enemy_turn_started():
@@ -405,13 +406,17 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _save_game():
 	var saveName
+	var idx
 	match Profile.gameProgress:
 		"Profile 1":
 			saveName = "res://savegame1.bin"
+			idx = 0
 		"Profile 2":
 			saveName = "res://savegame2.bin"       
+			idx = 1
 		"Profile 3":
 			saveName = "res://savegame3.bin"
+			idx = 2
 
 	var file = FileAccess.open(saveName, FileAccess.READ_WRITE)
 
@@ -421,9 +426,10 @@ func _save_game():
 
 		# Construct the save data
 		var saveData: Dictionary = {
-			"username": Profile.profileList,
+			"username": Profile.profileList[idx],
 			"characterSelect": Profile.character_select,
 			"gameData": {
+				"stageSelect": Profile.stage_select,
 				"turnCounter": turnManager.turnCounter,
 				"currentTurn": turnManager.currentTurn,
 				"unitData": []
@@ -434,6 +440,8 @@ func _save_game():
 		for unit in _units.values():
 			var unitData: Dictionary = {
 				"cell": str(unit.cell),  # Convert Vector2 to string for JSON
+				"pos_x": unit.position.x,
+				"pos_y": unit.position.y,
 				"hp": unit.hp
 			}
 			saveData["gameData"]["unitData"].append(unitData)
@@ -505,6 +513,7 @@ func _load_game():
 
 		if jsonData.has("gameData"):
 			var gameData = jsonData["gameData"]
+			Profile.stage_select = gameData["stageSelect"]
 			if gameData.has("turnCounter"):
 				turnManager.turnCounter = gameData["turnCounter"]
 				turnManager.currentTurn = gameData["currentTurn"]
@@ -519,7 +528,7 @@ func _load_game():
 						var cellStr = unitInfo["cell"]
 						var hp = unitInfo["hp"]
 						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
-						initialize_or_update_unit(cell, hp)  # Your function to initialize/update units
+#						initialize_or_update_unit(cell, hp)  # Your function to initialize/update units
 				print("Game loaded successfully.")
 
 
