@@ -21,19 +21,23 @@ func _process(delta):
 	pass
 
 func _on_button_forest_pressed():
+	$RandomStage/Random.text = "[center]Forest"
 	Profile.stage_select = "Forest"
 	selectBackground(2)
 
 
 func _on_button_dust_pressed():
+	$RandomStage/Random.text = "[center]Desert"
 	Profile.stage_select = "Desert"
 	selectBackground(0)
 
 func _on_button_snow_pressed():
+	$RandomStage/Random.text = "[center]Snow"
 	Profile.stage_select = "Snow"
 	selectBackground(1)
 
 func _on_button_random_pressed():
+	$RandomStage/Random.text = "[center]Random"
 	randomTimer.start()
 	var stage_options = ["Snow", "Forest", "Desert"]
 	Profile.stage_select = stage_options[randi() % stage_options.size()]

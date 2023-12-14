@@ -64,20 +64,20 @@ texture = ExtResource("3_jjjtq")
 
 [node name="Random" type="RichTextLabel" parent="RandomStage"]
 anchors_preset = -1
-anchor_left = 0.000314932
-anchor_top = -0.0010524
-anchor_right = 0.408906
-anchor_bottom = 0.000827302
-offset_left = -186.515
-offset_top = -55.0583
-offset_right = -130.515
-offset_bottom = 81.9417
+anchor_left = -0.309176
+anchor_top = 0.0358239
+anchor_right = 0.891623
+anchor_bottom = 0.0358239
+offset_left = -188.66
+offset_top = -65.0037
+offset_right = -132.66
+offset_bottom = 71.9963
 scale = Vector2(0.79, 0.79)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
-text = "RANDOM"
+text = "[center] CHOOSE"
 fit_content = true
 metadata/_edit_use_anchors_ = true
 
@@ -98,12 +98,13 @@ scale = Vector2(0.531065, 0.531065)
 texture = ExtResource("5_jn0vw")
 
 [node name="FOREST" type="RichTextLabel" parent="Button Forest/Forest"]
-offset_left = -65.9053
-offset_top = -146.875
-offset_right = 70.0947
-offset_bottom = -97.8746
+offset_left = -166.0
+offset_top = -147.0
+offset_right = 177.0
+offset_bottom = -98.0
 theme_override_font_sizes/normal_font_size = 35
-text = "FOREST"
+bbcode_enabled = true
+text = "[center]FOREST"
 fit_content = true
 
 [node name="Button Dust" type="Button" parent="." groups=["StageSelection"]]
@@ -118,12 +119,13 @@ scale = Vector2(0.569527, 0.569527)
 texture = ExtResource("6_h281m")
 
 [node name="Dust" type="RichTextLabel" parent="Button Dust/Dust"]
-offset_left = -59.6987
-offset_top = -142.223
-offset_right = 37.3013
-offset_bottom = -93.2234
+offset_left = -167.0
+offset_top = -142.0
+offset_right = 179.0
+offset_bottom = -93.0
 theme_override_font_sizes/normal_font_size = 35
-text = "DUST"
+bbcode_enabled = true
+text = "[center]DUST"
 fit_content = true
 
 [node name="Button Snow" type="Button" parent="." groups=["StageSelection"]]
@@ -138,12 +140,13 @@ scale = Vector2(0.606509, 0.606509)
 texture = ExtResource("7_updhs")
 
 [node name="Snow" type="RichTextLabel" parent="Button Snow/Snow"]
-offset_left = -62.6537
-offset_top = -140.147
-offset_right = 51.3463
-offset_bottom = -91.1465
+offset_left = -163.0
+offset_top = -140.0
+offset_right = 176.0
+offset_bottom = -91.0
 theme_override_font_sizes/normal_font_size = 35
-text = "SNOW"
+bbcode_enabled = true
+text = "[center]SNOW"
 fit_content = true
 
 [node name="Button Random" type="Button" parent="." groups=["StageSelection"]]
@@ -158,12 +161,13 @@ scale = Vector2(0.588757, 0.588757)
 texture = ExtResource("8_0rfmw")
 
 [node name="Randowm" type="RichTextLabel" parent="Button Random/Random"]
-offset_left = -83.2263
-offset_top = -139.276
-offset_right = 82.7737
-offset_bottom = -90.2765
+offset_left = -165.0
+offset_top = -139.0
+offset_right = 177.0
+offset_bottom = -90.0
 theme_override_font_sizes/normal_font_size = 35
-text = "RANDOM"
+bbcode_enabled = true
+text = "[center]RANDOM"
 fit_content = true
 
 [node name="Dificulty" type="RichTextLabel" parent="."]
