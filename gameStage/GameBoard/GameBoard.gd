@@ -23,6 +23,7 @@ var _target_unit: Unit
 var _walkable_cells := []
 var _currentEnemies := []
 
+
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
 @onready var _unit_path: UnitPath = $UnitPath
 
@@ -32,6 +33,12 @@ var turnManager : TurnManager = TurnManager.new()
 
 func _ready() -> void:
 	$"../CanvasLayer/ColorRect".color = "5F94BA"
+	if Profile.hasSave:
+		print("Hello")
+		first_enemy = true   
+		first_ally = true
+		_load_game()
+		print(Profile.character_select)
 	_check_stage()
 	turnManager.ally_turn_started.connect(_on_ally_turn_started)
 	turnManager.enemy_turn_started.connect(_on_enemy_turn_started)
@@ -49,7 +56,7 @@ func _check_stage():
 func _on_ally_turn_started():
 	if turnManager.turnCounter == 1:
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
-	elif turnManager.turnCounter % 2 == 0:
+	elif turnManager.currentTurn == "Ally Turn":
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
 	else: 
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
@@ -71,16 +78,19 @@ func _on_ally_turn_started():
 			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
 			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
 			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
-	print(areAllAlliedUnitsDefeated)
 
 func _on_enemy_turn_started():
-	if turnManager.turnCounter % 2 == 0:
+	print("THIS IS ENEMY TURN")
+	if turnManager.currentTurn == "Ally Turn":
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
 	else: 
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
+	print(_playerUnits)
+	print(_enemyUnits)
 	_perform_enemy_turn()
+	
 	
 func attack(target):
 	target.take_damage(50)
@@ -103,11 +113,24 @@ func _get_ally_unit():
 		if not unit:
 			continue
 		if (unit.name in Profile.character_select) and (unit.hp <= 0):
-			_defeatedUnit[unit.cell] = unit
+			if _defeatedUnit.is_empty():
+				_defeatedUnit[unit.cell] = unit
+			else:
+				var isUnique = true
+				for unit_info in _defeatedUnit.values():
+					var value = str(unit_info)
+					var unit_name = value.split(":")[0].strip_edges()
+					if unit.name == unit_name:
+						isUnique = false
+						break
+				if isUnique:
+					_defeatedUnit[unit.cell] = unit
+			print(_defeatedUnit)
 			if _defeatedUnit.size() == Profile.character_select.size():
 				$"../CanvasLayer/BackgroundColor".visible = true
 				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
 		if (unit.name in Profile.character_select) and (unit.hp > 0):
+			print("GEL ALLY ", unit.name)
 			unit.visible = true
 			if first_ally == false:
 				unit.position.x = randi_range(355, 740)
@@ -398,31 +421,242 @@ func _unhandled_input(event: InputEvent) -> void:
 		_clear_active_unit()
 
 
-func _get_configuration_warning() -> String:
-	var warning := ""
-	if not grid:
-		warning = "You need a Grid resource for this node to work."
-	return warning
-
 func _save_game():
+	var saveName
+	var idx
+	match Profile.gameProgress:
+		"Profile 1":
+			saveName = "res://savegame1.bin"
+			idx = 0
+		"Profile 2":
+			saveName = "res://savegame2.bin"       
+			idx = 1
+		"Profile 3":
+			saveName = "res://savegame3.bin"
+			idx = 2
+
+	var file = FileAccess.open(saveName, FileAccess.READ_WRITE)
+
+	if file:
+		var fileContents = file.get_as_text()
+		file.close()
+
+		# Construct the save data
+		var saveData: Dictionary = {
+			"username": Profile.profileList[idx],
+			"characterSelect": Profile.character_select,
+			"enemySelection": _currentEnemies,  
+			"gameData": {
+				"stageSelect": Profile.stage_select,
+				"turnCounter": turnManager.turnCounter,
+				"currentTurn": turnManager.currentTurn,
+				"unitData": [],
+				"enemyData": [],
+				"defeatedUnits": _defeatedUnit 
+			}
+		}
+
+		# Collect data for each unit
+		for unit in _playerUnits.values():
+			var unitData: Dictionary = {
+				"name": unit.name,
+				"cell": str(unit.cell),  # Convert Vector2 to string for JSON
+				"pos_x": unit.position.x,
+				"pos_y": unit.position.y,
+				"hp": unit.hp
+			}
+			saveData["gameData"]["unitData"].append(unitData)
+		
+		for enemyUnit in _enemyUnits.values():
+			var enemyInfo: Dictionary = {
+				"enemy_name": enemyUnit.name,
+				"cell": str(enemyUnit.cell),
+				"pos_x": enemyUnit.position.x,
+				"pos_y": enemyUnit.position.y,
+				"hp": enemyUnit.hp  # Include the updated HP here
+			}
+			saveData["gameData"]["enemyData"].append(enemyInfo)
+
+		# Convert saveData to JSON format
+		var saveString = JSON.stringify(saveData)
+
+		# Write the save data to the file
+		file = FileAccess.open(saveName, FileAccess.WRITE)
+
+		if file:
+			file.store_string(saveString)
+			file.close()
+			print("Game saved successfully.")
+		else:
+			print("Error opening file.")
+	else:
+		print("Error reading file.")
+		
+func get_unit_at_cell(cell: Vector2) -> Unit:
+	# Iterate through all units and find the one at the specified cell
+	for child in get_children():
+		var unit = child as Unit
+		if not unit:
+			continue
+		if (unit.name in Profile.character_select) and (unit.hp > 0):
+			return unit
+
+	# Return null if no unit is found at the specified cell
+	return null
+
+func find_unit_by_name(name: String) -> Unit:
+	# Iterate through all units and find the one with the specified name
+	for child in get_children():
+		var unit = child as Unit
+		if unit and unit.name == name:
+			return unit
+
+	# Return null if no unit is found with the specified name
+	return null
+
+
+# Function to initialize or update units based on loaded data
+func initialize_or_update_unit(cell: Vector2, name: String, hp: int, posX: float, posY: float, type: String) -> void:
+
+	var unitToUpdate = find_unit_by_name(name)
+	if unitToUpdate != null && hp > 0:
+		print("UNIT TO UPDAYE IS:", unitToUpdate)
+		unitToUpdate.cell = cell
+		unitToUpdate.name = name
+		unitToUpdate.hp = hp
+		unitToUpdate.position.x = posX
+		unitToUpdate.position.y = posY
+		unitToUpdate.cell = grid.calculate_grid_coordinates(unitToUpdate.position)
+		unitToUpdate.position = grid.calculate_map_position(unitToUpdate.cell)
+		if type == "Ally":
+			_playerUnits[unitToUpdate.cell] = unitToUpdate  # Add or update the unit in _playerUnits
+			_units[unitToUpdate.cell] = unitToUpdate
+		elif type == "Enemy":
+			_enemyUnits[unitToUpdate.cell] = unitToUpdate
+			unitToUpdate.visible = true
+			
+
+			
+
+# Function to convert cell string to Vector2
+func parse_cell_string(cellStr: String) -> Vector2:
+	var coordinates = cellStr.split(",")
+	return Vector2(float(coordinates[0]), float(coordinates[1]))
+
+func _load_game():
 	var saveName
 	match Profile.gameProgress:
 		"Profile 1":
 			saveName = "res://savegame1.bin"
 		"Profile 2":
-			saveName = "res://savegame2.bin"
+			saveName = "res://savegame2.bin"       
 		"Profile 3":
 			saveName = "res://savegame3.bin"
-	var file = FileAccess.open(saveName, FileAccess.WRITE)
 
-	var saveData: Dictionary = {
-			"units": _units,
-			"playerUnits": _playerUnits,
-			"turnManager": turnManager
-		}
+	var file = FileAccess.open(saveName, FileAccess.READ)
+	
+	if file:
+		var fileContents = file.get_as_text()
+		file.close()
+
+		var jsonData = JSON.parse_string(fileContents)
+
+		if jsonData.has("username"):
+			Profile.profileList = jsonData["username"]
+
+		if jsonData.has("characterSelect") && jsonData.has("enemySelection") :
+			Profile.character_select = jsonData["characterSelect"]
+			_currentEnemies = jsonData["enemySelection"]
+
+		if jsonData.has("gameData"):
+			var gameData = jsonData["gameData"]
+			Profile.stage_select = gameData["stageSelect"]
+			if gameData.has("turnCounter"):
+				turnManager.turnCounter = gameData["turnCounter"]
+				turnManager.currentTurn = gameData["currentTurn"]
+				print(gameData["turnCounter"])
+				print(turnManager.turnCounter)
+				$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
+#			if gameData.has("units"):
+#					_units = gameData["units"]
+#					print("THIS IS _UNITS")
+#					print(_units)
+#			if gameData.has("playerUnits"):
+#				_playerUnits = gameData["playerUnits"]
+#			if gameData.has("enemyUnits"):
+#				_enemyUnits = gameData["enemyUnits"]
+
+			if gameData.has("defeatedUnits"):
+				var loadedDefeatedUnits = gameData["defeatedUnits"]
+				_defeatedUnit.clear()  # Clear the existing defeated units dictionary
+				for key in loadedDefeatedUnits.keys():
+					_defeatedUnit[key] = loadedDefeatedUnits[key]
+				print("DEFEATED :", _defeatedUnit)
+				# Other logic
+
+			if gameData.has("defeatedUnits"):
+				var loadedDefeatedUnits = gameData["defeatedUnits"]
+				_defeatedUnit.clear()
+				for key in loadedDefeatedUnits.keys():
+					_defeatedUnit[key] = loadedDefeatedUnits[key]
+				print("DEFEATED :", _defeatedUnit)
+				for unit_info in _defeatedUnit.values():
+					var unit_name = unit_info.split(":")[0].strip_edges()
+					print("Unit Name:", unit_name)
+					for child in get_children():
+						var unit := child as Unit
+						if not unit:
+							continue
+						if unit.name == unit_name:
+							unit.hp = 0
+							_units.erase(unit.cell)
+
+
+
+			if gameData.has("unitData"):
+				var unitData = gameData["unitData"]
+				for unitInfo in unitData:
+					if unitInfo.has("cell") and unitInfo.has("hp"):
+						var unitName = unitInfo["name"]
+						var cellStr = unitInfo["cell"]
+						var pos_x = unitInfo["pos_x"]
+						var pos_y = unitInfo["pos_y"]
+						var hp = unitInfo["hp"]
+						print("NAME", unitName, hp)
+						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
+						initialize_or_update_unit(cell, unitName, hp, pos_x, pos_y, "Ally") 
+			
+			if gameData.has("enemyData"): 
+				var enemyData = gameData["enemyData"]
+				for enemyInfo in enemyData:
+					if enemyInfo.has("cell") and enemyInfo.has("hp"):
+						var name = enemyInfo["enemy_name"]
+						var cellStr = enemyInfo["cell"]
+						var pos_x = enemyInfo["pos_x"]
+						var pos_y = enemyInfo["pos_y"]
+						var hp = enemyInfo["hp"]
+					
+						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
+						initialize_or_update_unit(cell, name, hp, pos_x, pos_y, "Enemy")  
+				print("Game loaded successfully.")
+
+
 
 	
 
 
 func _on_exitto_menu_pressed():
 	get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
+
+
+func _on_button_pressed():
+	_save_game() # Replace with function body.
+
+
+func _on_button_2_pressed():
+	_save_game() 
+	get_tree().quit()
+
+
+func _on_load_game_pressed():
+	_load_game()
