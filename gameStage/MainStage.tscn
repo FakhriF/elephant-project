@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://2jarj8vtfcng"]
+[gd_scene load_steps=28 format=3 uid="uid://2jarj8vtfcng"]
 
 [ext_resource type="PackedScene" uid="uid://bv1ul1qynrdwd" path="res://gameStage/GameBoard/Cursor/Cursor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d4mhjq651egt" path="res://gameStage/Units/Unit.tscn" id="2"]
@@ -35,6 +35,13 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbops"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irkai"]
+bg_color = Color(0.309804, 0.290196, 0.270588, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_imxww"]
 bg_color = Color(1, 1, 1, 1)
@@ -320,12 +327,12 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_fbops")
 theme_override_styles/pressed = ExtResource("19_jlish")
 theme_override_styles/focus = ExtResource("19_jlish")
 
-[node name="ColorRect2" type="ColorRect" parent="Pause Canvas"]
+[node name="ColorRect2" type="Panel" parent="Pause Canvas"]
 offset_left = 464.0
 offset_top = 248.0
 offset_right = 752.0
 offset_bottom = 452.0
-color = Color(0.309804, 0.290196, 0.270588, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_irkai")
 
 [node name="SaveButton" type="Button" parent="Pause Canvas"]
 offset_left = 488.0
