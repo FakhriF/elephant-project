@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://4s05blamcfv7"]
+[gd_scene load_steps=18 format=3 uid="uid://4s05blamcfv7"]
 
 [ext_resource type="Script" path="res://menu/scripts/select_map_scene.gd" id="1_ryw3e"]
 [ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_yxebu"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://duhhottt5n7oa" path="res://menu/assets/Snow.png" id="7_updhs"]
 [ext_resource type="Texture2D" uid="uid://dgllxe1cpu4fj" path="res://menu/assets/random.png" id="8_0rfmw"]
 [ext_resource type="Texture2D" uid="uid://d157i26bm4x4g" path="res://menu/assets/next.png" id="9_8cl6a"]
+[ext_resource type="StyleBox" uid="uid://5bgb1ps0cib8" path="res://menu/styles/invisible_color_button.tres" id="9_tamxg"]
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="10_5jgvq"]
 [ext_resource type="StyleBox" uid="uid://ei7n6jxvwwhx" path="res://menu/styles/button_styles.tres" id="14_gnlmc"]
 [ext_resource type="StyleBox" uid="uid://dkerwp5wxv4fy" path="res://menu/styles/button_hover_styles.tres" id="15_kal2c"]
@@ -94,6 +95,10 @@ offset_top = 495.0
 offset_right = 337.0
 offset_bottom = 589.0
 mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("9_tamxg")
+theme_override_styles/hover = ExtResource("9_tamxg")
+theme_override_styles/pressed = ExtResource("9_tamxg")
+theme_override_styles/focus = ExtResource("9_tamxg")
 
 [node name="Forest" type="Sprite2D" parent="Button Forest"]
 position = Vector2(96, 47)
@@ -116,6 +121,10 @@ offset_top = 494.0
 offset_right = 557.0
 offset_bottom = 596.0
 mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("9_tamxg")
+theme_override_styles/hover = ExtResource("9_tamxg")
+theme_override_styles/pressed = ExtResource("9_tamxg")
+theme_override_styles/focus = ExtResource("9_tamxg")
 
 [node name="Dust" type="Sprite2D" parent="Button Dust"]
 position = Vector2(103, 51.0001)
@@ -138,6 +147,10 @@ offset_top = 494.0
 offset_right = 785.0
 offset_bottom = 599.0
 mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("9_tamxg")
+theme_override_styles/hover = ExtResource("9_tamxg")
+theme_override_styles/pressed = ExtResource("9_tamxg")
+theme_override_styles/focus = ExtResource("9_tamxg")
 
 [node name="Snow" type="Sprite2D" parent="Button Snow"]
 position = Vector2(108, 53)
@@ -160,6 +173,10 @@ offset_top = 496.0
 offset_right = 1010.0
 offset_bottom = 601.0
 mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("9_tamxg")
+theme_override_styles/hover = ExtResource("9_tamxg")
+theme_override_styles/pressed = ExtResource("9_tamxg")
+theme_override_styles/focus = ExtResource("9_tamxg")
 
 [node name="Random" type="Sprite2D" parent="Button Random"]
 position = Vector2(104, 52)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cb8searn43yql"]
+[gd_scene load_steps=16 format=3 uid="uid://cb8searn43yql"]
 
 [ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_6gswc"]
 [ext_resource type="Script" path="res://menu/scripts/Select_Character.gd" id="1_sqsc7"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://btefsoaygpxlc" path="res://menu/assets/BGCharacter.png" id="3_nb7k1"]
 [ext_resource type="Texture2D" uid="uid://dbijgm8n562ic" path="res://menu/assets/character_4.png" id="4_pmudm"]
 [ext_resource type="Texture2D" uid="uid://c4hinws517u6s" path="res://menu/assets/character_3.png" id="5_62wfx"]
+[ext_resource type="StyleBox" uid="uid://5bgb1ps0cib8" path="res://menu/styles/invisible_color_button.tres" id="5_gbh3h"]
 [ext_resource type="Texture2D" uid="uid://dy2hnwq3r0hig" path="res://menu/assets/character_2.png" id="6_yvebi"]
+[ext_resource type="StyleBox" uid="uid://1lsxrror8m8b" path="res://menu/styles/panel_character_select.tres" id="7_bku5t"]
 [ext_resource type="Texture2D" uid="uid://db7riqy47p000" path="res://menu/assets/character_1.png" id="7_imgcm"]
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="8_bg8i2"]
 [ext_resource type="Texture2D" uid="uid://7t1re6nequh" path="res://gameStage/Units/Aurel-SplashArt.png" id="9_rjl0q"]
@@ -36,6 +38,8 @@ theme_override_colors/font_color = Color(0.929412, 0.490196, 0.192157, 1)
 theme_override_font_sizes/font_size = 60
 theme_override_styles/normal = ExtResource("2_3yt3f")
 theme_override_styles/hover = ExtResource("2_3yt3f")
+theme_override_styles/pressed = ExtResource("5_gbh3h")
+theme_override_styles/focus = ExtResource("5_gbh3h")
 text = "BACK"
 metadata/_edit_use_anchors_ = true
 
@@ -266,6 +270,11 @@ offset_right = 772.165
 offset_bottom = 730.19
 scale = Vector2(0.79, 0.79)
 mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("5_gbh3h")
+theme_override_styles/hover = ExtResource("5_gbh3h")
+theme_override_styles/pressed = ExtResource("5_gbh3h")
+theme_override_styles/disabled = ExtResource("5_gbh3h")
+theme_override_styles/focus = ExtResource("5_gbh3h")
 toggle_mode = true
 
 [node name="Character4" type="Sprite2D" parent="Button Character 4"]
@@ -273,15 +282,15 @@ position = Vector2(58.2687, 57.0973)
 scale = Vector2(0.803645, 0.803645)
 texture = ExtResource("4_pmudm")
 
-[node name="CharacterColorBlock4" type="ColorRect" parent="Button Character 4"]
+[node name="CharacterColorBlock4" type="Panel" parent="Button Character 4"]
 visible = false
 layout_mode = 0
-offset_left = -0.000610352
-offset_top = -1.24054
-offset_right = 116.999
-offset_bottom = 116.759
+offset_left = -2.0
+offset_top = -5.0
+offset_right = 119.0
+offset_bottom = 117.0
 mouse_filter = 2
-color = Color(0.933333, 0.709804, 0.552941, 0.45098)
+theme_override_styles/panel = ExtResource("7_bku5t")
 
 [node name="Button Character 3" type="Button" parent="."]
 offset_left = 540.506
@@ -290,6 +299,11 @@ offset_right = 659.506
 offset_bottom = 729.658
 scale = Vector2(0.79, 0.79)
 mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("5_gbh3h")
+theme_override_styles/hover = ExtResource("5_gbh3h")
+theme_override_styles/pressed = ExtResource("5_gbh3h")
+theme_override_styles/disabled = ExtResource("5_gbh3h")
+theme_override_styles/focus = ExtResource("5_gbh3h")
 toggle_mode = true
 
 [node name="Character3" type="Sprite2D" parent="Button Character 3"]
@@ -297,7 +311,7 @@ position = Vector2(59.5007, 61.1032)
 scale = Vector2(0.792892, 0.792892)
 texture = ExtResource("5_62wfx")
 
-[node name="CharacterColorBlock3" type="ColorRect" parent="Button Character 3"]
+[node name="CharacterColorBlock3" type="Panel" parent="Button Character 3"]
 visible = false
 layout_mode = 0
 offset_left = 1.60278
@@ -305,7 +319,7 @@ offset_top = 1.96454
 offset_right = 118.603
 offset_bottom = 119.965
 mouse_filter = 2
-color = Color(0.933333, 0.709804, 0.552941, 0.45098)
+theme_override_styles/panel = ExtResource("7_bku5t")
 
 [node name="Button Character 2" type="Button" parent="."]
 offset_right = 8.0
@@ -319,15 +333,15 @@ position = Vector2(604.169, 835.974)
 scale = Vector2(0.79, 0.79)
 texture = ExtResource("6_yvebi")
 
-[node name="CharacterColorBlock2" type="ColorRect" parent="Button Character 2"]
+[node name="CharacterColorBlock2" type="Panel" parent="Button Character 2"]
 visible = false
 layout_mode = 0
-offset_left = 544.784
-offset_top = 777.481
-offset_right = 661.784
-offset_bottom = 895.481
+offset_left = 545.0
+offset_top = 777.0
+offset_right = 664.0
+offset_bottom = 895.0
 mouse_filter = 2
-color = Color(0.933333, 0.709804, 0.552941, 0.45098)
+theme_override_styles/panel = ExtResource("7_bku5t")
 
 [node name="Button Character 1" type="Button" parent="."]
 offset_left = 313.0
@@ -337,6 +351,9 @@ offset_bottom = 732.0
 scale = Vector2(0.79, 0.79)
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_fg4r4")
+theme_override_styles/hover = ExtResource("5_gbh3h")
+theme_override_styles/pressed = ExtResource("5_gbh3h")
+theme_override_styles/focus = ExtResource("5_gbh3h")
 toggle_mode = true
 
 [node name="Character1" type="Sprite2D" parent="Button Character 1"]
@@ -344,15 +361,15 @@ position = Vector2(64.0924, 57.6829)
 scale = Vector2(0.79, 0.79)
 texture = ExtResource("7_imgcm")
 
-[node name="CharacterColorBlock1" type="ColorRect" parent="Button Character 1"]
+[node name="CharacterColorBlock1" type="Panel" parent="Button Character 1"]
 visible = false
 layout_mode = 0
-offset_left = 6.0
-offset_top = -1.0
+offset_left = 4.0
+offset_top = -1.00006
 offset_right = 123.0
 offset_bottom = 117.0
 mouse_filter = 2
-color = Color(0.933333, 0.709804, 0.552941, 0.45098)
+theme_override_styles/panel = ExtResource("7_bku5t")
 
 [node name="Aurel-splashArt" type="Sprite2D" parent="Button Character 1"]
 visible = false
