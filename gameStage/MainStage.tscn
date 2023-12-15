@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://2jarj8vtfcng"]
+[gd_scene load_steps=27 format=3 uid="uid://2jarj8vtfcng"]
 
 [ext_resource type="PackedScene" uid="uid://bv1ul1qynrdwd" path="res://gameStage/GameBoard/Cursor/Cursor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d4mhjq651egt" path="res://gameStage/Units/Unit.tscn" id="2"]
@@ -15,6 +15,11 @@
 [ext_resource type="PackedScene" uid="uid://de53ukdqyusan" path="res://gameStage/Background/Map.tscn" id="10"]
 [ext_resource type="Texture2D" uid="uid://bye2vbsnh5jak" path="res://gameStage/Units/Theon-Sprite.png" id="12_ks6x4"]
 [ext_resource type="Texture2D" uid="uid://b5dv68xtcaxek" path="res://gameStage/Units/Thea-Sprite.png" id="13_bey8i"]
+[ext_resource type="StyleBox" uid="uid://ei7n6jxvwwhx" path="res://menu/styles/button_styles.tres" id="16_sphi0"]
+[ext_resource type="StyleBox" uid="uid://dkerwp5wxv4fy" path="res://menu/styles/button_hover_styles.tres" id="17_5qudg"]
+[ext_resource type="Texture2D" uid="uid://salsnt8nmb4v" path="res://menu/assets/Paused Icon.png" id="18_kd3m8"]
+[ext_resource type="StyleBox" uid="uid://5bgb1ps0cib8" path="res://menu/styles/invisible_color_button.tres" id="19_jlish"]
+[ext_resource type="StyleBox" uid="uid://3jupl6n0jnw5" path="res://menu/styles/button_in_game.tres" id="19_njqr8"]
 
 [sub_resource type="Curve2D" id="1"]
 resource_local_to_scene = true
@@ -24,6 +29,19 @@ resource_local_to_scene = true
 
 [sub_resource type="Curve2D" id="3"]
 resource_local_to_scene = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w14fd"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbops"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_imxww"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 
 [node name="Main" type="Node2D"]
 
@@ -77,17 +95,106 @@ offset_bottom = 32.192
 theme_override_font_sizes/bold_font_size = 0
 bbcode_enabled = true
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+[node name="Character Name 1" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 24.0
+offset_right = 295.0
+offset_bottom = 51.0
+text = "Character Name"
+
+[node name="HP and EP" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 46.0
+offset_right = 140.0
+offset_bottom = 94.0
+bbcode_enabled = true
+text = "HP		100
+EP		100"
+
+[node name="HP Bar" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.664
 anchor_top = 0.062
 anchor_right = 0.664
 anchor_bottom = 0.062
-offset_left = -97.984
-offset_top = -7.744
-offset_right = 98.016
-offset_bottom = 8.256
+offset_left = -59.1839
+offset_top = 18.822
+offset_right = 136.816
+offset_bottom = 34.822
+scale = Vector2(0.772927, 0.907232)
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_kowaf")
+
+[node name="Character Name 2" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 126.0
+offset_right = 304.0
+offset_bottom = 153.0
+text = "Character Name"
+
+[node name="HP and EP2" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 152.0
+offset_right = 143.0
+offset_bottom = 214.0
+text = "HP		100
+EP		100"
+
+[node name="HP Bar 2" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -57.184
+offset_top = 121.822
+offset_right = 138.816
+offset_bottom = 137.822
+scale = Vector2(0.760001, 1)
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_kowaf")
+
+[node name="Character Name 3" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 230.0
+offset_right = 302.0
+offset_bottom = 258.0
+text = "Character Name"
+
+[node name="HP and EP3" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 255.0
+offset_right = 171.0
+offset_bottom = 315.0
+text = "HP		100
+EP		100"
+
+[node name="HP Bar 3" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -57.184
+offset_top = 230.822
+offset_right = 138.816
+offset_bottom = 244.822
+scale = Vector2(0.75902, 0.790891)
 min_value = 1.0
 value = 1.0
 rounded = true
@@ -96,13 +203,15 @@ texture_progress = ExtResource("3_kowaf")
 
 [node name="TurnCounter" type="RichTextLabel" parent="CanvasLayer"]
 custom_minimum_size = Vector2(334, 211)
-offset_left = -40.0
-offset_top = -32.0
-offset_right = 294.0
-offset_bottom = 179.0
+offset_left = -43.0
+offset_top = 21.0
+offset_right = 291.0
+offset_bottom = 232.0
 size_flags_vertical = 4
 theme_override_font_sizes/bold_font_size = 32
 bbcode_enabled = true
+text = "[center][b]WHOSE TURN?[/b][/center]
+[center][b]Turn 000[/b][/center]"
 
 [node name="GameBoard" type="Node2D" parent="."]
 z_index = 2
@@ -172,8 +281,105 @@ offset_left = 993.0
 offset_top = 576.0
 offset_right = 1137.0
 offset_bottom = 632.0
+theme_override_styles/normal = ExtResource("16_sphi0")
+theme_override_styles/hover = ExtResource("17_5qudg")
 text = "End Turn"
+
+[node name="PausedIcon" type="Sprite2D" parent="."]
+position = Vector2(1112, 40)
+scale = Vector2(0.682292, 0.682292)
+texture = ExtResource("18_kd3m8")
+
+[node name="PauseButton" type="Button" parent="PausedIcon"]
+offset_left = -35.0
+offset_top = -35.0
+offset_right = 35.0
+offset_bottom = 35.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("19_jlish")
+theme_override_styles/hover = ExtResource("19_jlish")
+theme_override_styles/pressed = ExtResource("19_jlish")
+theme_override_styles/focus = ExtResource("19_jlish")
+
+[node name="Pause Canvas" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Pause Canvas"]
+offset_left = -12.0
+offset_top = -9.0
+offset_right = 1165.0
+offset_bottom = 664.0
+color = Color(1, 1, 1, 0.882353)
+
+[node name="PauseBackButton" type="Button" parent="Pause Canvas/ColorRect"]
+layout_mode = 0
+offset_right = 1172.0
+offset_bottom = 665.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_w14fd")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fbops")
+theme_override_styles/pressed = ExtResource("19_jlish")
+theme_override_styles/focus = ExtResource("19_jlish")
+
+[node name="ColorRect2" type="ColorRect" parent="Pause Canvas"]
+offset_left = 464.0
+offset_top = 248.0
+offset_right = 752.0
+offset_bottom = 452.0
+color = Color(0.309804, 0.290196, 0.270588, 1)
+
+[node name="SaveButton" type="Button" parent="Pause Canvas"]
+offset_left = 488.0
+offset_top = 283.0
+offset_right = 728.0
+offset_bottom = 320.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "SAVE"
+
+[node name="LoadButton" type="Button" parent="Pause Canvas"]
+offset_left = 488.0
+offset_top = 332.0
+offset_right = 728.0
+offset_bottom = 372.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "LOAD"
+
+[node name="SaveAndExitButton" type="Button" parent="Pause Canvas"]
+offset_left = 488.0
+offset_top = 385.0
+offset_right = 728.0
+offset_bottom = 421.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "SAVE & EXIT"
 
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
+[connection signal="pressed" from="PausedIcon/PauseButton" to="GameBoard" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="Pause Canvas/ColorRect/PauseBackButton" to="GameBoard" method="_on_pause_back_button_pressed"]
+[connection signal="pressed" from="Pause Canvas/SaveButton" to="GameBoard" method="_on_button_pressed"]
+[connection signal="pressed" from="Pause Canvas/LoadButton" to="GameBoard" method="_on_load_game_pressed"]
+[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://4s05blamcfv7"]
+[gd_scene load_steps=17 format=3 uid="uid://4s05blamcfv7"]
 
 [ext_resource type="Script" path="res://menu/scripts/select_map_scene.gd" id="1_ryw3e"]
 [ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_yxebu"]
@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://dgllxe1cpu4fj" path="res://menu/assets/random.png" id="8_0rfmw"]
 [ext_resource type="Texture2D" uid="uid://d157i26bm4x4g" path="res://menu/assets/next.png" id="9_8cl6a"]
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="10_5jgvq"]
+[ext_resource type="StyleBox" uid="uid://ei7n6jxvwwhx" path="res://menu/styles/button_styles.tres" id="14_gnlmc"]
+[ext_resource type="StyleBox" uid="uid://dkerwp5wxv4fy" path="res://menu/styles/button_hover_styles.tres" id="15_kal2c"]
 
 [node name="SelectMapScene" type="Node2D"]
 script = ExtResource("1_ryw3e")
@@ -91,6 +93,7 @@ offset_left = 144.0
 offset_top = 495.0
 offset_right = 337.0
 offset_bottom = 589.0
+mouse_default_cursor_shape = 2
 
 [node name="Forest" type="Sprite2D" parent="Button Forest"]
 position = Vector2(96, 47)
@@ -112,6 +115,7 @@ offset_left = 352.0
 offset_top = 494.0
 offset_right = 557.0
 offset_bottom = 596.0
+mouse_default_cursor_shape = 2
 
 [node name="Dust" type="Sprite2D" parent="Button Dust"]
 position = Vector2(103, 51.0001)
@@ -133,6 +137,7 @@ offset_left = 569.0
 offset_top = 494.0
 offset_right = 785.0
 offset_bottom = 599.0
+mouse_default_cursor_shape = 2
 
 [node name="Snow" type="Sprite2D" parent="Button Snow"]
 position = Vector2(108, 53)
@@ -154,6 +159,7 @@ offset_left = 802.0
 offset_top = 496.0
 offset_right = 1010.0
 offset_bottom = 601.0
+mouse_default_cursor_shape = 2
 
 [node name="Random" type="Sprite2D" parent="Button Random"]
 position = Vector2(104, 52)
@@ -171,12 +177,13 @@ text = "[center]RANDOM"
 fit_content = true
 
 [node name="Dificulty" type="RichTextLabel" parent="."]
-offset_left = 766.0
-offset_top = 112.0
-offset_right = 948.0
-offset_bottom = 161.0
+offset_left = 746.0
+offset_top = 137.0
+offset_right = 943.0
+offset_bottom = 186.0
 theme_override_font_sizes/normal_font_size = 35
-text = "DIFICULTY"
+bbcode_enabled = true
+text = "[center]DIFFICULTY"
 fit_content = true
 
 [node name="Button maju" type="Button" parent="."]
@@ -213,6 +220,10 @@ offset_left = 771.0
 offset_top = 343.0
 offset_right = 926.0
 offset_bottom = 404.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("14_gnlmc")
+theme_override_styles/hover = ExtResource("15_kal2c")
+disabled = true
 text = "Next"
 
 [node name="NEXT" type="Sprite2D" parent="Button Next"]
