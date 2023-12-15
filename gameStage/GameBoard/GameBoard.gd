@@ -52,6 +52,15 @@ func _check_stage():
 		$"../Desert".visible = true
 	if Profile.stage_select == "Snow":
 		$"../Snow".visible = true
+		
+func _set_difficulty(unit):
+#	var unit = find_unit_by_name(name)
+	if Profile.difficulty == "Easy":
+		unit.hp -= 50
+		unit.move_range = randi_range(1, 2)
+	elif Profile.difficulty == "Hard":
+		unit.hp += 100
+		unit.move_range = randi_range(6, 8)
 
 func _on_ally_turn_started():
 	if turnManager.turnCounter == 1:
@@ -169,6 +178,7 @@ func _get_enemy_unit() -> Dictionary:
 			randomUnit.position = grid.calculate_map_position(randomUnit.cell)
 			_enemyUnits[randomUnit.cell] = randomUnit
 #			randomUnit.aura = Color(1, 0, 0, 1)
+			_set_difficulty(randomUnit)
 			randomUnit.visible = true
 			# Remove the selected unit from eligibleUnits
 			eligibleUnits.remove_at(randomIndex)

@@ -52,6 +52,7 @@ layer_0/tile_data = PackedInt32Array(-65538, 65538, 9, -65537, 131074, 9, -13107
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1

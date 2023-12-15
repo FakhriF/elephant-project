@@ -175,34 +175,55 @@ theme_override_font_sizes/normal_font_size = 35
 text = "DIFICULTY"
 fit_content = true
 
-[node name="Button maju" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="Difficulty Status" type="RichTextLabel" parent="."]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 771.0
+offset_top = 236.0
+offset_right = 926.0
+offset_bottom = 334.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "NORMAL"
+fit_content = true
 
-[node name="maju2" type="Sprite2D" parent="Button maju"]
-position = Vector2(1011, 259)
+[node name="Next Difficulty" type="Button" parent="."]
+offset_left = 962.0
+offset_top = 236.0
+offset_right = 1005.0
+offset_bottom = 284.0
+
+[node name="maju2" type="Sprite2D" parent="Next Difficulty"]
+position = Vector2(21, 25)
 scale = Vector2(0.793209, 0.79321)
 texture = ExtResource("9_8cl6a")
 flip_h = true
 
-[node name="Button Mundur" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="Prev Difficulty" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 687.0
+offset_top = 238.0
+offset_right = 734.0
+offset_bottom = 286.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="mundur" type="Sprite2D" parent="Button Mundur"]
-position = Vector2(696, 258)
+[node name="mundur" type="Sprite2D" parent="Prev Difficulty"]
+position = Vector2(25, 22)
 scale = Vector2(0.801887, 0.801887)
 texture = ExtResource("9_8cl6a")
-
-[node name="Randowm3" type="RichTextLabel" parent="."]
-offset_left = 807.0
-offset_top = 236.0
-offset_right = 893.0
-offset_bottom = 285.0
-theme_override_colors/default_color = Color(0.929412, 0.490196, 0.192157, 1)
-theme_override_font_sizes/normal_font_size = 35
-text = "EASY"
-fit_content = true
 
 [node name="Button Next" type="Button" parent="."]
 offset_left = 771.0
@@ -231,4 +252,6 @@ metadata/_edit_use_anchors_ = true
 [connection signal="pressed" from="Button Dust" to="." method="_on_button_dust_pressed"]
 [connection signal="pressed" from="Button Snow" to="." method="_on_button_snow_pressed"]
 [connection signal="pressed" from="Button Random" to="." method="_on_button_random_pressed"]
+[connection signal="pressed" from="Next Difficulty" to="." method="_on_next_difficulty_pressed"]
+[connection signal="pressed" from="Prev Difficulty" to="." method="_on_prev_difficulty_pressed"]
 [connection signal="pressed" from="Button Next" to="." method="_on_button_next_pressed"]

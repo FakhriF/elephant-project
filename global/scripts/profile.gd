@@ -10,3 +10,5 @@ var stage_select = ""
 var gameProgress
 
 var hasSave = false
+
+var difficulty = "Normal"
