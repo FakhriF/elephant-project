@@ -34,7 +34,6 @@ var _currentEnemies := []
 @onready var Action = ""
 @onready var CharacterChoice = $"../ActionMenu"
 
-
 var turnManager : TurnManager = TurnManager.new()
 
 
@@ -140,6 +139,7 @@ func _get_ally_unit():
 			print("GEL ALLY ", unit.name)
 			unit.visible = true
 			if first_ally == false:
+				unit.Turn = true
 				unit.position.x = randi_range(355, 740)
 				unit.position.y = randi_range(0, 600)
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
@@ -234,6 +234,9 @@ func _select_unit(cell: Vector2) -> void:
 #	var callable = Callable(self, "_on_move_button_pressed").bind(_active_unit)
 	
 	
+	if _active_unit.Turn == false:
+		print("CHECK")
+		return
 	
 	CharacterChoice.position = Vector2(_active_unit.position.x + 50, _active_unit.position.y - 75)
 	CharacterChoice.visible = true
@@ -302,6 +305,7 @@ func _on_attack_button_pressed():
 
 ## Deselects the active unit, clearing the cells overlay and interactive path drawing.
 func _deselect_active_unit() -> void:
+	_active_unit.Turn = false
 	_active_unit.is_selected = false
 	_unit_overlay.clear()
 	_unit_path.stop()
@@ -317,6 +321,8 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	if not _active_unit:
 		_select_unit(cell)
 		print("You Selected Unit")
+	elif _active_unit.is_selected and _active_unit.Turn == false:
+		print("Can't select this Character Again for this Turn")
 	elif _active_unit.is_selected and Action == "Attack":
 		print("You Selected Attack")
 		var enemyUnit = get_target(cell, "Enemy")
@@ -536,6 +542,7 @@ func _on_Cursor_moved(new_cell: Vector2) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _active_unit and event.is_action_pressed("ui_cancel"):
+		_active_unit.Turn = false
 		_active_unit.is_selected = false
 		_deselect_active_unit()
 		_clear_active_unit()
