@@ -20,6 +20,8 @@ signal health_changed(life)
 @export var hp := 100
 @export var energy := 100
 
+@export var Turn := true
+
 func take_damage(damage):
 	hp = hp - damage
 	if hp <= 0:

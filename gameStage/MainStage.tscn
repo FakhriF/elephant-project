@@ -52,7 +52,6 @@ layer_0/tile_data = PackedInt32Array(-65538, 65538, 9, -65537, 131074, 9, -13107
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1
@@ -251,6 +250,7 @@ visible = false
 position = Vector2(744, 560)
 curve = SubResource("1")
 move_range = 3
+Turn = null
 skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
@@ -260,6 +260,7 @@ position = Vector2(805, 470)
 scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
+Turn = null
 skin = ExtResource("9_1cexo")
 skin_offset = Vector2(-8, -20)
 
@@ -269,6 +270,7 @@ position = Vector2(550, 210)
 scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
+Turn = null
 skin = ExtResource("12_ks6x4")
 skin_offset = Vector2(-8, -20)
 
@@ -280,6 +282,7 @@ curve = SubResource("1")
 move_range = 3
 hp = 75
 energy = 200
+Turn = null
 skin = ExtResource("13_bey8i")
 skin_offset = Vector2(-8, -25)
 
@@ -288,6 +291,7 @@ visible = false
 position = Vector2(850.293, 412.465)
 curve = SubResource("2")
 move_range = 8
+Turn = null
 skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
 
@@ -296,8 +300,22 @@ visible = false
 position = Vector2(744, 216)
 curve = SubResource("3")
 move_range = 5
+Turn = null
 skin = ExtResource("7")
 skin_offset = Vector2(6, 17)
+
+[node name="CharacterChoice" type="MenuButton" parent="."]
+offset_left = 448.0
+offset_top = 536.0
+offset_right = 576.0
+offset_bottom = 568.0
+item_count = 3
+popup/item_0/text = "Attack"
+popup/item_0/id = 0
+popup/item_1/text = "Skill"
+popup/item_1/id = 1
+popup/item_2/text = "Move"
+popup/item_2/id = 2
 
 [node name="EndTurn" type="Button" parent="."]
 offset_left = 993.0
@@ -321,6 +339,7 @@ offset_bottom = 56.0
 text = "Exit and Save Game"
 
 [node name="LoadGame" type="Button" parent="."]
+visible = false
 offset_left = 1000.0
 offset_top = 64.0
 offset_right = 1144.0
@@ -332,5 +351,5 @@ text = "Quick Load"
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
 [connection signal="pressed" from="SaveGame" to="GameBoard" method="_on_button_pressed"]
-[connection signal="pressed" from="ExitandSaveGame" to="GameBoard" method="_on_button_2_pressed"]
+[connection signal="pressed" from="ExitandSaveGame" to="GameBoard" method="_on_exit_and_save_game_pressed"]
 [connection signal="pressed" from="LoadGame" to="GameBoard" method="_on_load_game_pressed"]

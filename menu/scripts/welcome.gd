@@ -34,7 +34,7 @@ func saveGame(Username: Control):
 		var jstr = JSON.stringify(profile_data)
 		file.store_line(jstr)
 		Profile.profileList.append(Username.get_text())
-		Profile.gameProgress = "Profile " + str(i + 1)
+#		Profile.gameProgress = "Profile " + str(i + 1)
 		i += 1  # Increment i
 		return true
 		break
@@ -54,12 +54,15 @@ func loadGame():
 			Profile.profileList = current_line["username"]
 			if saveName == "res://savegame1.bin":
 				$SelectProfile/Profile1.text = "PROFILE 1: " + Profile.profileList
+				
 			if saveName == "res://savegame2.bin":
 				$SelectProfile/Profile2.text = "PROFILE 2: " + Profile.profileList
 			if saveName == "res://savegame3.bin":
 				$SelectProfile/Profile3.text = "PROFILE 3: " + Profile.profileList
+			Profile.gameProgress = "Profile " + str(i + 1)
 		else:
 			pass
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -125,12 +128,12 @@ func _on_profile_1_pressed():
 
 func _on_profile_2_pressed():
 	if FileAccess.file_exists("res://savegame2.bin"):
-		Profile.gameProgress = "Profile 1"
+		Profile.gameProgress = "Profile 2"
 		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
 		
 
 
 func _on_profile_3_pressed():
 	if FileAccess.file_exists("res://savegame3.bin"):
-		Profile.gameProgress = "Profile 1"
+		Profile.gameProgress = "Profile 3"
 		get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
