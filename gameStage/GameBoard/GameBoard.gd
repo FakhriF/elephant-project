@@ -26,9 +26,7 @@ var _currentEnemies := []
 
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
 @onready var _unit_path: UnitPath = $UnitPath
-@onready var CharacterOption = $"../CharacterChoice" 
-@onready var turnChoice = CharacterOption.get_popup()
-@onready var action
+
 
 var turnManager : TurnManager = TurnManager.new()
 
@@ -54,15 +52,6 @@ func _check_stage():
 		$"../Desert".visible = true
 	if Profile.stage_select == "Snow":
 		$"../Snow".visible = true
-		
-func _set_difficulty(unit):
-#	var unit = find_unit_by_name(name)
-	if Profile.difficulty == "Easy":
-		unit.hp -= 50
-		unit.move_range = randi_range(1, 2)
-	elif Profile.difficulty == "Hard":
-		unit.hp += 100
-		unit.move_range = randi_range(6, 8)
 
 func _on_ally_turn_started():
 	if turnManager.turnCounter == 1:
@@ -71,8 +60,6 @@ func _on_ally_turn_started():
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
 	else: 
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
-	if Profile._check_progress():
-		$"../LoadGame".visible = true
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
 	for child in get_children():
@@ -145,7 +132,6 @@ func _get_ally_unit():
 		if (unit.name in Profile.character_select) and (unit.hp > 0):
 			print("GEL ALLY ", unit.name)
 			unit.visible = true
-			unit.Turn = true
 			if first_ally == false:
 				unit.position.x = randi_range(355, 740)
 				unit.position.y = randi_range(0, 600)
@@ -183,7 +169,6 @@ func _get_enemy_unit() -> Dictionary:
 			randomUnit.position = grid.calculate_map_position(randomUnit.cell)
 			_enemyUnits[randomUnit.cell] = randomUnit
 #			randomUnit.aura = Color(1, 0, 0, 1)
-			_set_difficulty(randomUnit)
 			randomUnit.visible = true
 			# Remove the selected unit from eligibleUnits
 			eligibleUnits.remove_at(randomIndex)
@@ -215,37 +200,13 @@ func _on_end_turn_pressed():
 ## Sets it as the `_active_unit` and draws its walkable cells and interactive move path. 
 func _select_unit(cell: Vector2) -> void:
 	if not _units.has(cell):
-		return	
-		
-	_active_unit = _units[cell]
-	if _active_unit.Turn == false:
 		return
-	print(_active_unit.Turn)
-
-		
-	print("Unit Selected is: ", _active_unit)
-	CharacterOption.position = Vector2(_active_unit.position.x + 75, _active_unit.position.y - 75)
-	CharacterOption.show_popup()
-	turnChoice.id_pressed.connect(Callable(_on_ally_choice).bind(_active_unit))
 	
-	
-
-func _on_ally_choice(id, unit_to_take_action):
-	print("Unit to take action is: ", unit_to_take_action)
-	match id:
-		0:
-			print("Hello")
-		1:
-			print("Attack!")
-		2:
-			unit_to_take_action.is_selected = true
-			action = "Move"
-			_walkable_cells = get_walkable_cells(unit_to_take_action)
-			_unit_overlay.draw(_walkable_cells)
-			_unit_path.initialize(_walkable_cells)
-	unit_to_take_action.Turn = false
-	turnChoice.id_pressed.disconnect(_on_ally_choice)
-			
+	_active_unit = _units[cell]
+	_active_unit.is_selected = true
+	_walkable_cells = get_walkable_cells(_active_unit)
+	_unit_overlay.draw(_walkable_cells)
+	_unit_path.initialize(_walkable_cells)
 
 
 ## Deselects the active unit, clearing the cells overlay and interactive path drawing.
@@ -264,7 +225,7 @@ func _clear_active_unit() -> void:
 func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	if not _active_unit:
 		_select_unit(cell)
-	elif _active_unit.is_selected and action == "Move":
+	elif _active_unit.is_selected:
 		_move_active_unit(cell)
 		
 		# Make sure to check if the target cell is occupied by an ally unit
@@ -525,7 +486,7 @@ func _save_game():
 		if file:
 			file.store_string(saveString)
 			file.close()
-			print("Game saved successfully into ", saveName)
+			print("Game saved successfully.")
 		else:
 			print("Error opening file.")
 	else:
@@ -692,10 +653,18 @@ func _on_button_pressed():
 	_save_game() # Replace with function body.
 
 
+func _on_button_2_pressed():
+	_save_game() 
+	get_tree().quit()
+
+
 func _on_load_game_pressed():
 	_load_game()
 
 
-func _on_exit_and_save_game_pressed():
-	_save_game() 
-	get_tree().quit() 
+func _on_pause_button_pressed():
+	$"../Pause Canvas".visible = true
+
+
+func _on_pause_back_button_pressed():
+	$"../Pause Canvas".visible = false
