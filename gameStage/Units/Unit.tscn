@@ -61,7 +61,7 @@ _data = {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qo0d1"]
 resource_local_to_scene = true
 shader = ExtResource("4_f3dqi")
-shader_parameter/aura_width = 20.0
+shader_parameter/aura_width = 15.0
 shader_parameter/aura_color = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6vdj7"]

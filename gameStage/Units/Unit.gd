@@ -27,6 +27,10 @@ func set_aura_color(new_color: Color) -> void:
 	var sprite_material = _sprite.material
 	sprite_material.set_shader_parameter("aura_color", new_color)
 
+func get_aura_color() -> Color:
+	var sprite_material = _sprite.material
+	return sprite_material.get_shader_parameter("aura_color")
+
 func take_damage(damage):
 	hp = hp - damage
 	if hp <= 0:
