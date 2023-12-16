@@ -269,6 +269,10 @@ func _on_attack_button_pressed():
 		Action = "Attack"
 		print("You Can Attack!")
 		print(_units)
+		var enemyUnit = get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy")
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".position = Vector2(enemyUnit.position.x - 15, enemyUnit.position.y - 230)
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = true
 	else:
 		Action = "No Enemy"
 		print("You Can't Attack")
@@ -316,12 +320,17 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	elif _active_unit.is_selected and Action == "Attack":
 		print("You Selected Attack")
 		var enemyUnit = get_target(cell, "Enemy")
-		print(enemyUnit)
 		print(enemyUnit.hp)
 		attack(enemyUnit)
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 		if enemyUnit.hp <= 0:
 			enemyUnit.visible = false
+		else:
+			await get_tree().create_timer(1).timeout
 		print(enemyUnit.hp)
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
+		_deselect_active_unit()
+		_clear_active_unit()
 	elif _active_unit.is_selected and Action == "No Enemy":
 		print("There's No Enemy To Attack")
 	elif _active_unit.is_selected and Action == "Move":

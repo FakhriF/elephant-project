@@ -208,6 +208,25 @@ rounded = true
 texture_under = ExtResource("2_d7p3j")
 texture_progress = ExtResource("3_kowaf")
 
+[node name="Enemy Hp Bar" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -57.184
+offset_top = 230.822
+offset_right = 138.816
+offset_bottom = 244.822
+scale = Vector2(0.75902, 0.790891)
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_kowaf")
+
 [node name="TurnCounter" type="RichTextLabel" parent="CanvasLayer"]
 custom_minimum_size = Vector2(334, 211)
 offset_left = -43.0
