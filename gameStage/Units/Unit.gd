@@ -22,6 +22,11 @@ signal health_changed(life)
 
 @export var Turn := true
 
+
+func set_aura_color(new_color: Color) -> void:
+	var sprite_material = _sprite.material
+	sprite_material.set_shader_parameter("aura_color", new_color)
+
 func take_damage(damage):
 	hp = hp - damage
 	if hp <= 0:
@@ -83,8 +88,6 @@ var _is_walking := false:
 @onready var _sprite: Sprite2D = $PathFollow2D/Sprite
 @onready var _anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _path_follow: PathFollow2D = $PathFollow2D
-
-#@onready var _aura: Color = $PathFollow2D/Sprite.material.get("shader_parameter/aura_color");
 
 @onready var _anim = get_node("AnimationPlayer")
 

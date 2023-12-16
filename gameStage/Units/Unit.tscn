@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d4mhjq651egt"]
+[gd_scene load_steps=11 format=3 uid="uid://d4mhjq651egt"]
 
 [ext_resource type="Script" path="res://gameStage/Units/Unit.gd" id="1"]
 [ext_resource type="Resource" uid="uid://dos77avjw27es" path="res://gameStage/GameBoard/Grid.tres" id="2"]
@@ -58,6 +58,12 @@ _data = {
 "selected": SubResource("2")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qo0d1"]
+resource_local_to_scene = true
+shader = ExtResource("4_f3dqi")
+shader_parameter/aura_width = 20.0
+shader_parameter/aura_color = null
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6vdj7"]
 shader = ExtResource("4_f3dqi")
 shader_parameter/aura_width = 4.0
@@ -84,6 +90,7 @@ texture = ExtResource("3")
 
 [node name="Sprite" type="Sprite2D" parent="PathFollow2D"]
 texture_filter = 4
+material = SubResource("ShaderMaterial_qo0d1")
 position = Vector2(2, 0)
 scale = Vector2(0.24, 0.24)
 offset = Vector2(-3.8147e-06, -185)

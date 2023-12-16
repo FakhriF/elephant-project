@@ -143,7 +143,9 @@ func _get_ally_unit():
 				unit.position.y = randi_range(0, 600)
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
 				unit.position = grid.calculate_map_position(unit.cell)
+				unit.set_aura_color(Color(0, 0, 1, 1))
 			_units[unit.cell] = unit
+						
 #			unit.aura = Color(0, 0, 1, 1)
 	first_ally = true
 	
@@ -175,7 +177,9 @@ func _get_enemy_unit() -> Dictionary:
 			randomUnit.position = grid.calculate_map_position(randomUnit.cell)
 			_enemyUnits[randomUnit.cell] = randomUnit
 #			randomUnit.aura = Color(1, 0, 0, 1)
+			randomUnit.set_aura_color(Color(1, 0, 0, 1))
 			randomUnit.visible = true
+#			randomUnit.material.set("shader_parameter/aura_color", Color(1, 0, 0, 1))
 			# Remove the selected unit from eligibleUnits
 			eligibleUnits.remove_at(randomIndex)
 			
