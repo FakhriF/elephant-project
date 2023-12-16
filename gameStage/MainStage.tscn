@@ -30,12 +30,6 @@ resource_local_to_scene = true
 [sub_resource type="Curve2D" id="3"]
 resource_local_to_scene = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w14fd"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbops"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irkai"]
 bg_color = Color(0.309804, 0.290196, 0.270588, 1)
 corner_radius_top_left = 18
@@ -49,6 +43,12 @@ corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w14fd"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbops"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Main" type="Node2D"]
 
@@ -236,6 +236,7 @@ visible = false
 position = Vector2(744, 560)
 curve = SubResource("1")
 move_range = 3
+Turn = true
 skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
@@ -244,6 +245,7 @@ position = Vector2(290, 470)
 scale = Vector2(0.5, 0.35)
 curve = SubResource("1")
 move_range = 3
+Turn = true
 skin = ExtResource("9_1cexo")
 skin_offset = Vector2(-8, -20)
 
@@ -253,6 +255,7 @@ position = Vector2(550, 210)
 scale = Vector2(0.5, 0.35)
 curve = SubResource("1")
 move_range = 3
+Turn = true
 skin = ExtResource("12_ks6x4")
 skin_offset = Vector2(-8, -20)
 
@@ -264,6 +267,7 @@ curve = SubResource("1")
 move_range = 3
 hp = 75
 energy = 200
+Turn = true
 skin = ExtResource("13_bey8i")
 skin_offset = Vector2(-8, -25)
 
@@ -272,6 +276,7 @@ visible = false
 position = Vector2(850.293, 412.465)
 curve = SubResource("2")
 move_range = 8
+Turn = true
 skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
 
@@ -280,6 +285,7 @@ visible = false
 position = Vector2(744, 216)
 curve = SubResource("3")
 move_range = 5
+Turn = true
 skin = ExtResource("7")
 skin_offset = Vector2(6, 17)
 
@@ -291,6 +297,78 @@ offset_bottom = 632.0
 theme_override_styles/normal = ExtResource("16_sphi0")
 theme_override_styles/hover = ExtResource("17_5qudg")
 text = "End Turn"
+
+[node name="ActionMenu" type="Panel" parent="."]
+visible = false
+offset_left = 472.0
+offset_top = 272.0
+offset_right = 576.0
+offset_bottom = 392.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_irkai")
+
+[node name="CharacterAction" type="VBoxContainer" parent="ActionMenu"]
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -46.5
+offset_right = 25.0
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate = false
+localize_numeral_system = false
+alignment = 1
+
+[node name="AttackButton" type="Button" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "   Attack   "
+
+[node name="HSeparator" type="HSeparator" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+
+[node name="SkillButton" type="Button" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "Skill"
+
+[node name="HSeparator2" type="HSeparator" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+
+[node name="MoveButton" type="Button" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "Move
+"
 
 [node name="PausedIcon" type="Sprite2D" parent="."]
 position = Vector2(1112, 40)
@@ -385,8 +463,12 @@ text = "SAVE & EXIT"
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
+[connection signal="pressed" from="ActionMenu/CharacterAction/AttackButton" to="GameBoard" method="_on_attack_button_pressed"]
+[connection signal="pressed" from="ActionMenu/CharacterAction/SkillButton" to="GameBoard" method="_on_button_pressed"]
+[connection signal="pressed" from="ActionMenu/CharacterAction/MoveButton" to="GameBoard" method="_on_move_button_pressed"]
 [connection signal="pressed" from="PausedIcon/PauseButton" to="GameBoard" method="_on_pause_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/ColorRect/PauseBackButton" to="GameBoard" method="_on_pause_back_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveButton" to="GameBoard" method="_on_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/LoadButton" to="GameBoard" method="_on_load_game_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]
+[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_save_and_exit_button_pressed"]

@@ -27,6 +27,12 @@ var _currentEnemies := []
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
 @onready var _unit_path: UnitPath = $UnitPath
 
+#@onready var CharacterOption = $"../CharacterChoice" 
+#@onready var choiceOptionsAdded = false
+#@onready var turnChoice = CharacterOption.get_popup()
+#@onready var action
+@onready var CharacterChoice = $"../ActionMenu"
+
 
 var turnManager : TurnManager = TurnManager.new()
 
@@ -186,7 +192,7 @@ func _get_enemy_unit() -> Dictionary:
 	
 	first_enemy = true
 	return _enemyUnits
-	
+
 
 func _on_end_turn_pressed():
 	_playerUnits.clear()
@@ -201,13 +207,65 @@ func _on_end_turn_pressed():
 func _select_unit(cell: Vector2) -> void:
 	if not _units.has(cell):
 		return
-	
+		
+
 	_active_unit = _units[cell]
+	_unit_overlay.draw([Vector2(_active_unit.cell.x, _active_unit.cell.y)], "Ally")
+	
+#	var callable = Callable(self, "_on_move_button_pressed").bind(_active_unit)
+	
+	
+	
+	CharacterChoice.position = Vector2(_active_unit.position.x + 50, _active_unit.position.y - 75)
+	CharacterChoice.visible = true
+#	var popupMenu = CharacterOption.get_popup()
+#	var theme = popupMenu.get_theme()
+#	theme.set_color("font_color", Color(1, 0, 0)) # Change font color to red
+#	theme.set_color("background_color", Color(0.2, 0.2, 0.2)) # Change background color
+#	# Apply the modified theme
+#	popupMenu.set_theme(theme)
+#
+#
+#	CharacterOption.show_popup()
+#	_activate_choice(_active_unit)
+#	turnChoice.id_pressed.connect(Callable(_on_ally_choice).bind(_active_unit))
+
+
+
+
+func _on_move_button_pressed():
+	print("MOVE UNIT: ", _active_unit)
 	_active_unit.is_selected = true
 	_walkable_cells = get_walkable_cells(_active_unit)
-	_unit_overlay.draw(_walkable_cells)
+	_unit_overlay.draw(_walkable_cells, "Ally")
 	_unit_path.initialize(_walkable_cells)
+	CharacterChoice.visible = false
+	
+	
+func _on_attack_button_pressed():
+	print(_active_unit)
+	if is_occupied_by_(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy"):
+	
+		print("You Can Attack!")
+		
+	CharacterChoice.visible = false
 
+#func _on_ally_choice(id, unit_to_take_action):
+#	print("Unit to take action is: ", unit_to_take_action)
+#	match id:
+#		0:
+#			print("Hello")
+#		1:
+#			print("Attack!")
+#	turnChoice.id_pressed.disconnect(_on_ally_choice)
+#
+#func _activate_choice(_active_unit):
+#	if not choiceOptionsAdded:
+#		turnChoice.add_item("Attack")
+#		turnChoice.add_item("Skill")
+#		turnChoice.add_item("Move")
+#
+#		choiceOptionsAdded = true
 
 ## Deselects the active unit, clearing the cells overlay and interactive path drawing.
 func _deselect_active_unit() -> void:
@@ -229,7 +287,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 		_move_active_unit(cell)
 		
 		# Make sure to check if the target cell is occupied by an ally unit
-		if is_occupied_by_ally(cell):
+		if is_occupied_by_(cell, "Ally"):
 			print("Target cell is occupied by an ally unit. Cannot move.")
 			_deselect_active_unit()
 			_clear_active_unit()
@@ -243,8 +301,13 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 
 # ...
 
-func is_occupied_by_ally(cell: Vector2) -> bool:
-	return _playerUnits.has(cell)
+func is_occupied_by_(cell: Vector2, unitType: String) -> bool:
+	if unitType == "Ally":
+		return _playerUnits.has(cell)
+	elif unitType == "Enemy":
+		return _enemyUnits.has(cell)
+	else:
+		return false
 
 # ============================== Enemy Action ==============================
 
@@ -255,7 +318,7 @@ func _perform_enemy_turn() -> void:
 	print("Turn Enemy")
 	for unit in enemy_units:
 		_walkable_cells = get_walkable_cells(unit)
-		_unit_overlay.draw(_walkable_cells)
+		_unit_overlay.draw(_walkable_cells, "Enemy")
 		_unit_path.initialize(_walkable_cells)
 		var target_cell = calculate_enemy_target(unit, _playerUnits)  # Implement your logic to calculate the target cell.
 		print(target_cell)
@@ -419,6 +482,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _active_unit and event.is_action_pressed("ui_cancel"):
 		_deselect_active_unit()
 		_clear_active_unit()
+		CharacterChoice.visible = false
 
 
 func _save_game():
@@ -503,7 +567,7 @@ func get_unit_at_cell(cell: Vector2) -> Unit:
 
 	# Return null if no unit is found at the specified cell
 	return null
-
+	
 func find_unit_by_name(name: String) -> Unit:
 	# Iterate through all units and find the one with the specified name
 	for child in get_children():
@@ -653,10 +717,9 @@ func _on_button_pressed():
 	_save_game() # Replace with function body.
 
 
-func _on_button_2_pressed():
+func _on_save_and_exit_button_pressed():
 	_save_game() 
 	get_tree().quit()
-
 
 func _on_load_game_pressed():
 	_load_game()
@@ -668,3 +731,10 @@ func _on_pause_button_pressed():
 
 func _on_pause_back_button_pressed():
 	$"../Pause Canvas".visible = false
+
+
+
+
+
+
+
