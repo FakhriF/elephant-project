@@ -297,8 +297,6 @@ visible = false
 position = Vector2(744, 560)
 curve = SubResource("1")
 move_range = 3
-skill = ""
-ultimate = ""
 skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
@@ -309,7 +307,7 @@ scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
 skill = "Midas Touch"
-ultimate = ""
+ultimate = "Zeus' Rage"
 skin = ExtResource("9_1cexo")
 skin_offset = Vector2(-8, -20)
 
@@ -320,7 +318,7 @@ scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
 skill = "Drain"
-ultimate = ""
+ultimate = "Bloodmoon Devour"
 skin = ExtResource("12_ks6x4")
 skin_offset = Vector2(-8, -20)
 
@@ -333,7 +331,7 @@ move_range = 3
 hp = 75
 energy = 200
 skill = "Heal"
-ultimate = ""
+ultimate = "Requiem"
 skin = ExtResource("13_bey8i")
 skin_offset = Vector2(-8, -25)
 
@@ -341,9 +339,7 @@ skin_offset = Vector2(-8, -25)
 visible = false
 position = Vector2(850.293, 412.465)
 curve = SubResource("2")
-move_range = 8
-skill = ""
-ultimate = ""
+move_range = 5
 skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
 
@@ -352,8 +348,6 @@ visible = false
 position = Vector2(744, 216)
 curve = SubResource("3")
 move_range = 5
-skill = ""
-ultimate = ""
 skin = ExtResource("7")
 skin_offset = Vector2(6, 17)
 
@@ -590,6 +584,7 @@ text = "SAVE & EXIT"
 [connection signal="pressed" from="ActionMenu/CharacterAction/SkillButton" to="GameBoard" method="_on_skill_button_pressed"]
 [connection signal="pressed" from="ActionMenu/CharacterAction/MoveButton" to="GameBoard" method="_on_move_button_pressed"]
 [connection signal="pressed" from="SkillMenu/CharacterAction/UseSkill" to="GameBoard" method="_on_use_skill_pressed"]
+[connection signal="pressed" from="SkillMenu/CharacterAction/UseUltimate" to="GameBoard" method="_on_use_ultimate_pressed"]
 [connection signal="pressed" from="PausedIcon/PauseButton" to="GameBoard" method="_on_pause_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/ColorRect/PauseBackButton" to="GameBoard" method="_on_pause_back_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveButton" to="GameBoard" method="_on_button_pressed"]

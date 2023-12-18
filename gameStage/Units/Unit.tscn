@@ -47,5 +47,4 @@ offset = Vector2(-3.8147e-06, -185)
 [node name="Aura" type="Sprite2D" parent="PathFollow2D/Sprite"]
 texture_filter = 4
 material = SubResource("ShaderMaterial_hywlp")
-scale = Vector2(1, 1)
 offset = Vector2(-3.8147e-06, -185)

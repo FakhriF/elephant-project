@@ -33,6 +33,7 @@ var _currentEnemies := []
 #@onready var turnChoice = CharacterOption.get_popup()
 @onready var Action = ""
 @onready var CharacterChoice = $"../ActionMenu"
+@onready var enemy_info = $"../CanvasLayer/ColorRect2/Enemy Hp Bar"
 
 var turnManager : TurnManager = TurnManager.new()
 
@@ -231,6 +232,8 @@ func _get_enemy_unit() -> Dictionary:
 
 
 func _on_end_turn_pressed():
+	$"../SkillMenu".visible = false
+	CharacterChoice.visible = false
 	_playerUnits.clear()
 	_units.clear()
 	_enemyUnits.clear()
@@ -254,10 +257,6 @@ func _select_unit(cell: Vector2) -> void:
 		
 	_unit_overlay.draw([Vector2(_active_unit.cell.x, _active_unit.cell.y)], "Ally")
 	_active_unit.is_selected = true
-#	var callable = Callable(self, "_on_move_button_pressed").bind(_active_unit)
-	
-	
-	
 	
 	CharacterChoice.position = Vector2(_active_unit.position.x + 50, _active_unit.position.y - 75)
 	CharacterChoice.visible = true
@@ -315,25 +314,87 @@ func _on_attack_button_pressed():
 
 func _on_skill_button_pressed():
 	Action = "Skill"
+	_active_unit.is_selected = true
 	$"../SkillMenu".position = Vector2(_active_unit.position.x + 160, _active_unit.position.y - 50)
 	$"../SkillMenu".visible = true
 	$"../SkillMenu/CharacterAction/UseSkill".text = _active_unit.skill
+	$"../SkillMenu/CharacterAction/UseUltimate".text = _active_unit.ultimate
 	
 
 func _on_use_skill_pressed():
-	Action = "Use Skill"
-	var enemyUnit = get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy")
-	
-	if _active_unit.skill in _active_unit.offensiveSkill and get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy"):
-		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
-		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".position = Vector2(enemyUnit.position.x - 15, enemyUnit.position.y - 230)
-		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = true
+	if _active_unit._check_energy(_active_unit, _active_unit.skill, "Skill"):
+		Action = "Use Skill"
+		var enemyUnit = get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy")
+		
+		if _active_unit.skill in _active_unit.offensiveSkill and get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy"):
+			enemy_info.value = enemyUnit.hp
+			enemy_info.position = Vector2(enemyUnit.position.x - 15, enemyUnit.position.y - 230)
+			enemy_info.visible = true
+	else:
+		print("You have less energy required, please wait to recharge")
+		_active_unit.Turn = true
+		_deselect_active_unit()
+		_clear_active_unit()
 	
 	$"../SkillMenu".visible = false
 	CharacterChoice.visible = false
+	
+func _on_use_ultimate_pressed():
+	if _active_unit.energy < 100:
+		_active_unit.Turn = true
+		_deselect_active_unit()
+		_clear_active_unit()
+
+		print("You need to have 100 energy to use Ultimate")
+	else:
+		_active_unit.energy -= 100
+		for child in get_children():
+			var unit := child as Unit
+			if not unit:
+				continue
+			if unit.name in _currentEnemies and unit.hp > 0:
+				var enemy_info = $"../CanvasLayer/ColorRect2/Enemy Hp Bar".duplicate()
+				add_child(enemy_info)
+				enemy_info.value = unit.hp
+				enemy_info.position = Vector2(unit.position.x - 65, unit.position.y - 100)
+				enemy_info.visible = true
+				if _active_unit.ultimate == "Bloodmoon Devour":
+					unit._drain_animation()
+					unit.take_damage(75)
+					_active_unit.heal(25)
+				if _active_unit.ultimate == "Zeus' Rage":
+					unit._lightning_strike_animation()
+					unit.hp -= 75
+				await get_tree().create_timer(0.05).timeout
+				enemy_info.value = unit.hp
+					
+			
+		for index in range(min(len(Profile.character_select), 3)):
+			for child in get_children():
+				var unit := child as Unit
+				if not unit:
+					continue
+				if unit.name in Profile.character_select:
+					if _active_unit.ultimate == "Requiem":
+						unit.heal(50)
+						unit._heal_animation()
+				update_unit_UI(unit, index)
+	$"../SkillMenu".visible = false
+	CharacterChoice.visible = false
+				
+				
+				
+
+
 
 	
-	
+func useUltimate(skillName: String):
+	if skillName == "Bloodmoon Devour":
+		for unit in _enemyUnits:
+			print(unit)
+#		ally.hp -= 25
+		pass
+		
 #func _on_ally_choice(id, unit_to_take_action):
 #	print("Unit to take action is: ", unit_to_take_action)
 #	match id:
@@ -353,7 +414,6 @@ func _on_use_skill_pressed():
 
 ## Deselects the active unit, clearing the cells overlay and interactive path drawing.
 func _deselect_active_unit() -> void:
-	_active_unit.Turn = false
 	_active_unit.is_selected = false
 	_unit_overlay.clear()
 	_unit_path.stop()
@@ -378,6 +438,8 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			attack(enemyUnit)
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 			if enemyUnit.hp <= 0:
+				enemyUnit.death()
+				await get_tree().create_timer(0.5).timeout
 				enemyUnit.visible = false
 			else:
 				await get_tree().create_timer(0.5).timeout
@@ -402,6 +464,9 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
 			elif _active_unit.skill in _active_unit.defensiveSkill:
 				use_skill(allyUnit, enemyUnit, _active_unit.skill)
+			_active_unit.Turn = false
+			_deselect_active_unit()
+			_clear_active_unit()
 		else:
 			return
 
@@ -409,6 +474,9 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	elif _active_unit.is_selected and Action == "No Enemy":
 		print("There's No Enemy To Attack")
 	elif _active_unit.is_selected and Action == "Move":
+		if cell not in get_walkable_cells(_active_unit):
+			return
+		
 		print("Ally Turn: You Selected Movement")
 		_move_active_unit(cell)
 		
@@ -418,6 +486,8 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			_deselect_active_unit()
 			_clear_active_unit()
 			return
+			
+		
 		
 			
 
@@ -921,6 +991,8 @@ func _on_pause_button_pressed():
 
 func _on_pause_back_button_pressed():
 	$"../Pause Canvas".visible = false
+
+
 
 
 

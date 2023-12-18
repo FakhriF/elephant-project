@@ -29,6 +29,8 @@ signal health_changed(life)
 @onready var defensiveSkill := ["Heal"]
 
 
+
+
 func _hurt_animation():
 	_aura.visible = false
 	_sprite.modulate = Color.RED
@@ -43,7 +45,76 @@ func _hurt_animation():
 	await get_tree().create_timer(0.1).timeout
 	_sprite.modulate = Color.WHITE
 	_aura.visible = true
+	
+func _blink_animation():
+	_aura.visible = false
+	var colors = [Color.BLACK, Color.WHITE]
+	for color in colors:
+		_sprite.modulate = color
+		await get_tree().create_timer(0.1).timeout
+	_aura.visible = true
 
+func _fade_animation():
+	_aura.visible = false
+	var duration = 0.05
+	for i in range(0, 5):
+		_sprite.modulate.a = 0.0
+		await get_tree().create_timer(duration).timeout
+		_sprite.modulate.a = 1.0
+		await get_tree().create_timer(duration).timeout
+	_aura.visible = true
+
+func _lightning_strike_animation():
+	_aura.visible = false
+
+	var duration = 0.05
+	var colors = [Color.BLACK, Color.WHITE, Color(0.8, 0.8, 1.0)]
+	
+	for i in range(0, 5):
+		for color in colors:
+			_sprite.modulate = color
+			await get_tree().create_timer(duration).timeout
+		
+	_aura.visible = true
+
+func _heal_animation():
+	_aura.visible = false
+
+	var duration = 0.2
+	var colors = [Color(0.2, 0.8, 0.2), Color(0.8, 1.0, 0.8), Color.WHITE]
+	
+	for color in colors:
+		_sprite.modulate = color
+		await get_tree().create_timer(duration).timeout
+		
+	_aura.visible = true
+
+func _drain_animation():
+	_aura.visible = false
+
+	var duration = 0.1
+	var colors = [Color(0.2, 0.0, 0.0), Color(0.6, 0.0, 0.0), Color(0.8, 0.0, 0.0)]
+	
+	for i in range(0, 3):
+		for color in colors:
+			_sprite.modulate = color
+			await get_tree().create_timer(duration).timeout
+			
+	_aura.visible = true
+
+func death():
+	_aura.visible = false
+	
+	var duration = 0.05
+	var opacities = [1.0, 0.6, 0.3, 0.0]
+	
+	for i in range(opacities.size()):
+		_sprite.modulate.a = opacities[i]
+		await get_tree().create_timer(duration).timeout
+		
+	_aura.visible = true
+
+	
 func take_damage(damage):
 	
 	hp = hp - damage
@@ -52,6 +123,7 @@ func take_damage(damage):
 		emit_signal("dead")
 	else:
 		emit_signal("health_changed", hp)
+		
 	
 func heal(amount):
 	hp += amount
@@ -66,15 +138,33 @@ func skillManager(skillName: String):
 #		useSupportSKill(skillName)
 		pass
 		
+func _check_energy(unit, skillName: String, type: String):
+	if type == "Ultimate":
+		pass
+	elif type == "Skill":
+		if skillName == "Midas Touch":
+			return unit.energy >= 25
+		if skillName == "Drain" or skillName == "Heal":
+			return unit.energy >= 50	
+
 
 func useOffensiveSkill(ally, target, skillName: String):
 	if skillName == "Midas Touch":
-		ally.energy -= 25
-		target.take_damage(25)
+		if ally.energy >= 25:
+			ally.energy -= 25
+			target.take_damage(25)
+			target._lightning_strike_animation()
+		else:
+			print("You need to have at least 25 energy to use Drain")
 	elif skillName == "Drain":
-		ally.energy -= 50
-		ally.heal(25)
-		target.take_damage(25)
+		if ally.energy >= 50:
+			ally.energy -= 50
+			ally.heal(25)
+			ally._heal_animation()
+			target.take_damage(25)
+			target._drain_animation()
+		else:
+			print("You need to have at least 50 energy to use Drain")
 		
 
 func useSupportSKill(ally, skillName: String):
@@ -186,9 +276,9 @@ func _process(delta: float) -> void:
 			move_speed += 10.0
 		else:
 			move_speed += 150.0
-
-func hurt_anim():
-	_anim.play("hurt")
+#
+#func hurt_anim():
+#	_anim.play("hurt")
 
 ## Starts walking along the `path`.
 ## `path` is an array of grid coordinates that the function converts to map coordinates.
