@@ -226,6 +226,7 @@ offset_left = 962.0
 offset_top = 236.0
 offset_right = 1005.0
 offset_bottom = 284.0
+flat = true
 
 [node name="maju2" type="Sprite2D" parent="Next Difficulty"]
 position = Vector2(21, 25)
@@ -247,6 +248,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+flat = true
 
 [node name="mundur" type="Sprite2D" parent="Prev Difficulty"]
 position = Vector2(25, 22)

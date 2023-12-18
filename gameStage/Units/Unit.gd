@@ -23,14 +23,6 @@ signal health_changed(life)
 @export var Turn := true
 
 
-func set_aura_color(new_color: Color) -> void:
-	var sprite_material = _sprite.material
-	sprite_material.set_shader_parameter("aura_color", new_color)
-
-func get_aura_color() -> Color:
-	var sprite_material = _sprite.material
-	return sprite_material.get_shader_parameter("aura_color")
-
 func take_damage(damage):
 	hp = hp - damage
 	if hp <= 0:
@@ -42,6 +34,24 @@ func heal(amount):
 	hp += amount
 	hp = clamp(hp, hp, 100)
 	emit_signal("health_changed", hp)
+	
+func offensiveSkill():
+	pass
+
+func supportSKill():
+	pass
+	# Requiem - > Mass Heal Ultimate
+	
+
+func set_aura_color(new_color: Color) -> void:
+	var sprite_material = _sprite.material
+	sprite_material.set_shader_parameter("aura_color", new_color)
+
+func get_aura_color() -> Color:
+	var sprite_material = _sprite.material
+	return sprite_material.get_shader_parameter("aura_color")
+
+
 	
 	
 ## Texture representing the unit.

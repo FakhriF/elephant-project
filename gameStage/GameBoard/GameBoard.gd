@@ -101,6 +101,12 @@ func _on_enemy_turn_started():
 func attack(target):
 	target.take_damage(50)
 	target.hurt_anim()
+	
+func use_skill(Type: String):
+	if Type == "Offensive":
+		pass
+	elif Type == "Support":
+		pass
 
 func areAllAlliedUnitsDefeated() -> bool:
 	for unit in _playerUnits.values():
@@ -332,7 +338,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 		if enemyUnit.hp <= 0:
 			enemyUnit.visible = false
 		else:
-			await get_tree().create_timer(1).timeout
+			await get_tree().create_timer(0.5).timeout
 		print(enemyUnit.hp)
 		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
 		_deselect_active_unit()
