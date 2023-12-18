@@ -144,8 +144,8 @@ func _get_ally_unit():
 		if (unit.name in Profile.character_select) and (unit.hp > 0):
 			print("GEL ALLY ", unit.name)
 			unit.visible = true
+			unit.Turn = true
 			if first_ally == false:
-				unit.Turn = true
 				unit.position.x = randi_range(355, 740)
 				unit.position.y = randi_range(0, 600)
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
