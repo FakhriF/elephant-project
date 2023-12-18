@@ -9,7 +9,7 @@
 script = ExtResource("1_tf8uq")
 
 [node name="SomeMenu" type="Sprite2D" parent="."]
-modulate = Color(0.329412, 0.329412, 0.329412, 1)
+modulate = Color(0.447059, 0.447059, 0.447059, 0.760784)
 position = Vector2(577, 321)
 scale = Vector2(0.302514, 0.302514)
 texture = ExtResource("2_8ttg5")
@@ -38,6 +38,7 @@ offset_right = 721.0
 offset_bottom = 365.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = ExtResource("3_1c6sk")
 theme_override_styles/hover = ExtResource("4_6rqgn")
 text = "YES"
@@ -54,6 +55,7 @@ offset_right = 552.0
 offset_bottom = 365.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = ExtResource("3_1c6sk")
 theme_override_styles/hover = ExtResource("4_6rqgn")
 text = "NO"

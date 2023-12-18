@@ -8,12 +8,16 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
-	pass
+	$"Start Button".disabled = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if Profile.character_select.size() == 3:
+		$"Start Button".disabled = false
+	else:
+		$"Start Button".disabled = true
+	
 
 
 func _on_start_button_pressed():
@@ -29,13 +33,17 @@ func _on_button_character_1_toggled(button_pressed):
 			$HP/isi.text = str(aurel_unit.hp)
 			$EP/isi.text = str(aurel_unit.energy)
 			$"Button Character 1/Aurel-splashArt".visible = true
+			$"Button Character 1/CharacterColorBlock1".visible = true
 			Profile.character_select.append("Aurel")
 			print(Profile.character_select)
 		else: 
 			print("Maximum Number of Character Selected!")
 	else:
 		Profile.character_select.erase("Aurel")
+		$HP/isi.text = str(aurel_unit.hp)
+		$EP/isi.text = str(aurel_unit.energy)
 		print(Profile.character_select)
+		$"Button Character 1/CharacterColorBlock1".visible = false
 
 
 func _on_button_character_3_toggled(button_pressed):
@@ -43,10 +51,14 @@ func _on_button_character_3_toggled(button_pressed):
 		$HP/isi.text = str(thea_unit.hp)
 		$EP/isi.text = str(thea_unit.energy)
 		Profile.character_select.append("Thea")
+		$"Button Character 3/CharacterColorBlock3".visible = true
 		print(Profile.character_select)
 	else:
 		Profile.character_select.erase("Thea")
+		$HP/isi.text = str(thea_unit.hp)
+		$EP/isi.text = str(thea_unit.energy)
 		print(Profile.character_select)
+		$"Button Character 3/CharacterColorBlock3".visible = false
 
 
 func _on_button_character_4_toggled(button_pressed):
@@ -54,9 +66,19 @@ func _on_button_character_4_toggled(button_pressed):
 		$HP/isi.text = str(theon_unit.hp)
 		$EP/isi.text = str(theon_unit.energy)
 		Profile.character_select.append("Theon")
+		$"Button Character 4/CharacterColorBlock4".visible = true
 		print(Profile.character_select)
 	else:
 		Profile.character_select.erase("Theon")
+		$HP/isi.text = str(theon_unit.hp)
+		$EP/isi.text = str(theon_unit.energy)
 		print(Profile.character_select)
+		$"Button Character 4/CharacterColorBlock4".visible = false
 
+
+
+
+func _on_back_button_pressed():
+	Profile.character_select.clear()
+	get_tree().change_scene_to_file("res://menu/scenes/select_map_scene.tscn")
 

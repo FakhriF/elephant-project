@@ -660,3 +660,11 @@ func _on_button_2_pressed():
 
 func _on_load_game_pressed():
 	_load_game()
+
+
+func _on_pause_button_pressed():
+	$"../Pause Canvas".visible = true
+
+
+func _on_pause_back_button_pressed():
+	$"../Pause Canvas".visible = false
