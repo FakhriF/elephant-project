@@ -61,7 +61,7 @@ _data = {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qo0d1"]
 resource_local_to_scene = true
 shader = ExtResource("4_f3dqi")
-shader_parameter/aura_width = 15.0
+shader_parameter/aura_width = 20.0
 shader_parameter/aura_color = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6vdj7"]
@@ -72,6 +72,8 @@ shader_parameter/aura_color = Color(0.462745, 0.717647, 1, 1)
 [node name="Unit" type="Path2D"]
 script = ExtResource("1")
 grid = ExtResource("2")
+skill = null
+ultimate = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"

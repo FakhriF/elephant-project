@@ -22,6 +22,12 @@ signal health_changed(life)
 
 @export var Turn := true
 
+@export var skill := ""
+@export var ultimate := ""
+
+@onready var offensiveSkill := ["Midas Touch", "Drain"]
+@onready var defensiveSkill := ["Heal"]
+
 
 func take_damage(damage):
 	hp = hp - damage
@@ -34,12 +40,27 @@ func heal(amount):
 	hp += amount
 	hp = clamp(hp, hp, 100)
 	emit_signal("health_changed", hp)
-	
-func offensiveSkill():
-	pass
 
-func supportSKill():
-	pass
+func skillManager(skillName: String):
+	if skillName in offensiveSkill:
+#		useOffensiveSkill(skillName)
+		pass
+	elif skillName in defensiveSkill:
+#		useSupportSKill(skillName)
+		pass
+		
+
+func useOffensiveSkill(ally, target, skillName: String):
+	if skillName == "Midas Touch":
+		target.take_damage(25)
+	elif skillName == "Drain":
+		ally.heal(25)
+		target.take_damage(25)
+		
+
+func useSupportSKill(skillName: String):
+	if skillName == "Heal":
+		heal(25)
 	# Requiem - > Mass Heal Ultimate
 	
 
