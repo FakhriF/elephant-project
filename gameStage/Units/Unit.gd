@@ -52,14 +52,17 @@ func skillManager(skillName: String):
 
 func useOffensiveSkill(ally, target, skillName: String):
 	if skillName == "Midas Touch":
+		ally.energy -= 25
 		target.take_damage(25)
 	elif skillName == "Drain":
+		ally.energy -= 50
 		ally.heal(25)
 		target.take_damage(25)
 		
 
-func useSupportSKill(skillName: String):
+func useSupportSKill(ally, skillName: String):
 	if skillName == "Heal":
+		ally.energy -= 50
 		heal(25)
 	# Requiem - > Mass Heal Ultimate
 	

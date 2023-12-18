@@ -152,7 +152,6 @@ func _get_ally_unit():
 #				$"../CanvasLayer/BackgroundColor".visible = true
 #				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
 		if (unit.name in Profile.character_select) and (unit.hp > 0):
-			print("GEL ALLY ", unit.name)
 			unit.visible = true
 			unit.Turn = true
 			if first_ally == false:
@@ -221,7 +220,6 @@ func _get_enemy_unit() -> Dictionary:
 							break
 					if isUnique:
 						_defeatedEnemy[unit.cell] = unit
-				print(_defeatedAlly)
 			elif unit.name in _currentEnemies:
 				_enemyUnits[unit.cell] = unit
 		
@@ -282,9 +280,8 @@ func attack(target):
 func use_skill(ally, target, skillName):
 	if _active_unit.skill in _active_unit.offensiveSkill:
 		_active_unit.useOffensiveSkill(ally, target, _active_unit.skill)
-#		
-#	elif Type == "Support":
-#		pass
+	elif _active_unit.skill in _active_unit.defensiveSkill:
+		_active_unit.useSupportSKill(ally, _active_unit.skill)
 
 
 
@@ -326,9 +323,12 @@ func _on_skill_button_pressed():
 func _on_use_skill_pressed():
 	Action = "Use Skill"
 	var enemyUnit = get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy")
-	$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
-	$"../CanvasLayer/ColorRect2/Enemy Hp Bar".position = Vector2(enemyUnit.position.x - 15, enemyUnit.position.y - 230)
-	$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = true
+	
+	if _active_unit.skill in _active_unit.offensiveSkill and get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy"):
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".position = Vector2(enemyUnit.position.x - 15, enemyUnit.position.y - 230)
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = true
+	
 	$"../SkillMenu".visible = false
 	CharacterChoice.visible = false
 
@@ -372,40 +372,44 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	elif _active_unit.is_selected and _active_unit.Turn == false:
 		print("Can't select this Character Again for this Turn")
 	elif _active_unit.is_selected and Action == "Attack":
-		print("You Selected Attack")
-		var enemyUnit = get_target(cell, "Enemy")
-		attack(enemyUnit)
-		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
-		if enemyUnit.hp <= 0:
-			enemyUnit.visible = false
-		else:
-			await get_tree().create_timer(0.5).timeout
-		print(enemyUnit.hp)
-		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
-		_deselect_active_unit()
-		_clear_active_unit()
+		if is_occupied(cell):
+			print("Ally Turn: You Selected Attack")
+			var enemyUnit = get_target(cell, "Enemy")
+			attack(enemyUnit)
+			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
+			if enemyUnit.hp <= 0:
+				enemyUnit.visible = false
+			else:
+				await get_tree().create_timer(0.5).timeout
+			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
+			_deselect_active_unit()
+			_clear_active_unit()
+		else: 
+			return
+		
 	elif _active_unit.is_selected and Action == "Use Skill":
 #		_active_unit.skillManager(_active_unit.skill)
-		print("You Used Skill")
-		var enemyUnit = get_target(cell, "Enemy")
-		var allyUnit = get_target(_active_unit.cell, "Ally")
-		print(enemyUnit)
-		print(enemyUnit.hp)
-		print(allyUnit)
-		print(allyUnit.hp)
-		use_skill(allyUnit, enemyUnit, _active_unit.skill)
-		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
-		if enemyUnit.hp <= 0:
-			enemyUnit.visible = false
+		if is_occupied(cell):
+			var enemyUnit = get_target(cell, "Enemy")
+			var allyUnit = get_target(_active_unit.cell, "Ally")
+			if _active_unit.skill in _active_unit.offensiveSkill:
+				use_skill(allyUnit, enemyUnit, _active_unit.skill)
+				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
+				if enemyUnit.hp <= 0:
+					enemyUnit.visible = false
+				else:
+					await get_tree().create_timer(0.5).timeout
+				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
+			elif _active_unit.skill in _active_unit.defensiveSkill:
+				use_skill(allyUnit, enemyUnit, _active_unit.skill)
 		else:
-			await get_tree().create_timer(0.5).timeout
-		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
-		print(enemyUnit.hp)
-		print(allyUnit.hp)
+			return
+
+			
 	elif _active_unit.is_selected and Action == "No Enemy":
 		print("There's No Enemy To Attack")
 	elif _active_unit.is_selected and Action == "Move":
-		print("You Selected Movement")
+		print("Ally Turn: You Selected Movement")
 		_move_active_unit(cell)
 		
 		# Make sure to check if the target cell is occupied by an ally unit
@@ -445,7 +449,6 @@ func is_occupied_by_(cell: Vector2, unitType: String) -> bool:
 func _perform_enemy_turn() -> void:
 	var enemy_units = _enemyUnits.values()
 	var player_units = _playerUnits.values()
-	print("Turn Enemy")
 	for unit in enemy_units:
 		_walkable_cells = get_walkable_cells(unit)
 		_unit_overlay.draw(_walkable_cells, "Enemy")
@@ -458,7 +461,7 @@ func _perform_enemy_turn() -> void:
 				target_cell.x -= 1
 				var unit_target = get_target(target_cell, "Ally")
 				attack(unit_target)
-				print("Bisa Nyerang")
+				print("Enemy Turn: Enemy Attacked")
 				if (unit_target.hp <= 0):
 					unit_target.hp = 0
 					unit_target.visible = false
@@ -512,8 +515,6 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 		var enemy_cell = enemy_unit.cell
 		var distance = enemy_cell.distance_to(player_cell)
 
-		print("Player Cell:", player_cell, "Distance:", distance)
-
 #		if distance < nearest_distance:
 		nearest_distance = distance
 		nearest_target = player_cell
@@ -534,11 +535,14 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 
 
 func get_target(cell: Vector2, type: String) -> Unit:
-	if type == "Ally":
-		_target_unit = _units[cell]
-	elif type == "Enemy":
-		_target_unit = _enemyUnits[cell]
-	return _target_unit
+	if is_occupied(cell):
+		if type == "Ally":
+			_target_unit = _units[cell]
+		elif type == "Enemy":
+			_target_unit = _enemyUnits[cell]
+		return _target_unit
+	else:
+		return null
 
 
 func areCharactersNextToEachOther(character1_position, character2_position):
