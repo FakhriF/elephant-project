@@ -29,8 +29,25 @@ signal health_changed(life)
 @onready var defensiveSkill := ["Heal"]
 
 
+func _hurt_animation():
+	_aura.visible = false
+	_sprite.modulate = Color.RED
+	await get_tree().create_timer(0.05).timeout
+	_sprite.modulate = Color.WHITE
+	await get_tree().create_timer(0.05).timeout
+	_sprite.modulate = Color.RED
+	await get_tree().create_timer(0.05).timeout
+	_sprite.modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	_sprite.modulate = Color.RED
+	await get_tree().create_timer(0.1).timeout
+	_sprite.modulate = Color.WHITE
+	_aura.visible = true
+
 func take_damage(damage):
+	
 	hp = hp - damage
+	_hurt_animation()
 	if hp <= 0:
 		emit_signal("dead")
 	else:
@@ -65,14 +82,18 @@ func useSupportSKill(ally, skillName: String):
 		ally.energy -= 50
 		heal(25)
 	# Requiem - > Mass Heal Ultimate
-	
+
+func display_aura(status: bool):
+	var sprite_material = _aura.material
+	sprite_material.set_shader_parameter("aura_visible", status)
 
 func set_aura_color(new_color: Color) -> void:
-	var sprite_material = _sprite.material
+	_aura.texture = _sprite.texture
+	var sprite_material = _aura.material
 	sprite_material.set_shader_parameter("aura_color", new_color)
 
 func get_aura_color() -> Color:
-	var sprite_material = _sprite.material
+	var sprite_material = _aura.material
 	return sprite_material.get_shader_parameter("aura_color")
 
 
@@ -124,6 +145,7 @@ var _is_walking := false:
 		set_process(_is_walking)
 
 @onready var _sprite: Sprite2D = $PathFollow2D/Sprite
+@onready var _aura: Sprite2D = $PathFollow2D/Sprite/Aura
 @onready var _anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _path_follow: PathFollow2D = $PathFollow2D
 

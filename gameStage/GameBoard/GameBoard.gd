@@ -275,7 +275,7 @@ func _select_unit(cell: Vector2) -> void:
 
 func attack(target):
 	target.take_damage(50)
-	target.hurt_anim()
+#	target.hurt_anim()
 	
 func use_skill(ally, target, skillName):
 	if _active_unit.skill in _active_unit.offensiveSkill:
