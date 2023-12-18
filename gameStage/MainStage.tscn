@@ -589,5 +589,5 @@ text = "SAVE & EXIT"
 [connection signal="pressed" from="Pause Canvas/ColorRect/PauseBackButton" to="GameBoard" method="_on_pause_back_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveButton" to="GameBoard" method="_on_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/LoadButton" to="GameBoard" method="_on_load_game_pressed"]
-[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_save_and_exit_button_pressed"]
+[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]

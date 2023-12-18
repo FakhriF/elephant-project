@@ -273,14 +273,14 @@ func _select_unit(cell: Vector2) -> void:
 #	turnChoice.id_pressed.connect(Callable(_on_ally_choice).bind(_active_unit))
 
 func attack(target):
-	target.take_damage(50)
+	target.take_damage(10)
 #	target.hurt_anim()
 	
 func use_skill(ally, target, skillName):
 	if _active_unit.skill in _active_unit.offensiveSkill:
 		_active_unit.useOffensiveSkill(ally, target, _active_unit.skill)
 	elif _active_unit.skill in _active_unit.defensiveSkill:
-		_active_unit.useSupportSKill(ally, _active_unit.skill)
+		_active_unit.useSupportSKill(ally, target, _active_unit.skill)
 
 
 
@@ -348,11 +348,12 @@ func _on_use_ultimate_pressed():
 		print("You need to have 100 energy to use Ultimate")
 	else:
 		_active_unit.energy -= 100
+		
 		for child in get_children():
 			var unit := child as Unit
 			if not unit:
 				continue
-			if unit.name in _currentEnemies and unit.hp > 0:
+			if unit.name in _currentEnemies and unit.hp > 0 and (_active_unit.name == "Theon" or _active_unit.name == "Aurel"):
 				var enemy_info = $"../CanvasLayer/ColorRect2/Enemy Hp Bar".duplicate()
 				add_child(enemy_info)
 				enemy_info.value = unit.hp
@@ -364,9 +365,12 @@ func _on_use_ultimate_pressed():
 					_active_unit.heal(25)
 				if _active_unit.ultimate == "Zeus' Rage":
 					unit._lightning_strike_animation()
-					unit.hp -= 75
+					unit.take_damage(75)
 				await get_tree().create_timer(0.05).timeout
 				enemy_info.value = unit.hp
+			
+				await get_tree().create_timer(0.1).timeout	
+				enemy_info.visible = false
 					
 			
 		for index in range(min(len(Profile.character_select), 3)):
@@ -452,10 +456,10 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	elif _active_unit.is_selected and Action == "Use Skill":
 #		_active_unit.skillManager(_active_unit.skill)
 		if is_occupied(cell):
-			var enemyUnit = get_target(cell, "Enemy")
-			var allyUnit = get_target(_active_unit.cell, "Ally")
 			if _active_unit.skill in _active_unit.offensiveSkill:
-				use_skill(allyUnit, enemyUnit, _active_unit.skill)
+				var enemyUnit = get_target(cell, "Enemy")
+				var selectedUnit = get_target(_active_unit.cell, "Ally")
+				use_skill(selectedUnit, enemyUnit, _active_unit.skill)
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 				if enemyUnit.hp <= 0:
 					enemyUnit.visible = false
@@ -463,7 +467,9 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 					await get_tree().create_timer(0.5).timeout
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
 			elif _active_unit.skill in _active_unit.defensiveSkill:
-				use_skill(allyUnit, enemyUnit, _active_unit.skill)
+				var allyUnit = get_target(cell, "Ally")
+				var selectedUnit = get_target(_active_unit.cell, "Ally")
+				use_skill(selectedUnit, allyUnit, _active_unit.skill)
 			_active_unit.Turn = false
 			_deselect_active_unit()
 			_clear_active_unit()

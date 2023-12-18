@@ -167,10 +167,11 @@ func useOffensiveSkill(ally, target, skillName: String):
 			print("You need to have at least 50 energy to use Drain")
 		
 
-func useSupportSKill(ally, skillName: String):
+func useSupportSKill(ally, target, skillName: String):
 	if skillName == "Heal":
 		ally.energy -= 50
-		heal(25)
+		target.heal(25)
+		target._heal_animation()
 	# Requiem - > Mass Heal Ultimate
 
 func display_aura(status: bool):
