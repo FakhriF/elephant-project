@@ -1,12 +1,26 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://c0ek8wk0yuu2w"]
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://c0ek8wk0yuu2w"]
 
 [ext_resource type="Texture2D" uid="uid://bavjy1odiaew5" path="res://gameStage/UnitOverlay/tileset_unit_overlay.svg" id="1"]
+[ext_resource type="Texture2D" uid="uid://pk8monnstqb2" path="res://gameStage/UnitOverlay/ally_unit_overlay.svg" id="1_4mvgk"]
+[ext_resource type="Texture2D" uid="uid://bgdchhc4cmk8c" path="res://gameStage/UnitOverlay/enemy_unit_overlay.svg" id="2_e7khi"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lp3at"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pgyb4"]
 texture = ExtResource("1")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pdsmd"]
+texture = ExtResource("2_e7khi")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ir1le"]
+texture = ExtResource("1_4mvgk")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 
 [resource]
 tile_size = Vector2i(64, 64)
-sources/0 = SubResource("TileSetAtlasSource_lp3at")
+sources/1 = SubResource("TileSetAtlasSource_pgyb4")
+sources/2 = SubResource("TileSetAtlasSource_pdsmd")
+sources/3 = SubResource("TileSetAtlasSource_ir1le")

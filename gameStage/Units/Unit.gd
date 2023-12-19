@@ -20,17 +20,174 @@ signal health_changed(life)
 @export var hp := 100
 @export var energy := 100
 
+@export var Turn := true
+
+@export var skill := ""
+@export var ultimate := ""
+
+@onready var offensiveSkill := ["Midas Touch", "Drain"]
+@onready var defensiveSkill := ["Heal"]
+
+
+
+
+func _hurt_animation():
+	_aura.visible = false
+	_sprite.modulate = Color.RED
+	await get_tree().create_timer(0.05).timeout
+	_sprite.modulate = Color.WHITE
+	await get_tree().create_timer(0.05).timeout
+	_sprite.modulate = Color.RED
+	await get_tree().create_timer(0.05).timeout
+	_sprite.modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	_sprite.modulate = Color.RED
+	await get_tree().create_timer(0.1).timeout
+	_sprite.modulate = Color.WHITE
+	_aura.visible = true
+	
+func _blink_animation():
+	_aura.visible = false
+	var colors = [Color.BLACK, Color.WHITE]
+	for color in colors:
+		_sprite.modulate = color
+		await get_tree().create_timer(0.1).timeout
+	_aura.visible = true
+
+func _fade_animation():
+	_aura.visible = false
+	var duration = 0.05
+	for i in range(0, 5):
+		_sprite.modulate.a = 0.0
+		await get_tree().create_timer(duration).timeout
+		_sprite.modulate.a = 1.0
+		await get_tree().create_timer(duration).timeout
+	_aura.visible = true
+
+func _lightning_strike_animation():
+	_aura.visible = false
+
+	var duration = 0.05
+	var colors = [Color.BLACK, Color.WHITE, Color(0.8, 0.8, 1.0)]
+	
+	for i in range(0, 5):
+		for color in colors:
+			_sprite.modulate = color
+			await get_tree().create_timer(duration).timeout
+		
+	_aura.visible = true
+
+func _heal_animation():
+	_aura.visible = false
+
+	var duration = 0.2
+	var colors = [Color(0.2, 0.8, 0.2), Color(0.8, 1.0, 0.8), Color.WHITE]
+	
+	for color in colors:
+		_sprite.modulate = color
+		await get_tree().create_timer(duration).timeout
+		
+	_aura.visible = true
+
+func _drain_animation():
+	_aura.visible = false
+
+	var duration = 0.1
+	var colors = [Color(0.2, 0.0, 0.0), Color(0.6, 0.0, 0.0), Color(0.8, 0.0, 0.0)]
+	
+	for i in range(0, 3):
+		for color in colors:
+			_sprite.modulate = color
+			await get_tree().create_timer(duration).timeout
+			
+	_aura.visible = true
+
+func death():
+	_aura.visible = false
+	
+	var duration = 0.05
+	var opacities = [1.0, 0.6, 0.3, 0.0]
+	
+	for i in range(opacities.size()):
+		_sprite.modulate.a = opacities[i]
+		await get_tree().create_timer(duration).timeout
+		
+	_aura.visible = true
+
+	
 func take_damage(damage):
+	
 	hp = hp - damage
+	_hurt_animation()
 	if hp <= 0:
 		emit_signal("dead")
 	else:
 		emit_signal("health_changed", hp)
+		
 	
 func heal(amount):
 	hp += amount
 	hp = clamp(hp, hp, 100)
 	emit_signal("health_changed", hp)
+
+func skillManager(skillName: String):
+	if skillName in offensiveSkill:
+#		useOffensiveSkill(skillName)
+		pass
+	elif skillName in defensiveSkill:
+#		useSupportSKill(skillName)
+		pass
+		
+func _check_energy(unit, skillName: String, type: String):
+	if type == "Ultimate":
+		pass
+	elif type == "Skill":
+		if skillName == "Midas Touch":
+			return unit.energy >= 25
+		if skillName == "Drain" or skillName == "Heal":
+			return unit.energy >= 50	
+
+
+func useOffensiveSkill(ally, target, skillName: String):
+	if skillName == "Midas Touch":
+		if ally.energy >= 25:
+			ally.energy -= 25
+			target.take_damage(25)
+			target._lightning_strike_animation()
+		else:
+			print("You need to have at least 25 energy to use Drain")
+	elif skillName == "Drain":
+		if ally.energy >= 50:
+			ally.energy -= 50
+			ally.heal(25)
+			ally._heal_animation()
+			target.take_damage(25)
+			target._drain_animation()
+		else:
+			print("You need to have at least 50 energy to use Drain")
+		
+
+func useSupportSKill(ally, target, skillName: String):
+	if skillName == "Heal":
+		ally.energy -= 50
+		target.heal(25)
+		target._heal_animation()
+	# Requiem - > Mass Heal Ultimate
+
+func display_aura(status: bool):
+	var sprite_material = _aura.material
+	sprite_material.set_shader_parameter("aura_visible", status)
+
+func set_aura_color(new_color: Color) -> void:
+	_aura.texture = _sprite.texture
+	var sprite_material = _aura.material
+	sprite_material.set_shader_parameter("aura_color", new_color)
+
+func get_aura_color() -> Color:
+	var sprite_material = _aura.material
+	return sprite_material.get_shader_parameter("aura_color")
+
+
 	
 	
 ## Texture representing the unit.
@@ -79,10 +236,9 @@ var _is_walking := false:
 		set_process(_is_walking)
 
 @onready var _sprite: Sprite2D = $PathFollow2D/Sprite
+@onready var _aura: Sprite2D = $PathFollow2D/Sprite/Aura
 @onready var _anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _path_follow: PathFollow2D = $PathFollow2D
-
-#@onready var _aura: Color = $PathFollow2D/Sprite.material.get("shader_parameter/aura_color");
 
 @onready var _anim = get_node("AnimationPlayer")
 
@@ -121,9 +277,9 @@ func _process(delta: float) -> void:
 			move_speed += 10.0
 		else:
 			move_speed += 150.0
-
-func hurt_anim():
-	_anim.play("hurt")
+#
+#func hurt_anim():
+#	_anim.play("hurt")
 
 ## Starts walking along the `path`.
 ## `path` is an array of grid coordinates that the function converts to map coordinates.

@@ -26,13 +26,29 @@ func _on_start_button_pressed():
 	else:
 		Profile.hasSave = false
 		get_tree().change_scene_to_file("res://gameStage/MainStage.tscn")
+		
 
+func _display_splash_art(unit_name: String):
+	if unit_name == "Aurel":
+		$"Button Character 1/Aurel-splashArt".visible = true
+		$"Button Character 3/Thea-splashArt".visible = false
+		$"Button Character 4/Theon-splashArt".visible = false
+	elif unit_name == "Thea":
+		$"Button Character 1/Aurel-splashArt".visible = false
+		$"Button Character 3/Thea-splashArt".visible = true
+		$"Button Character 4/Theon-splashArt".visible = false
+	elif unit_name == "Theon":
+		$"Button Character 1/Aurel-splashArt".visible = false
+		$"Button Character 3/Thea-splashArt".visible = false
+		$"Button Character 4/Theon-splashArt".visible = true
+	
+	
 func _on_button_character_1_toggled(button_pressed):
 	if(button_pressed):
 		if Profile.character_select.size() < 3:
 			$HP/isi.text = str(aurel_unit.hp)
 			$EP/isi.text = str(aurel_unit.energy)
-			$"Button Character 1/Aurel-splashArt".visible = true
+			_display_splash_art("Aurel")
 			$"Button Character 1/CharacterColorBlock1".visible = true
 			Profile.character_select.append("Aurel")
 			print(Profile.character_select)
@@ -51,6 +67,7 @@ func _on_button_character_3_toggled(button_pressed):
 		$HP/isi.text = str(thea_unit.hp)
 		$EP/isi.text = str(thea_unit.energy)
 		Profile.character_select.append("Thea")
+		_display_splash_art("Thea")
 		$"Button Character 3/CharacterColorBlock3".visible = true
 		print(Profile.character_select)
 	else:
@@ -66,6 +83,7 @@ func _on_button_character_4_toggled(button_pressed):
 		$HP/isi.text = str(theon_unit.hp)
 		$EP/isi.text = str(theon_unit.energy)
 		Profile.character_select.append("Theon")
+		_display_splash_art("Theon")
 		$"Button Character 4/CharacterColorBlock4".visible = true
 		print(Profile.character_select)
 	else:

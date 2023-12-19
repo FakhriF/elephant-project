@@ -16,7 +16,8 @@ var first_enemy := false
 var _units := {}
 var _playerUnits := {}
 var _enemyUnits := {}
-var _defeatedUnit := {}
+var _defeatedAlly := {}
+var _defeatedEnemy := {}
 
 var _active_unit: Unit
 var _target_unit: Unit 
@@ -27,6 +28,12 @@ var _currentEnemies := []
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
 @onready var _unit_path: UnitPath = $UnitPath
 
+#@onready var CharacterOption = $"../CharacterChoice" 
+#@onready var choiceOptionsAdded = false
+#@onready var turnChoice = CharacterOption.get_popup()
+@onready var Action = ""
+@onready var CharacterChoice = $"../ActionMenu"
+@onready var enemy_info = $"../CanvasLayer/ColorRect2/Enemy Hp Bar"
 
 var turnManager : TurnManager = TurnManager.new()
 
@@ -52,6 +59,36 @@ func _check_stage():
 		$"../Desert".visible = true
 	if Profile.stage_select == "Snow":
 		$"../Snow".visible = true
+		
+func update_unit_UI(unit, index):
+	var character_name_path = "../CanvasLayer/ColorRect2/Character Name " + str(index + 1)
+	var hp_and_ep_path = "../CanvasLayer/ColorRect2/HP and EP " + str(index + 1)
+	var hp_bar_path = "../CanvasLayer/ColorRect2/HP Bar " + str(index + 1)
+	var energy_bar_path = "../CanvasLayer/ColorRect2/Energy Bar " + str(index + 1)
+	
+	
+		
+	if unit.name == Profile.character_select[index]:
+		var character_name = get_node(character_name_path)
+		var hp_and_ep = get_node(hp_and_ep_path)
+		var hp_bar = get_node(hp_bar_path)
+		var energy_bar = get_node(energy_bar_path)
+		if turnManager.turnCounter == 1:
+			hp_bar.max_value = unit.hp
+			energy_bar.max_value = unit.energy
+		character_name.text = unit.name
+		hp_and_ep.text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
+		hp_bar.value = unit.hp
+		energy_bar.value = unit.energy
+		
+
+	
+#func process_units():
+#	for child in get_children():
+#		var unit = child as Unit
+#		if unit != null:
+#			# Perform actions for valid 'Unit' nodes
+#			process_unit(unit)
 
 func _on_ally_turn_started():
 	if turnManager.turnCounter == 1:
@@ -62,22 +99,12 @@ func _on_ally_turn_started():
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
-	for child in get_children():
-		var unit := child as Unit
-		if not unit:
-			continue
-		if unit.name == Profile.character_select[0]:
-			$"../CanvasLayer/ColorRect2/Character Name 1".text = unit.name
-			$"../CanvasLayer/ColorRect2/HP and EP".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-			$"../CanvasLayer/ColorRect2/HP Bar".value = unit.hp
-		if unit.name == Profile.character_select[1]:
-			$"../CanvasLayer/ColorRect2/Character Name 2".text = unit.name
-			$"../CanvasLayer/ColorRect2/HP and EP2".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-			$"../CanvasLayer/ColorRect2/HP Bar 2".value = unit.hp
-		if unit.name == Profile.character_select[2]:
-			$"../CanvasLayer/ColorRect2/Character Name 3".text = unit.name
-			$"../CanvasLayer/ColorRect2/HP and EP3".text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
-			$"../CanvasLayer/ColorRect2/HP Bar 3".value = unit.hp
+	for index in range(min(len(Profile.character_select), 3)):
+		for child in get_children():
+			var unit := child as Unit
+			if not unit:
+				continue
+			update_unit_UI(unit, index)
 
 func _on_enemy_turn_started():
 	print("THIS IS ENEMY TURN")
@@ -90,11 +117,7 @@ func _on_enemy_turn_started():
 	print(_playerUnits)
 	print(_enemyUnits)
 	_perform_enemy_turn()
-	
-	
-func attack(target):
-	target.take_damage(50)
-	target.hurt_anim()
+
 
 func areAllAlliedUnitsDefeated() -> bool:
 	for unit in _playerUnits.values():
@@ -113,31 +136,33 @@ func _get_ally_unit():
 		if not unit:
 			continue
 		if (unit.name in Profile.character_select) and (unit.hp <= 0):
-			if _defeatedUnit.is_empty():
-				_defeatedUnit[unit.cell] = unit
+			if _defeatedAlly.is_empty():
+				_defeatedAlly[unit.cell] = unit
 			else:
 				var isUnique = true
-				for unit_info in _defeatedUnit.values():
+				for unit_info in _defeatedAlly.values():
 					var value = str(unit_info)
 					var unit_name = value.split(":")[0].strip_edges()
 					if unit.name == unit_name:
 						isUnique = false
 						break
 				if isUnique:
-					_defeatedUnit[unit.cell] = unit
-			print(_defeatedUnit)
-			if _defeatedUnit.size() == Profile.character_select.size():
-				$"../CanvasLayer/BackgroundColor".visible = true
-				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
+					_defeatedAlly[unit.cell] = unit
+			print(_defeatedAlly)
+#			if _defeatedAlly.size() == Profile.character_select.size():
+#				$"../CanvasLayer/BackgroundColor".visible = true
+#				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
 		if (unit.name in Profile.character_select) and (unit.hp > 0):
-			print("GEL ALLY ", unit.name)
 			unit.visible = true
+			unit.Turn = true
 			if first_ally == false:
 				unit.position.x = randi_range(355, 740)
 				unit.position.y = randi_range(0, 600)
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
 				unit.position = grid.calculate_map_position(unit.cell)
+				unit.set_aura_color(Color(0, 0, 1, 1))
 			_units[unit.cell] = unit
+						
 #			unit.aura = Color(0, 0, 1, 1)
 	first_ally = true
 	
@@ -159,7 +184,10 @@ func _get_enemy_unit() -> Dictionary:
 			eligibleUnits.append(unit)
 			
 		while _enemyUnits.size() < 3:
+			if eligibleUnits.size() == 0:
+				continue
 			var randomIndex = randi() % eligibleUnits.size()
+				
 			var randomUnit = eligibleUnits[randomIndex]
 			_get_current_enemies(str(randomUnit.name))  # Corrected to pass the unit name
 			
@@ -169,7 +197,9 @@ func _get_enemy_unit() -> Dictionary:
 			randomUnit.position = grid.calculate_map_position(randomUnit.cell)
 			_enemyUnits[randomUnit.cell] = randomUnit
 #			randomUnit.aura = Color(1, 0, 0, 1)
+			randomUnit.set_aura_color(Color(1, 0, 0, 1))
 			randomUnit.visible = true
+#			randomUnit.material.set("shader_parameter/aura_color", Color(1, 0, 0, 1))
 			# Remove the selected unit from eligibleUnits
 			eligibleUnits.remove_at(randomIndex)
 			
@@ -178,7 +208,20 @@ func _get_enemy_unit() -> Dictionary:
 			var unit := child as Unit
 			if not unit or unit.name in Profile.character_select:
 				continue
-			if unit.name in _currentEnemies:
+			if (unit.name in _currentEnemies) and (unit.hp <= 0):
+				if _defeatedEnemy.is_empty():
+					_defeatedEnemy[unit.cell] = unit
+				else:
+					var isUnique = true
+					for unit_info in _defeatedEnemy.values():
+						var value = str(unit_info)
+						var unit_name = value.split(":")[0].strip_edges()
+						if unit.name == unit_name:
+							isUnique = false
+							break
+					if isUnique:
+						_defeatedEnemy[unit.cell] = unit
+			elif unit.name in _currentEnemies:
 				_enemyUnits[unit.cell] = unit
 		
 
@@ -186,9 +229,11 @@ func _get_enemy_unit() -> Dictionary:
 	
 	first_enemy = true
 	return _enemyUnits
-	
+
 
 func _on_end_turn_pressed():
+	$"../SkillMenu".visible = false
+	CharacterChoice.visible = false
 	_playerUnits.clear()
 	_units.clear()
 	_enemyUnits.clear()
@@ -201,13 +246,175 @@ func _on_end_turn_pressed():
 func _select_unit(cell: Vector2) -> void:
 	if not _units.has(cell):
 		return
-	
-	_active_unit = _units[cell]
-	_active_unit.is_selected = true
-	_walkable_cells = get_walkable_cells(_active_unit)
-	_unit_overlay.draw(_walkable_cells)
-	_unit_path.initialize(_walkable_cells)
+		
 
+	_active_unit = _units[cell]
+	
+	if _active_unit.Turn == false:
+		_deselect_active_unit()
+		_clear_active_unit()
+		return
+		
+	_unit_overlay.draw([Vector2(_active_unit.cell.x, _active_unit.cell.y)], "Ally")
+	_active_unit.is_selected = true
+	
+	CharacterChoice.position = Vector2(_active_unit.position.x + 50, _active_unit.position.y - 75)
+	CharacterChoice.visible = true
+#	var popupMenu = CharacterOption.get_popup()
+#	var theme = popupMenu.get_theme()
+#	theme.set_color("font_color", Color(1, 0, 0)) # Change font color to red
+#	theme.set_color("background_color", Color(0.2, 0.2, 0.2)) # Change background color
+#	# Apply the modified theme
+#	popupMenu.set_theme(theme)
+#
+#
+#	CharacterOption.show_popup()
+#	_activate_choice(_active_unit)
+#	turnChoice.id_pressed.connect(Callable(_on_ally_choice).bind(_active_unit))
+
+func attack(target):
+	target.take_damage(10)
+#	target.hurt_anim()
+	
+func use_skill(ally, target, skillName):
+	if _active_unit.skill in _active_unit.offensiveSkill:
+		_active_unit.useOffensiveSkill(ally, target, _active_unit.skill)
+	elif _active_unit.skill in _active_unit.defensiveSkill:
+		_active_unit.useSupportSKill(ally, target, _active_unit.skill)
+
+
+
+func _on_move_button_pressed():
+	print("MOVE UNIT: ", _active_unit)
+	Action = "Move"
+	_walkable_cells = get_walkable_cells(_active_unit)
+	_unit_overlay.draw(_walkable_cells, "Ally")
+	_unit_path.initialize(_walkable_cells)
+	CharacterChoice.visible = false
+	
+	
+func _on_attack_button_pressed():
+	print(_active_unit)
+	
+	_unit_overlay.draw([Vector2(_active_unit.cell.x + 1, _active_unit.cell.y)], "Attack")
+	if is_occupied_by_(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy"):
+		Action = "Attack"
+		print("You Can Attack!")
+		var enemyUnit = get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy")
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".position = Vector2(enemyUnit.position.x - 15, enemyUnit.position.y - 230)
+		$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = true
+	else:
+		Action = "No Enemy"
+		print("You Can't Attack")
+#	_deselect_active_unit()
+#	_clear_active_unit()
+		
+	CharacterChoice.visible = false
+
+func _on_skill_button_pressed():
+	Action = "Skill"
+	_active_unit.is_selected = true
+	$"../SkillMenu".position = Vector2(_active_unit.position.x + 160, _active_unit.position.y - 50)
+	$"../SkillMenu".visible = true
+	$"../SkillMenu/CharacterAction/UseSkill".text = _active_unit.skill
+	$"../SkillMenu/CharacterAction/UseUltimate".text = _active_unit.ultimate
+	
+
+func _on_use_skill_pressed():
+	if _active_unit._check_energy(_active_unit, _active_unit.skill, "Skill"):
+		Action = "Use Skill"
+		var enemyUnit = get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy")
+		
+		if _active_unit.skill in _active_unit.offensiveSkill and get_target(Vector2(_active_unit.cell.x + 1, _active_unit.cell.y), "Enemy"):
+			enemy_info.value = enemyUnit.hp
+			enemy_info.position = Vector2(enemyUnit.position.x - 15, enemyUnit.position.y - 230)
+			enemy_info.visible = true
+	else:
+		print("You have less energy required, please wait to recharge")
+		_active_unit.Turn = true
+		_deselect_active_unit()
+		_clear_active_unit()
+	
+	$"../SkillMenu".visible = false
+	CharacterChoice.visible = false
+	
+func _on_use_ultimate_pressed():
+	if _active_unit.energy < 100:
+		_active_unit.Turn = true
+		_deselect_active_unit()
+		_clear_active_unit()
+
+		print("You need to have 100 energy to use Ultimate")
+	else:
+		_active_unit.energy -= 100
+		
+		for child in get_children():
+			var unit := child as Unit
+			if not unit:
+				continue
+			if unit.name in _currentEnemies and unit.hp > 0 and (_active_unit.name == "Theon" or _active_unit.name == "Aurel"):
+				var enemy_info = $"../CanvasLayer/ColorRect2/Enemy Hp Bar".duplicate()
+				add_child(enemy_info)
+				enemy_info.value = unit.hp
+				enemy_info.position = Vector2(unit.position.x - 65, unit.position.y - 100)
+				enemy_info.visible = true
+				if _active_unit.ultimate == "Bloodmoon Devour":
+					unit._drain_animation()
+					unit.take_damage(75)
+					_active_unit.heal(25)
+				if _active_unit.ultimate == "Zeus' Rage":
+					unit._lightning_strike_animation()
+					unit.take_damage(75)
+				await get_tree().create_timer(0.05).timeout
+				enemy_info.value = unit.hp
+			
+				await get_tree().create_timer(0.1).timeout	
+				enemy_info.visible = false
+					
+			
+		for index in range(min(len(Profile.character_select), 3)):
+			for child in get_children():
+				var unit := child as Unit
+				if not unit:
+					continue
+				if unit.name in Profile.character_select:
+					if _active_unit.ultimate == "Requiem":
+						unit.heal(50)
+						unit._heal_animation()
+				update_unit_UI(unit, index)
+	$"../SkillMenu".visible = false
+	CharacterChoice.visible = false
+				
+				
+				
+
+
+
+	
+func useUltimate(skillName: String):
+	if skillName == "Bloodmoon Devour":
+		for unit in _enemyUnits:
+			print(unit)
+#		ally.hp -= 25
+		pass
+		
+#func _on_ally_choice(id, unit_to_take_action):
+#	print("Unit to take action is: ", unit_to_take_action)
+#	match id:
+#		0:
+#			print("Hello")
+#		1:
+#			print("Attack!")
+#	turnChoice.id_pressed.disconnect(_on_ally_choice)
+#
+#func _activate_choice(_active_unit):
+#	if not choiceOptionsAdded:
+#		turnChoice.add_item("Attack")
+#		turnChoice.add_item("Skill")
+#		turnChoice.add_item("Move")
+#
+#		choiceOptionsAdded = true
 
 ## Deselects the active unit, clearing the cells overlay and interactive path drawing.
 func _deselect_active_unit() -> void:
@@ -225,26 +432,92 @@ func _clear_active_unit() -> void:
 func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	if not _active_unit:
 		_select_unit(cell)
-	elif _active_unit.is_selected:
+		print("You Selected Unit")
+	elif _active_unit.is_selected and _active_unit.Turn == false:
+		print("Can't select this Character Again for this Turn")
+	elif _active_unit.is_selected and Action == "Attack":
+		if is_occupied(cell):
+			print("Ally Turn: You Selected Attack")
+			var enemyUnit = get_target(cell, "Enemy")
+			attack(enemyUnit)
+			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
+			if enemyUnit.hp <= 0:
+				enemyUnit.death()
+				await get_tree().create_timer(0.5).timeout
+				enemyUnit.visible = false
+			else:
+				await get_tree().create_timer(0.5).timeout
+			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
+			_deselect_active_unit()
+			_clear_active_unit()
+		else: 
+			return
+		
+	elif _active_unit.is_selected and Action == "Use Skill":
+#		_active_unit.skillManager(_active_unit.skill)
+		if is_occupied(cell):
+			if _active_unit.skill in _active_unit.offensiveSkill:
+				var enemyUnit = get_target(cell, "Enemy")
+				var selectedUnit = get_target(_active_unit.cell, "Ally")
+				use_skill(selectedUnit, enemyUnit, _active_unit.skill)
+				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
+				if enemyUnit.hp <= 0:
+					enemyUnit.visible = false
+				else:
+					await get_tree().create_timer(0.5).timeout
+				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
+			elif _active_unit.skill in _active_unit.defensiveSkill:
+				var allyUnit = get_target(cell, "Ally")
+				var selectedUnit = get_target(_active_unit.cell, "Ally")
+				use_skill(selectedUnit, allyUnit, _active_unit.skill)
+			_active_unit.Turn = false
+			_deselect_active_unit()
+			_clear_active_unit()
+		else:
+			return
+
+			
+	elif _active_unit.is_selected and Action == "No Enemy":
+		print("There's No Enemy To Attack")
+	elif _active_unit.is_selected and Action == "Move":
+		if cell not in get_walkable_cells(_active_unit):
+			return
+		
+		print("Ally Turn: You Selected Movement")
 		_move_active_unit(cell)
 		
 		# Make sure to check if the target cell is occupied by an ally unit
-		if is_occupied_by_ally(cell):
+		if is_occupied_by_(cell, "Ally"):
 			print("Target cell is occupied by an ally unit. Cannot move.")
 			_deselect_active_unit()
 			_clear_active_unit()
 			return
+			
+		
+		
+			
 
 		# Make it so that the unit can only move once
 		_units.erase(_active_unit.cell)
 		
 		if _units.is_empty():
 			print("Can't select any more characters, please end turn")
-
+	for index in range(min(len(Profile.character_select), 3)):
+		for child in get_children():
+			var unit := child as Unit
+			if not unit:
+				continue
+			update_unit_UI(unit, index)
+	Action = ""
 # ...
 
-func is_occupied_by_ally(cell: Vector2) -> bool:
-	return _playerUnits.has(cell)
+func is_occupied_by_(cell: Vector2, unitType: String) -> bool:
+	if unitType == "Ally":
+		return _playerUnits.has(cell)
+	elif unitType == "Enemy":
+		return _enemyUnits.has(cell)
+	else:
+		return false
 
 # ============================== Enemy Action ==============================
 
@@ -252,10 +525,9 @@ func is_occupied_by_ally(cell: Vector2) -> bool:
 func _perform_enemy_turn() -> void:
 	var enemy_units = _enemyUnits.values()
 	var player_units = _playerUnits.values()
-	print("Turn Enemy")
 	for unit in enemy_units:
 		_walkable_cells = get_walkable_cells(unit)
-		_unit_overlay.draw(_walkable_cells)
+		_unit_overlay.draw(_walkable_cells, "Enemy")
 		_unit_path.initialize(_walkable_cells)
 		var target_cell = calculate_enemy_target(unit, _playerUnits)  # Implement your logic to calculate the target cell.
 		print(target_cell)
@@ -263,10 +535,11 @@ func _perform_enemy_turn() -> void:
 		if target_cell in _walkable_cells:
 			if is_occupied(target_cell):
 				target_cell.x -= 1
-				var unit_target = get_target(target_cell)
+				var unit_target = get_target(target_cell, "Ally")
 				attack(unit_target)
-				print("Bisa Nyerang")
+				print("Enemy Turn: Enemy Attacked")
 				if (unit_target.hp <= 0):
+					unit_target.hp = 0
 					unit_target.visible = false
 				_unit_overlay.clear()
 				_unit_path.stop()
@@ -318,8 +591,6 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 		var enemy_cell = enemy_unit.cell
 		var distance = enemy_cell.distance_to(player_cell)
 
-		print("Player Cell:", player_cell, "Distance:", distance)
-
 #		if distance < nearest_distance:
 		nearest_distance = distance
 		nearest_target = player_cell
@@ -339,9 +610,15 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 
 
 
-func get_target(cell: Vector2) -> Unit:
-	_target_unit = _units[cell]
-	return _target_unit
+func get_target(cell: Vector2, type: String) -> Unit:
+	if is_occupied(cell):
+		if type == "Ally":
+			_target_unit = _units[cell]
+		elif type == "Enemy":
+			_target_unit = _enemyUnits[cell]
+		return _target_unit
+	else:
+		return null
 
 
 func areCharactersNextToEachOther(character1_position, character2_position):
@@ -410,15 +687,24 @@ func _move_active_unit(new_cell: Vector2) -> void:
 
 ## Updates the interactive path's drawing if there's an active and selected unit.
 func _on_Cursor_moved(new_cell: Vector2) -> void:
-	if _active_unit and _active_unit.is_selected:
-		_unit_path.draw(_active_unit.cell, new_cell)
+	if _active_unit and _active_unit.is_selected and Action == "Move":
+		_unit_path.draw_path(_active_unit.cell, new_cell)
 
 # ============================== System ==============================
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _active_unit and event.is_action_pressed("ui_cancel"):
+		_active_unit.Turn = false
+		_active_unit.is_selected = false
 		_deselect_active_unit()
 		_clear_active_unit()
+		
+		if $"../SkillMenu".visible == true:
+			$"../SkillMenu".visible = false
+			CharacterChoice.visible = true
+			Action = ""
+		else:
+			CharacterChoice.visible = false
 
 
 func _save_game():
@@ -452,7 +738,8 @@ func _save_game():
 				"currentTurn": turnManager.currentTurn,
 				"unitData": [],
 				"enemyData": [],
-				"defeatedUnits": _defeatedUnit 
+				"defeatedAllies": _defeatedAlly,
+				"defeatedEnemies": _defeatedEnemy  
 			}
 		}
 
@@ -463,7 +750,8 @@ func _save_game():
 				"cell": str(unit.cell),  # Convert Vector2 to string for JSON
 				"pos_x": unit.position.x,
 				"pos_y": unit.position.y,
-				"hp": unit.hp
+				"hp": unit.hp,
+				"ally_aura": unit.get_aura_color()
 			}
 			saveData["gameData"]["unitData"].append(unitData)
 		
@@ -473,7 +761,8 @@ func _save_game():
 				"cell": str(enemyUnit.cell),
 				"pos_x": enemyUnit.position.x,
 				"pos_y": enemyUnit.position.y,
-				"hp": enemyUnit.hp  # Include the updated HP here
+				"hp": enemyUnit.hp,
+				"enemy_aura": enemyUnit.get_aura_color()
 			}
 			saveData["gameData"]["enemyData"].append(enemyInfo)
 
@@ -503,7 +792,7 @@ func get_unit_at_cell(cell: Vector2) -> Unit:
 
 	# Return null if no unit is found at the specified cell
 	return null
-
+	
 func find_unit_by_name(name: String) -> Unit:
 	# Iterate through all units and find the one with the specified name
 	for child in get_children():
@@ -516,11 +805,10 @@ func find_unit_by_name(name: String) -> Unit:
 
 
 # Function to initialize or update units based on loaded data
-func initialize_or_update_unit(cell: Vector2, name: String, hp: int, posX: float, posY: float, type: String) -> void:
+func initialize_or_update_unit(cell: Vector2, name: String, hp: int, posX: float, posY: float, type: String, aura_color: Color) -> void:
 
 	var unitToUpdate = find_unit_by_name(name)
 	if unitToUpdate != null && hp > 0:
-		print("UNIT TO UPDAYE IS:", unitToUpdate)
 		unitToUpdate.cell = cell
 		unitToUpdate.name = name
 		unitToUpdate.hp = hp
@@ -528,6 +816,8 @@ func initialize_or_update_unit(cell: Vector2, name: String, hp: int, posX: float
 		unitToUpdate.position.y = posY
 		unitToUpdate.cell = grid.calculate_grid_coordinates(unitToUpdate.position)
 		unitToUpdate.position = grid.calculate_map_position(unitToUpdate.cell)
+		
+		unitToUpdate.set_aura_color(Color(aura_color))
 		if type == "Ally":
 			_playerUnits[unitToUpdate.cell] = unitToUpdate  # Add or update the unit in _playerUnits
 			_units[unitToUpdate.cell] = unitToUpdate
@@ -542,6 +832,27 @@ func initialize_or_update_unit(cell: Vector2, name: String, hp: int, posX: float
 func parse_cell_string(cellStr: String) -> Vector2:
 	var coordinates = cellStr.split(",")
 	return Vector2(float(coordinates[0]), float(coordinates[1]))
+
+func parse_string_color(colorString: String) -> Color:
+	var openParenIndex = colorString.find("(")
+	var closeParenIndex = colorString.find(")")
+	
+	if openParenIndex == -1 or closeParenIndex == -1:
+		return Color(0, 0, 0, 1) # Return default color if the format is incorrect
+	
+	var colorValuesString = colorString.substr(openParenIndex + 1, closeParenIndex - openParenIndex - 1)
+	var colorComponents = colorValuesString.split(",")
+	
+	if colorComponents.size() < 4:
+		return Color(0, 0, 0, 1) # Return default color if insufficient components
+	
+	return Color(
+		float(colorComponents[0]),
+		float(colorComponents[1]),
+		float(colorComponents[2]),
+		float(colorComponents[3])
+	)
+
 
 func _load_game():
 	var saveName
@@ -586,21 +897,37 @@ func _load_game():
 #			if gameData.has("enemyUnits"):
 #				_enemyUnits = gameData["enemyUnits"]
 
-			if gameData.has("defeatedUnits"):
-				var loadedDefeatedUnits = gameData["defeatedUnits"]
-				_defeatedUnit.clear()  # Clear the existing defeated units dictionary
-				for key in loadedDefeatedUnits.keys():
-					_defeatedUnit[key] = loadedDefeatedUnits[key]
-				print("DEFEATED :", _defeatedUnit)
-				# Other logic
+#			if gameData.has("defeatedUnits"):
+#				var loadedDefeatedUnits = gameData["defeatedUnits"]
+#				_defeatedAlly.clear()  # Clear the existing defeated units dictionary
+#				for key in loadedDefeatedUnits.keys():
+#					_defeatedAlly[key] = loadedDefeatedUnits[key]
+#				print("DEFEATED :", _defeatedAlly)
 
-			if gameData.has("defeatedUnits"):
-				var loadedDefeatedUnits = gameData["defeatedUnits"]
-				_defeatedUnit.clear()
-				for key in loadedDefeatedUnits.keys():
-					_defeatedUnit[key] = loadedDefeatedUnits[key]
-				print("DEFEATED :", _defeatedUnit)
-				for unit_info in _defeatedUnit.values():
+			if gameData.has("defeatedAllies"):
+				var loadedDefeatedAlly = gameData["defeatedAllies"]
+				_defeatedAlly.clear()
+				for key in loadedDefeatedAlly.keys():
+					_defeatedAlly[key] = loadedDefeatedAlly[key]
+				print("DEFEATED :", _defeatedAlly)
+				for unit_info in _defeatedAlly.values():
+					var unit_name = unit_info.split(":")[0].strip_edges()
+					print("Unit Name:", unit_name)
+					for child in get_children():
+						var unit := child as Unit
+						if not unit:
+							continue
+						if unit.name == unit_name:
+							unit.hp = 0
+							_units.erase(unit.cell)
+							
+			if gameData.has("defeatedEnemies"):
+				var loadedDefeatedEnemy = gameData["defeatedEnemies"]
+				_defeatedEnemy.clear()
+				for key in loadedDefeatedEnemy.keys():
+					_defeatedEnemy[key] = loadedDefeatedEnemy[key]
+				print("DEFEATED :", _defeatedEnemy)
+				for unit_info in _defeatedEnemy.values():
 					var unit_name = unit_info.split(":")[0].strip_edges()
 					print("Unit Name:", unit_name)
 					for child in get_children():
@@ -622,9 +949,11 @@ func _load_game():
 						var pos_x = unitInfo["pos_x"]
 						var pos_y = unitInfo["pos_y"]
 						var hp = unitInfo["hp"]
-						print("NAME", unitName, hp)
+						var aura_color = unitInfo["ally_aura"]
+						var auraColor = parse_string_color(aura_color)
+						print("NAME", unitName, hp, auraColor)
 						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
-						initialize_or_update_unit(cell, unitName, hp, pos_x, pos_y, "Ally") 
+						initialize_or_update_unit(cell, unitName, hp, pos_x, pos_y, "Ally", auraColor) 
 			
 			if gameData.has("enemyData"): 
 				var enemyData = gameData["enemyData"]
@@ -635,9 +964,10 @@ func _load_game():
 						var pos_x = enemyInfo["pos_x"]
 						var pos_y = enemyInfo["pos_y"]
 						var hp = enemyInfo["hp"]
-					
+						var aura_color = enemyInfo["enemy_aura"]
+						var auraColor = parse_string_color(aura_color)
 						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
-						initialize_or_update_unit(cell, name, hp, pos_x, pos_y, "Enemy")  
+						initialize_or_update_unit(cell, name, hp, pos_x, pos_y, "Enemy", auraColor)  
 				print("Game loaded successfully.")
 
 
@@ -653,10 +983,9 @@ func _on_button_pressed():
 	_save_game() # Replace with function body.
 
 
-func _on_button_2_pressed():
+func _on_save_and_exit_button_pressed():
 	_save_game() 
 	get_tree().quit()
-
 
 func _on_load_game_pressed():
 	_load_game()
@@ -668,3 +997,13 @@ func _on_pause_button_pressed():
 
 func _on_pause_back_button_pressed():
 	$"../Pause Canvas".visible = false
+
+
+
+
+
+
+
+
+
+

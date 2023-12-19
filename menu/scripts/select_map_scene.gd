@@ -1,11 +1,13 @@
 extends Node2D
 
 @onready var stageBackgroundNodes = get_tree().get_nodes_in_group("Stage Background")
+@onready var difficulty = $"Difficulty Status"
 var currentBackgroundIndex = 0
 var randomTimer: Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	difficulty.text = "[center]%s[/center]" %Profile.difficulty
 	for button in get_tree().get_nodes_in_group("StagSelection"):
 		button.pressed.connect(func(): call("on_pressed_"+button.name) )
 	
@@ -75,3 +77,24 @@ func selectRandomBackground():
 
 func _on_random_background_timer_timeout():
 	selectRandomBackground()
+
+func _on_next_difficulty_pressed():
+	if Profile.difficulty == "Normal":
+		Profile.difficulty = "Hard"
+	elif Profile.difficulty == "Hard":
+		Profile.difficulty = "Easy"
+	elif Profile.difficulty == "Easy":
+		Profile.difficulty = "Normal"
+	print(Profile.difficulty)
+	difficulty.text = "[center]%s[/center]" %Profile.difficulty
+
+
+func _on_prev_difficulty_pressed():
+	if Profile.difficulty == "Normal":
+		Profile.difficulty = "Easy"
+	elif Profile.difficulty == "Hard":
+		Profile.difficulty = "Normal"
+	elif Profile.difficulty == "Easy":
+		Profile.difficulty = "Hard"
+	print(Profile.difficulty)
+	difficulty.text = "[center]%s[/center]" %Profile.difficulty

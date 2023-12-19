@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://gameStage/GameBoard/Cursor/Cursor.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://dsmh2fn7kpkri" path="res://gameStage/GameBoard/Cursor/menu_selection_arrow.png" id="2"]
-[ext_resource type="Resource" path="res://gameStage/GameBoard/Grid.tres" id="3"]
+[ext_resource type="Resource" uid="uid://dos77avjw27es" path="res://gameStage/GameBoard/Grid.tres" id="3"]
 
 [node name="Cursor" type="Node2D"]
 script = ExtResource("1")

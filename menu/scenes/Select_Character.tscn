@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cb8searn43yql"]
+[gd_scene load_steps=18 format=3 uid="uid://cb8searn43yql"]
 
 [ext_resource type="Texture2D" uid="uid://c2obt07ot1ry4" path="res://menu/assets/BGpolos.png" id="1_6gswc"]
 [ext_resource type="Script" path="res://menu/scripts/Select_Character.gd" id="1_sqsc7"]
@@ -11,6 +11,8 @@
 [ext_resource type="StyleBox" uid="uid://1lsxrror8m8b" path="res://menu/styles/panel_character_select.tres" id="7_bku5t"]
 [ext_resource type="Texture2D" uid="uid://db7riqy47p000" path="res://menu/assets/character_1.png" id="7_imgcm"]
 [ext_resource type="Texture2D" uid="uid://dv7su0t0kwc5y" path="res://menu/assets/Start.png" id="8_bg8i2"]
+[ext_resource type="Texture2D" uid="uid://05bg5gcqm7pr" path="res://gameStage/Units/Theon-SplashArt.png" id="8_nbsrr"]
+[ext_resource type="Texture2D" uid="uid://c25rcewie5vyo" path="res://gameStage/Units/Thea-SplashArt.png" id="9_i243r"]
 [ext_resource type="Texture2D" uid="uid://7t1re6nequh" path="res://gameStage/Units/Aurel-SplashArt.png" id="9_rjl0q"]
 [ext_resource type="StyleBox" uid="uid://ei7n6jxvwwhx" path="res://menu/styles/button_styles.tres" id="10_4v88y"]
 [ext_resource type="StyleBox" uid="uid://dkerwp5wxv4fy" path="res://menu/styles/button_hover_styles.tres" id="11_81j3b"]
@@ -292,6 +294,12 @@ offset_bottom = 117.0
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("7_bku5t")
 
+[node name="Theon-splashArt" type="Sprite2D" parent="Button Character 4"]
+visible = false
+position = Vector2(-163.436, -413.395)
+scale = Vector2(0.170934, 0.170934)
+texture = ExtResource("8_nbsrr")
+
 [node name="Button Character 3" type="Button" parent="."]
 offset_left = 540.506
 offset_top = 612.658
@@ -320,6 +328,12 @@ offset_right = 118.603
 offset_bottom = 119.965
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("7_bku5t")
+
+[node name="Thea-splashArt" type="Sprite2D" parent="Button Character 3"]
+visible = false
+position = Vector2(-25.6365, -374.94)
+scale = Vector2(0.146, 0.146)
+texture = ExtResource("9_i243r")
 
 [node name="Button Character 2" type="Button" parent="."]
 offset_right = 8.0

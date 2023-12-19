@@ -1,10 +1,11 @@
-[gd_scene load_steps=28 format=3 uid="uid://2jarj8vtfcng"]
+[gd_scene load_steps=29 format=3 uid="uid://2jarj8vtfcng"]
 
 [ext_resource type="PackedScene" uid="uid://bv1ul1qynrdwd" path="res://gameStage/GameBoard/Cursor/Cursor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d4mhjq651egt" path="res://gameStage/Units/Unit.tscn" id="2"]
 [ext_resource type="Texture2D" uid="uid://dq2ijvay8rb8" path="res://menu/assets/StatsBar.png" id="2_d7p3j"]
 [ext_resource type="Script" path="res://gameStage/GameBoard/GameBoard.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://b5jt8otr2cmut" path="res://menu/assets/HPBarProgress.png" id="3_kowaf"]
+[ext_resource type="Texture2D" uid="uid://hgduvaxuig2o" path="res://menu/assets/EnergyBarProgress.png" id="3_nvobg"]
 [ext_resource type="Resource" uid="uid://dos77avjw27es" path="res://gameStage/GameBoard/Grid.tres" id="4"]
 [ext_resource type="PackedScene" uid="uid://n825j345khoi" path="res://gameStage/UnitOverlay/UnitOverlay.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://dxyfefsgkgc4l" path="res://gameStage/GameBoard/UnitPath.tscn" id="6"]
@@ -30,12 +31,6 @@ resource_local_to_scene = true
 [sub_resource type="Curve2D" id="3"]
 resource_local_to_scene = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w14fd"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbops"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irkai"]
 bg_color = Color(0.309804, 0.290196, 0.270588, 1)
 corner_radius_top_left = 18
@@ -49,6 +44,12 @@ corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w14fd"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbops"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Main" type="Node2D"]
 
@@ -89,19 +90,6 @@ offset_bottom = 655.0
 color = Color(0.309804, 0.290196, 0.270588, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
-layout_mode = 2
-anchor_left = 0.25
-anchor_top = 0.109
-anchor_right = 0.25
-anchor_bottom = 0.109
-offset_left = -32.0
-offset_top = -31.808
-offset_right = 104.0
-offset_bottom = 32.192
-theme_override_font_sizes/bold_font_size = 0
-bbcode_enabled = true
-
 [node name="Character Name 1" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 0
 offset_left = 58.0
@@ -110,7 +98,7 @@ offset_right = 295.0
 offset_bottom = 51.0
 text = "Character Name"
 
-[node name="HP and EP" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+[node name="HP and EP 1" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 0
 offset_left = 61.0
 offset_top = 46.0
@@ -120,7 +108,7 @@ bbcode_enabled = true
 text = "HP		100
 EP		100"
 
-[node name="HP Bar" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+[node name="HP Bar 1" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.664
@@ -138,6 +126,24 @@ rounded = true
 texture_under = ExtResource("2_d7p3j")
 texture_progress = ExtResource("3_kowaf")
 
+[node name="Energy Bar 1" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -59.184
+offset_top = 42.822
+offset_right = 136.816
+offset_bottom = 58.822
+scale = Vector2(0.772927, 0.907232)
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_nvobg")
+
 [node name="Character Name 2" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 0
 offset_left = 58.0
@@ -146,7 +152,7 @@ offset_right = 304.0
 offset_bottom = 153.0
 text = "Character Name"
 
-[node name="HP and EP2" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+[node name="HP and EP 2" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 0
 offset_left = 60.0
 offset_top = 152.0
@@ -173,6 +179,24 @@ rounded = true
 texture_under = ExtResource("2_d7p3j")
 texture_progress = ExtResource("3_kowaf")
 
+[node name="Energy Bar 2" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -57.184
+offset_top = 147.822
+offset_right = 138.816
+offset_bottom = 163.822
+scale = Vector2(0.760001, 1)
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_nvobg")
+
 [node name="Character Name 3" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 0
 offset_left = 61.0
@@ -181,7 +205,7 @@ offset_right = 302.0
 offset_bottom = 258.0
 text = "Character Name"
 
-[node name="HP and EP3" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
+[node name="HP and EP 3" type="RichTextLabel" parent="CanvasLayer/ColorRect2"]
 layout_mode = 0
 offset_left = 61.0
 offset_top = 255.0
@@ -208,12 +232,49 @@ rounded = true
 texture_under = ExtResource("2_d7p3j")
 texture_progress = ExtResource("3_kowaf")
 
+[node name="Energy Bar 3" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -57.184
+offset_top = 252.822
+offset_right = 138.816
+offset_bottom = 266.822
+scale = Vector2(0.75902, 0.790891)
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_nvobg")
+
+[node name="Enemy Hp Bar" type="TextureProgressBar" parent="CanvasLayer/ColorRect2"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.664
+anchor_top = 0.062
+anchor_right = 0.664
+anchor_bottom = 0.062
+offset_left = -57.184
+offset_top = 230.822
+offset_right = 138.816
+offset_bottom = 244.822
+scale = Vector2(0.75902, 0.790891)
+min_value = 1.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("2_d7p3j")
+texture_progress = ExtResource("3_kowaf")
+
 [node name="TurnCounter" type="RichTextLabel" parent="CanvasLayer"]
 custom_minimum_size = Vector2(334, 211)
-offset_left = -43.0
-offset_top = 21.0
-offset_right = 291.0
-offset_bottom = 232.0
+offset_left = -48.0
+offset_top = 16.0
+offset_right = 286.0
+offset_bottom = 227.0
 size_flags_vertical = 4
 theme_override_font_sizes/bold_font_size = 32
 bbcode_enabled = true
@@ -240,30 +301,37 @@ skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
 
 [node name="Aurel" parent="GameBoard" instance=ExtResource("2")]
+visible = false
 position = Vector2(290, 470)
-scale = Vector2(0.5, 0.35)
+scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
+skill = "Midas Touch"
+ultimate = "Zeus' Rage"
 skin = ExtResource("9_1cexo")
 skin_offset = Vector2(-8, -20)
 
 [node name="Theon" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(550, 210)
-scale = Vector2(0.5, 0.35)
+scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
+skill = "Drain"
+ultimate = "Bloodmoon Devour"
 skin = ExtResource("12_ks6x4")
 skin_offset = Vector2(-8, -20)
 
 [node name="Thea" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(350, 175)
-scale = Vector2(0.4, 0.3)
+scale = Vector2(0.4, 0.25)
 curve = SubResource("1")
 move_range = 3
 hp = 75
 energy = 200
+skill = "Heal"
+ultimate = "Requiem"
 skin = ExtResource("13_bey8i")
 skin_offset = Vector2(-8, -25)
 
@@ -271,7 +339,7 @@ skin_offset = Vector2(-8, -25)
 visible = false
 position = Vector2(850.293, 412.465)
 curve = SubResource("2")
-move_range = 8
+move_range = 5
 skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
 
@@ -291,6 +359,133 @@ offset_bottom = 632.0
 theme_override_styles/normal = ExtResource("16_sphi0")
 theme_override_styles/hover = ExtResource("17_5qudg")
 text = "End Turn"
+
+[node name="ActionMenu" type="Panel" parent="."]
+visible = false
+offset_left = 472.0
+offset_top = 272.0
+offset_right = 576.0
+offset_bottom = 392.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_irkai")
+
+[node name="CharacterAction" type="VBoxContainer" parent="ActionMenu"]
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -46.5
+offset_right = 25.0
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate = false
+localize_numeral_system = false
+alignment = 1
+
+[node name="AttackButton" type="Button" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "   Attack   "
+
+[node name="HSeparator" type="HSeparator" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+
+[node name="SkillButton" type="Button" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "Skill"
+
+[node name="HSeparator2" type="HSeparator" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+
+[node name="MoveButton" type="Button" parent="ActionMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "Move
+"
+
+[node name="SkillMenu" type="Panel" parent="."]
+visible = false
+offset_left = 576.0
+offset_top = 257.0
+offset_right = 696.0
+offset_bottom = 336.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_irkai")
+
+[node name="CharacterAction" type="VBoxContainer" parent="SkillMenu"]
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -46.5
+offset_right = 25.0
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate = false
+localize_numeral_system = false
+alignment = 1
+
+[node name="UseSkill" type="Button" parent="SkillMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "Skill "
+
+[node name="HSeparator" type="HSeparator" parent="SkillMenu/CharacterAction"]
+layout_mode = 2
+
+[node name="UseUltimate" type="Button" parent="SkillMenu/CharacterAction"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = " Ultimate "
 
 [node name="PausedIcon" type="Sprite2D" parent="."]
 position = Vector2(1112, 40)
@@ -385,8 +580,14 @@ text = "SAVE & EXIT"
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
+[connection signal="pressed" from="ActionMenu/CharacterAction/AttackButton" to="GameBoard" method="_on_attack_button_pressed"]
+[connection signal="pressed" from="ActionMenu/CharacterAction/SkillButton" to="GameBoard" method="_on_skill_button_pressed"]
+[connection signal="pressed" from="ActionMenu/CharacterAction/MoveButton" to="GameBoard" method="_on_move_button_pressed"]
+[connection signal="pressed" from="SkillMenu/CharacterAction/UseSkill" to="GameBoard" method="_on_use_skill_pressed"]
+[connection signal="pressed" from="SkillMenu/CharacterAction/UseUltimate" to="GameBoard" method="_on_use_ultimate_pressed"]
 [connection signal="pressed" from="PausedIcon/PauseButton" to="GameBoard" method="_on_pause_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/ColorRect/PauseBackButton" to="GameBoard" method="_on_pause_back_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveButton" to="GameBoard" method="_on_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/LoadButton" to="GameBoard" method="_on_load_game_pressed"]
+[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_save_and_exit_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]
