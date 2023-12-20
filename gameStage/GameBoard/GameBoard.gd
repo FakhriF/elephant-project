@@ -316,9 +316,27 @@ func _on_skill_button_pressed():
 	Action = "Skill"
 	$"../SkillMenu".position = Vector2(_active_unit.position.x + 160, _active_unit.position.y - 50)
 	$"../SkillMenu".visible = true
-	$"../SkillMenu/CharacterAction/UseSkill".text = _active_unit.skill
-	$"../SkillMenu/CharacterAction/UseUltimate".text = _active_unit.ultimate
-	
+	$"../SkillMenu/Control/CharacterAction/UseSkill".text = _active_unit.skill
+	$"../SkillMenu/Control/CharacterAction/UseUltimate".text = _active_unit.ultimate
+
+	_show_information(_active_unit.name)
+
+func _show_information(unitName: String):
+	if unitName == "Aurel":
+		$"../SkillMenu/Control/CharacterAction/UseSkill".tooltip_text = "Damage Selected Enemy by 25 HP" 
+		$"../SkillMenu/Control/CharacterAction/Skill Energy".text = str(50) + str(" EP")
+		$"../SkillMenu/Control/CharacterAction/UseUltimate".tooltip_text = "Damage All Enemy by 75 HP" 
+		$"../SkillMenu/Control/CharacterAction/Ultimate Energy".text = str(100) + str(" EP")
+	elif unitName == "Theon":
+		$"../SkillMenu/Control/CharacterAction/UseSkill".tooltip_text = "Damage Selected Enemy by 25, Heal Selected Character by 25 HP" 
+		$"../SkillMenu/Control/CharacterAction/Skill Energy".text = str(25) + str(" EP")
+		$"../SkillMenu/Control/CharacterAction/UseUltimate".tooltip_text = "Damage All Enemy by 50 HP, Heal Selected Character by 50 HP" 
+		$"../SkillMenu/Control/CharacterAction/Ultimate Energy".text = str(100) + str(" EP")
+	elif unitName == "Thea":
+		$"../SkillMenu/Control/CharacterAction/UseSkill".tooltip_text = "Heal Selected Ally by 25 HP" 
+		$"../SkillMenu/Control/CharacterAction/Skill Energy".text = str(50) + str(" EP")
+		$"../SkillMenu/Control/CharacterAction/UseUltimate".tooltip_text = "Heal All Ally by 50 HP" 
+		$"../SkillMenu/Control/CharacterAction/Ultimate Energy".text = str(100) + str(" EP")
 
 func _on_use_skill_pressed():
 	if _active_unit._check_energy(_active_unit, _active_unit.skill, "Skill"):
@@ -360,8 +378,8 @@ func _on_use_ultimate_pressed():
 				enemy_info.visible = true
 				if _active_unit.ultimate == "Bloodmoon Devour":
 					unit._drain_animation()
-					unit.take_damage(75)
-					_active_unit.heal(25)
+					unit.take_damage(50)
+					_active_unit.heal(50)
 				if _active_unit.ultimate == "Zeus' Rage":
 					unit._lightning_strike_animation()
 					unit.take_damage(75)
