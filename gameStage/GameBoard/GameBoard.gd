@@ -260,6 +260,7 @@ func _select_unit(cell: Vector2) -> void:
 	
 	CharacterChoice.position = Vector2(_active_unit.position.x + 50, _active_unit.position.y - 75)
 	CharacterChoice.visible = true
+	Action = "Select Unit"
 #	var popupMenu = CharacterOption.get_popup()
 #	var theme = popupMenu.get_theme()
 #	theme.set_color("font_color", Color(1, 0, 0)) # Change font color to red
@@ -410,7 +411,13 @@ func _on_use_ultimate_pressed():
 	_clear_active_unit()
 	Action = ""
 				
-
+func _on_cancel():
+	CharacterChoice.visible = false
+	$"../SkillMenu".visible = false
+	_deselect_active_unit()
+	_clear_active_unit()
+	Action = ""
+	
 func _on_choice_end():
 	_active_unit.Turn = false
 	_deselect_active_unit()
@@ -463,6 +470,9 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	if not _active_unit:
 		_select_unit(cell)
 		print("You Selected Unit")
+		return
+	elif _active_unit.is_selected and (Action == "Select Unit" or Action == "Skill"):
+		_on_cancel()
 		return
 	elif _active_unit.is_selected and _active_unit.Turn == false:
 		print("Can't select this Character Again for this Turn")
