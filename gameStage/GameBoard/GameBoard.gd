@@ -370,6 +370,9 @@ func _on_use_ultimate_pressed():
 			
 				await get_tree().create_timer(0.1).timeout	
 				enemy_info.visible = false
+				
+				if unit.hp <= 0:
+					unit.visible = false
 					
 			
 		for index in range(min(len(Profile.character_select), 3)):
@@ -384,9 +387,19 @@ func _on_use_ultimate_pressed():
 				update_unit_UI(unit, index)
 	$"../SkillMenu".visible = false
 	CharacterChoice.visible = false
+	_active_unit.Turn = false
+	_deselect_active_unit()
+	_clear_active_unit()
+	Action = ""
 				
-				
-				
+
+func _on_choice_end():
+	_active_unit.Turn = false
+	_deselect_active_unit()
+	_clear_active_unit()
+	Action = ""
+	
+
 
 
 
@@ -432,6 +445,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	if not _active_unit:
 		_select_unit(cell)
 		print("You Selected Unit")
+		return
 	elif _active_unit.is_selected and _active_unit.Turn == false:
 		print("Can't select this Character Again for this Turn")
 	elif _active_unit.is_selected and Action == "Attack":
@@ -447,8 +461,6 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			else:
 				await get_tree().create_timer(0.5).timeout
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
-			_deselect_active_unit()
-			_clear_active_unit()
 		else: 
 			return
 		
@@ -469,9 +481,6 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 				var allyUnit = get_target(cell, "Ally")
 				var selectedUnit = get_target(_active_unit.cell, "Ally")
 				use_skill(selectedUnit, allyUnit, _active_unit.skill)
-			_active_unit.Turn = false
-			_deselect_active_unit()
-			_clear_active_unit()
 		else:
 			return
 
@@ -491,23 +500,20 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			_deselect_active_unit()
 			_clear_active_unit()
 			return
-			
-		
-		
-			
-
-		# Make it so that the unit can only move once
 		_units.erase(_active_unit.cell)
 		
 		if _units.is_empty():
 			print("Can't select any more characters, please end turn")
+		return
 	for index in range(min(len(Profile.character_select), 3)):
 		for child in get_children():
 			var unit := child as Unit
 			if not unit:
 				continue
 			update_unit_UI(unit, index)
-	Action = ""
+			
+	_on_choice_end()
+	#Action = ""
 # ...
 
 func is_occupied_by_(cell: Vector2, unitType: String) -> bool:
@@ -678,10 +684,12 @@ func _move_active_unit(new_cell: Vector2) -> void:
 	# warning-ignore:return_value_discarded
 	_units.erase(_active_unit.cell)
 	_units[new_cell] = _active_unit
+	_active_unit.Turn = false
 	_deselect_active_unit()
 	_active_unit.walk_along(_unit_path.current_path)
 	await _active_unit.walk_finished
 	_clear_active_unit()
+	Action = ""
 		
 
 ## Updates the interactive path's drawing if there's an active and selected unit.
