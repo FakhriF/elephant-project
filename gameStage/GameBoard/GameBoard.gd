@@ -314,7 +314,6 @@ func _on_attack_button_pressed():
 
 func _on_skill_button_pressed():
 	Action = "Skill"
-	_active_unit.is_selected = true
 	$"../SkillMenu".position = Vector2(_active_unit.position.x + 160, _active_unit.position.y - 50)
 	$"../SkillMenu".visible = true
 	$"../SkillMenu/CharacterAction/UseSkill".text = _active_unit.skill
@@ -694,17 +693,19 @@ func _on_Cursor_moved(new_cell: Vector2) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _active_unit and event.is_action_pressed("ui_cancel"):
-		_active_unit.Turn = false
-		_active_unit.is_selected = false
-		_deselect_active_unit()
-		_clear_active_unit()
 		
 		if $"../SkillMenu".visible == true:
 			$"../SkillMenu".visible = false
 			CharacterChoice.visible = true
 			Action = ""
+			return
 		else:
 			CharacterChoice.visible = false
+		
+		enemy_info.visible = false
+		_active_unit.is_selected = false
+		_deselect_active_unit()
+		_clear_active_unit()
 
 
 func _save_game():
