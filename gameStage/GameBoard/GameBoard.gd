@@ -714,6 +714,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_active_unit.is_selected = false
 		_deselect_active_unit()
 		_clear_active_unit()
+		Action = ""
 
 
 func _save_game():
