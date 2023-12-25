@@ -247,7 +247,6 @@ func _select_unit(cell: Vector2) -> void:
 	if not _units.has(cell):
 		return
 		
-
 	_active_unit = _units[cell]
 	
 	if _active_unit.Turn == false:
@@ -542,6 +541,8 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			
 	_on_choice_end()
 	#Action = ""
+	
+
 # ...
 
 func is_occupied_by_(cell: Vector2, unitType: String) -> bool:

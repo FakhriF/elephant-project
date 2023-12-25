@@ -28,10 +28,13 @@ signal health_changed(life)
 @onready var offensiveSkill := ["Midas Touch", "Drain"]
 @onready var defensiveSkill := ["Heal"]
 
-
+func _check_aura():
+	return _aura # Check if a character has aura
 
 
 func _hurt_animation():
+	if !_check_aura():
+		return
 	_aura.visible = false
 	_sprite.modulate = Color.RED
 	await get_tree().create_timer(0.05).timeout
@@ -47,6 +50,8 @@ func _hurt_animation():
 	_aura.visible = true
 	
 func _blink_animation():
+	if !_check_aura():
+		return
 	_aura.visible = false
 	var colors = [Color.BLACK, Color.WHITE]
 	for color in colors:
@@ -55,6 +60,8 @@ func _blink_animation():
 	_aura.visible = true
 
 func _fade_animation():
+	if !_check_aura():
+		return
 	_aura.visible = false
 	var duration = 0.05
 	for i in range(0, 5):
@@ -65,6 +72,8 @@ func _fade_animation():
 	_aura.visible = true
 
 func _lightning_strike_animation():
+	if !_check_aura():
+		return
 	_aura.visible = false
 
 	var duration = 0.05
@@ -78,6 +87,8 @@ func _lightning_strike_animation():
 	_aura.visible = true
 
 func _heal_animation():
+	if !_check_aura():
+		return
 	_aura.visible = false
 
 	var duration = 0.2
@@ -90,6 +101,8 @@ func _heal_animation():
 	_aura.visible = true
 
 func _drain_animation():
+	if !_check_aura():
+		return
 	_aura.visible = false
 
 	var duration = 0.1
@@ -103,6 +116,8 @@ func _drain_animation():
 	_aura.visible = true
 
 func death():
+	if !_check_aura():
+		return
 	_aura.visible = false
 	
 	var duration = 0.05

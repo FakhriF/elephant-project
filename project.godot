@@ -27,6 +27,10 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Elephant Project"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
 [input]
 
 Enter_KEY={

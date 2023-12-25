@@ -22,22 +22,22 @@
 [ext_resource type="StyleBox" uid="uid://5bgb1ps0cib8" path="res://menu/styles/invisible_color_button.tres" id="19_jlish"]
 [ext_resource type="StyleBox" uid="uid://3jupl6n0jnw5" path="res://menu/styles/button_in_game.tres" id="19_njqr8"]
 
-[sub_resource type="Curve2D" id="Curve2D_iu267"]
+[sub_resource type="Curve2D" id="Curve2D_gf851"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_fjjfn"]
+[sub_resource type="Curve2D" id="Curve2D_40qbr"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_mpetd"]
+[sub_resource type="Curve2D" id="Curve2D_747c0"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_1bpmo"]
+[sub_resource type="Curve2D" id="Curve2D_5v2x0"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_kajd2"]
+[sub_resource type="Curve2D" id="Curve2D_4hujn"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_uk411"]
+[sub_resource type="Curve2D" id="Curve2D_tm305"]
 resource_local_to_scene = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irkai"]
@@ -290,6 +290,18 @@ bbcode_enabled = true
 text = "[center][b]WHOSE TURN?[/b][/center]
 [center][b]Turn 000[/b][/center]"
 
+[node name="Information" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 40.0
+offset_top = 608.0
+offset_right = 181.0
+offset_bottom = 631.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Tooltip"
+horizontal_alignment = 1
+
 [node name="GameBoard" type="Node2D" parent="."]
 z_index = 2
 script = ExtResource("3")
@@ -304,7 +316,7 @@ grid = ExtResource("4")
 [node name="Bear" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(744, 560)
-curve = SubResource("Curve2D_iu267")
+curve = SubResource("Curve2D_gf851")
 move_range = 3
 skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
@@ -313,7 +325,7 @@ skin_offset = Vector2(2, 9)
 visible = false
 position = Vector2(290, 470)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_fjjfn")
+curve = SubResource("Curve2D_40qbr")
 move_range = 3
 skill = "Midas Touch"
 ultimate = "Zeus' Rage"
@@ -324,7 +336,7 @@ skin_offset = Vector2(-8, -20)
 visible = false
 position = Vector2(550, 210)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_mpetd")
+curve = SubResource("Curve2D_747c0")
 move_range = 3
 skill = "Drain"
 ultimate = "Bloodmoon Devour"
@@ -335,7 +347,7 @@ skin_offset = Vector2(-8, -20)
 visible = false
 position = Vector2(350, 175)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_1bpmo")
+curve = SubResource("Curve2D_5v2x0")
 move_range = 3
 hp = 75
 energy = 200
@@ -347,7 +359,7 @@ skin_offset = Vector2(-8, -25)
 [node name="Cat" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(850.293, 412.465)
-curve = SubResource("Curve2D_kajd2")
+curve = SubResource("Curve2D_4hujn")
 move_range = 5
 skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
@@ -355,7 +367,7 @@ skin_offset = Vector2(5, 12)
 [node name="Squirrel" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(744, 216)
-curve = SubResource("Curve2D_uk411")
+curve = SubResource("Curve2D_tm305")
 move_range = 5
 skin = ExtResource("7")
 skin_offset = Vector2(6, 17)
@@ -626,5 +638,5 @@ text = "SAVE & EXIT"
 [connection signal="pressed" from="Pause Canvas/ColorRect/PauseBackButton" to="GameBoard" method="_on_pause_back_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveButton" to="GameBoard" method="_on_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/LoadButton" to="GameBoard" method="_on_load_game_pressed"]
-[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_save_and_exit_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]
+[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_save_and_exit_button_pressed"]
