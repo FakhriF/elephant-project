@@ -23,6 +23,7 @@ var _active_unit: Unit
 var _target_unit: Unit 
 var _walkable_cells := []
 var _currentEnemies := []
+var ui_initialization = false
 
 
 @onready var _unit_overlay: UnitOverlay = $UnitOverlay
@@ -73,9 +74,10 @@ func update_unit_UI(unit, index):
 		var hp_and_ep = get_node(hp_and_ep_path)
 		var hp_bar = get_node(hp_bar_path)
 		var energy_bar = get_node(energy_bar_path)
-		if turnManager.turnCounter == 1:
+		if turnManager.turnCounter == 1 and ui_initialization == false:
 			hp_bar.max_value = unit.hp
 			energy_bar.max_value = unit.energy
+			ui_initialization = true
 		character_name.text = unit.name
 		hp_and_ep.text = "HP\t\t%s\nEP\t\t%s" % [str(unit.hp), str(unit.energy)]
 		hp_bar.value = unit.hp
@@ -391,6 +393,7 @@ func _on_use_ultimate_pressed():
 				
 				if unit.hp <= 0:
 					unit.visible = false
+				
 					
 			
 		for index in range(min(len(Profile.character_select), 3)):
@@ -790,6 +793,7 @@ func _save_game():
 				"pos_x": unit.position.x,
 				"pos_y": unit.position.y,
 				"hp": unit.hp,
+				"ep": unit.energy,
 				"ally_aura": unit.get_aura_color()
 			}
 			saveData["gameData"]["unitData"].append(unitData)
@@ -801,6 +805,7 @@ func _save_game():
 				"pos_x": enemyUnit.position.x,
 				"pos_y": enemyUnit.position.y,
 				"hp": enemyUnit.hp,
+				"ep": enemyUnit.energy,
 				"enemy_aura": enemyUnit.get_aura_color()
 			}
 			saveData["gameData"]["enemyData"].append(enemyInfo)
@@ -844,13 +849,14 @@ func find_unit_by_name(name: String) -> Unit:
 
 
 # Function to initialize or update units based on loaded data
-func initialize_or_update_unit(cell: Vector2, name: String, hp: int, posX: float, posY: float, type: String, aura_color: Color) -> void:
+func initialize_or_update_unit(cell: Vector2, name: String, hp: int, ep: int, posX: float, posY: float, type: String, aura_color: Color) -> void:
 
 	var unitToUpdate = find_unit_by_name(name)
 	if unitToUpdate != null && hp > 0:
 		unitToUpdate.cell = cell
 		unitToUpdate.name = name
 		unitToUpdate.hp = hp
+		unitToUpdate.energy = ep
 		unitToUpdate.position.x = posX
 		unitToUpdate.position.y = posY
 		unitToUpdate.cell = grid.calculate_grid_coordinates(unitToUpdate.position)
@@ -988,11 +994,12 @@ func _load_game():
 						var pos_x = unitInfo["pos_x"]
 						var pos_y = unitInfo["pos_y"]
 						var hp = unitInfo["hp"]
+						var ep = unitInfo["ep"]
 						var aura_color = unitInfo["ally_aura"]
 						var auraColor = parse_string_color(aura_color)
 						print("NAME", unitName, hp, auraColor)
 						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
-						initialize_or_update_unit(cell, unitName, hp, pos_x, pos_y, "Ally", auraColor) 
+						initialize_or_update_unit(cell, unitName, hp, ep, pos_x, pos_y, "Ally", auraColor) 
 			
 			if gameData.has("enemyData"): 
 				var enemyData = gameData["enemyData"]
@@ -1003,10 +1010,11 @@ func _load_game():
 						var pos_x = enemyInfo["pos_x"]
 						var pos_y = enemyInfo["pos_y"]
 						var hp = enemyInfo["hp"]
+						var ep = enemyInfo["ep"]
 						var aura_color = enemyInfo["enemy_aura"]
 						var auraColor = parse_string_color(aura_color)
 						var cell = parse_cell_string(cellStr)  # Function to convert string to Vector2
-						initialize_or_update_unit(cell, name, hp, pos_x, pos_y, "Enemy", auraColor)  
+						initialize_or_update_unit(cell, name, hp, ep, pos_x, pos_y, "Enemy", auraColor)  
 				print("Game loaded successfully.")
 
 
