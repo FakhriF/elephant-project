@@ -183,7 +183,7 @@ func useOffensiveSkill(ally, target, skillName: String):
 		
 
 func useSupportSKill(ally, target, skillName: String):
-	if skillName == "Heal":
+	if skillName == "Heal" and target != null:
 		ally.energy -= 50
 		target.heal(25)
 		target._heal_animation()

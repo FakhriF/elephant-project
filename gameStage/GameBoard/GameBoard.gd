@@ -111,6 +111,7 @@ func _on_ally_turn_started():
 
 func _on_enemy_turn_started():
 	print("THIS IS ENEMY TURN")
+	print(_defeatedEnemy)
 	if turnManager.currentTurn == "Ally Turn":
 		$"../CanvasLayer/ColorRect".color = "5F94BA"
 	else: 
@@ -440,10 +441,6 @@ func _on_choice_end():
 	_clear_active_unit()
 	Action = ""
 	
-
-
-
-
 	
 func useUltimate(skillName: String):
 	if skillName == "Bloodmoon Devour":
@@ -524,7 +521,12 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			elif _active_unit.skill in _active_unit.defensiveSkill:
 				var allyUnit = get_target(cell, "Ally")
 				var selectedUnit = get_target(_active_unit.cell, "Ally")
-				use_skill(selectedUnit, allyUnit, _active_unit.skill)
+				if selectedUnit == null:
+					_on_cancel()
+					_active_unit.Turn = true
+					return
+				else:
+					use_skill(selectedUnit, allyUnit, _active_unit.skill)
 		else:
 			return
 
@@ -664,6 +666,8 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 func get_target(cell: Vector2, type: String) -> Unit:
 	if is_occupied(cell):
 		if type == "Ally":
+			if is_occupied_by_(cell, "Enemy"):
+				return null
 			_target_unit = _units[cell]
 		elif type == "Enemy":
 			_target_unit = _enemyUnits[cell]
