@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://2jarj8vtfcng"]
+[gd_scene load_steps=33 format=3 uid="uid://2jarj8vtfcng"]
 
 [ext_resource type="PackedScene" uid="uid://bv1ul1qynrdwd" path="res://gameStage/GameBoard/Cursor/Cursor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d4mhjq651egt" path="res://gameStage/Units/Unit.tscn" id="2"]
@@ -22,22 +22,22 @@
 [ext_resource type="StyleBox" uid="uid://5bgb1ps0cib8" path="res://menu/styles/invisible_color_button.tres" id="19_jlish"]
 [ext_resource type="StyleBox" uid="uid://3jupl6n0jnw5" path="res://menu/styles/button_in_game.tres" id="19_njqr8"]
 
-[sub_resource type="Curve2D" id="Curve2D_pgse6"]
+[sub_resource type="Curve2D" id="Curve2D_iu267"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_hb4wt"]
+[sub_resource type="Curve2D" id="Curve2D_fjjfn"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_athvf"]
+[sub_resource type="Curve2D" id="Curve2D_mpetd"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_6ysml"]
+[sub_resource type="Curve2D" id="Curve2D_1bpmo"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_qakjo"]
+[sub_resource type="Curve2D" id="Curve2D_kajd2"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_4nxal"]
+[sub_resource type="Curve2D" id="Curve2D_uk411"]
 resource_local_to_scene = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irkai"]
@@ -59,6 +59,13 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbops"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_182qf"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 
 [node name="Main" type="Node2D"]
 
@@ -290,18 +297,6 @@ bbcode_enabled = true
 text = "[center][b]WHOSE TURN?[/b][/center]
 [center][b]Turn 000[/b][/center]"
 
-[node name="Information" type="Label" parent="CanvasLayer"]
-visible = false
-offset_left = 40.0
-offset_top = 608.0
-offset_right = 181.0
-offset_bottom = 631.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-text = "Tooltip"
-horizontal_alignment = 1
-
 [node name="GameBoard" type="Node2D" parent="."]
 z_index = 2
 script = ExtResource("3")
@@ -316,7 +311,7 @@ grid = ExtResource("4")
 [node name="Bear" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(744, 560)
-curve = SubResource("Curve2D_pgse6")
+curve = SubResource("Curve2D_iu267")
 move_range = 3
 skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
@@ -325,7 +320,7 @@ skin_offset = Vector2(2, 9)
 visible = false
 position = Vector2(290, 470)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_hb4wt")
+curve = SubResource("Curve2D_fjjfn")
 move_range = 3
 skill = "Midas Touch"
 ultimate = "Zeus' Rage"
@@ -336,7 +331,7 @@ skin_offset = Vector2(-8, -20)
 visible = false
 position = Vector2(550, 210)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_athvf")
+curve = SubResource("Curve2D_mpetd")
 move_range = 3
 skill = "Drain"
 ultimate = "Bloodmoon Devour"
@@ -347,7 +342,7 @@ skin_offset = Vector2(-8, -20)
 visible = false
 position = Vector2(350, 175)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_6ysml")
+curve = SubResource("Curve2D_1bpmo")
 move_range = 3
 hp = 75
 energy = 200
@@ -359,7 +354,7 @@ skin_offset = Vector2(-8, -25)
 [node name="Cat" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(850.293, 412.465)
-curve = SubResource("Curve2D_qakjo")
+curve = SubResource("Curve2D_kajd2")
 move_range = 5
 skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
@@ -367,7 +362,7 @@ skin_offset = Vector2(5, 12)
 [node name="Squirrel" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(744, 216)
-curve = SubResource("Curve2D_4nxal")
+curve = SubResource("Curve2D_uk411")
 move_range = 5
 skin = ExtResource("7")
 skin_offset = Vector2(6, 17)
@@ -626,6 +621,39 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_imxww")
 theme_override_styles/pressed = ExtResource("19_jlish")
 text = "SAVE & EXIT"
 
+[node name="VictoryDefeat" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="VictoryDefeat"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 0.541176)
+
+[node name="Label" type="Label" parent="VictoryDefeat"]
+offset_top = 205.0
+offset_right = 1152.0
+offset_bottom = 413.0
+theme_override_font_sizes/font_size = 120
+text = "STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Button" type="Button" parent="VictoryDefeat"]
+offset_left = 464.0
+offset_top = 408.0
+offset_right = 696.0
+offset_bottom = 468.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("19_njqr8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_182qf")
+theme_override_styles/pressed = ExtResource("19_jlish")
+text = "BACK TO MAIN MENU"
+
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
 [connection signal="pressed" from="EndTurn" to="GameBoard" method="_on_end_turn_pressed"]
@@ -640,3 +668,4 @@ text = "SAVE & EXIT"
 [connection signal="pressed" from="Pause Canvas/LoadButton" to="GameBoard" method="_on_load_game_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_save_and_exit_button_pressed"]
+[connection signal="pressed" from="VictoryDefeat/Button" to="GameBoard" method="_on_exitto_menu_pressed"]

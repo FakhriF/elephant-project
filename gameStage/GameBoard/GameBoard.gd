@@ -101,6 +101,7 @@ func _on_ally_turn_started():
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
+	
 	for index in range(min(len(Profile.character_select), 3)):
 		for child in get_children():
 			var unit := child as Unit
@@ -236,6 +237,12 @@ func _get_enemy_unit() -> Dictionary:
 func _on_end_turn_pressed():
 	$"../SkillMenu".visible = false
 	CharacterChoice.visible = false
+	#Cek apakah masih ada ally tersisa atau tidak (TEMP)
+	if _playerUnits == {}:
+		_is_victory_defeat("DEFEAT")
+	#Cek apakah masih ada musuh tersisa atau tidak (TEMP)
+	elif _enemyUnits == {}:
+		_is_victory_defeat("VICTORY")
 	_playerUnits.clear()
 	_units.clear()
 	_enemyUnits.clear()
@@ -1020,7 +1027,14 @@ func _load_game():
 
 
 	
-
+func _is_victory_defeat(status):
+	$"../VictoryDefeat".visible = true
+	if status == "VICTORY":
+		$"../VictoryDefeat/Label".add_theme_color_override("font_color", Color("ffe3ac"))
+		$"../VictoryDefeat/Label".text = "VICTORY"
+	elif status == "DEFEAT":
+		$"../VictoryDefeat/Label".add_theme_color_override("font_color", Color("ffacac"))
+		$"../VictoryDefeat/Label".text = "DEFEAT"
 
 func _on_exitto_menu_pressed():
 	get_tree().change_scene_to_file("res://menu/scenes/main_menu_scene.tscn")
