@@ -101,6 +101,9 @@ func _on_ally_turn_started():
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
+	if _defeatedEnemy.size() == 3:
+		_is_victory_defeat("VICTORY")
+		return
 	
 	for index in range(min(len(Profile.character_select), 3)):
 		for child in get_children():
@@ -242,10 +245,6 @@ func _on_end_turn_pressed():
 	if _defeatedAlly.size() == 3:
 		_is_victory_defeat("DEFEAT")
 		return
-	#Cek apakah masih ada musuh tersisa atau tidak (TEMP)
-	elif _defeatedAlly.size() == 3:
-		_is_victory_defeat("VICTORY")
-		return
 	_playerUnits.clear()
 	_units.clear()
 	_enemyUnits.clear()
@@ -332,7 +331,8 @@ func _on_skill_button_pressed():
 	$"../SkillMenu/Control/CharacterAction/UseUltimate".text = _active_unit.ultimate
 	if _active_unit.energy < 100:
 		$"../SkillMenu/Control/CharacterAction/UseUltimate".disabled = true
-		
+	else: 
+		$"../SkillMenu/Control/CharacterAction/UseUltimate".disabled = false
 
 	_show_information(_active_unit.name)
 	
