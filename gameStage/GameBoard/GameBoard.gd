@@ -238,11 +238,13 @@ func _on_end_turn_pressed():
 	$"../SkillMenu".visible = false
 	CharacterChoice.visible = false
 	#Cek apakah masih ada ally tersisa atau tidak (TEMP)
-	if _playerUnits == {}:
+	if _defeatedAlly.size() == 3:
 		_is_victory_defeat("DEFEAT")
+		return
 	#Cek apakah masih ada musuh tersisa atau tidak (TEMP)
-	elif _enemyUnits == {}:
+	elif _defeatedAlly.size() == 3:
 		_is_victory_defeat("VICTORY")
+		return
 	_playerUnits.clear()
 	_units.clear()
 	_enemyUnits.clear()
@@ -327,8 +329,13 @@ func _on_skill_button_pressed():
 	$"../SkillMenu".visible = true
 	$"../SkillMenu/Control/CharacterAction/UseSkill".text = _active_unit.skill
 	$"../SkillMenu/Control/CharacterAction/UseUltimate".text = _active_unit.ultimate
+	if _active_unit.energy < 100:
+		$"../SkillMenu/Control/CharacterAction/UseUltimate".disabled = true
+		
 
 	_show_information(_active_unit.name)
+	
+	
 
 func _show_information(unitName: String):
 	if unitName == "Aurel":

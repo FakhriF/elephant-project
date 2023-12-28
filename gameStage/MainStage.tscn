@@ -22,22 +22,22 @@
 [ext_resource type="StyleBox" uid="uid://5bgb1ps0cib8" path="res://menu/styles/invisible_color_button.tres" id="19_jlish"]
 [ext_resource type="StyleBox" uid="uid://3jupl6n0jnw5" path="res://menu/styles/button_in_game.tres" id="19_njqr8"]
 
-[sub_resource type="Curve2D" id="Curve2D_iu267"]
+[sub_resource type="Curve2D" id="Curve2D_45lj3"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_fjjfn"]
+[sub_resource type="Curve2D" id="Curve2D_v3fp7"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_mpetd"]
+[sub_resource type="Curve2D" id="Curve2D_k7lg3"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_1bpmo"]
+[sub_resource type="Curve2D" id="Curve2D_ba21s"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_kajd2"]
+[sub_resource type="Curve2D" id="Curve2D_oigcw"]
 resource_local_to_scene = true
 
-[sub_resource type="Curve2D" id="Curve2D_uk411"]
+[sub_resource type="Curve2D" id="Curve2D_5ist5"]
 resource_local_to_scene = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irkai"]
@@ -311,7 +311,7 @@ grid = ExtResource("4")
 [node name="Bear" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(744, 560)
-curve = SubResource("Curve2D_iu267")
+curve = SubResource("Curve2D_45lj3")
 move_range = 3
 skin = ExtResource("8")
 skin_offset = Vector2(2, 9)
@@ -320,7 +320,7 @@ skin_offset = Vector2(2, 9)
 visible = false
 position = Vector2(290, 470)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_fjjfn")
+curve = SubResource("Curve2D_v3fp7")
 move_range = 3
 skill = "Midas Touch"
 ultimate = "Zeus' Rage"
@@ -331,7 +331,7 @@ skin_offset = Vector2(-8, -20)
 visible = false
 position = Vector2(550, 210)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_mpetd")
+curve = SubResource("Curve2D_k7lg3")
 move_range = 3
 skill = "Drain"
 ultimate = "Bloodmoon Devour"
@@ -342,7 +342,7 @@ skin_offset = Vector2(-8, -20)
 visible = false
 position = Vector2(350, 175)
 scale = Vector2(0.4, 0.25)
-curve = SubResource("Curve2D_1bpmo")
+curve = SubResource("Curve2D_ba21s")
 move_range = 3
 hp = 75
 energy = 200
@@ -354,7 +354,7 @@ skin_offset = Vector2(-8, -25)
 [node name="Cat" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(850.293, 412.465)
-curve = SubResource("Curve2D_kajd2")
+curve = SubResource("Curve2D_oigcw")
 move_range = 5
 skin = ExtResource("9")
 skin_offset = Vector2(5, 12)
@@ -362,7 +362,7 @@ skin_offset = Vector2(5, 12)
 [node name="Squirrel" parent="GameBoard" instance=ExtResource("2")]
 visible = false
 position = Vector2(744, 216)
-curve = SubResource("Curve2D_uk411")
+curve = SubResource("Curve2D_5ist5")
 move_range = 5
 skin = ExtResource("7")
 skin_offset = Vector2(6, 17)
@@ -666,6 +666,6 @@ text = "BACK TO MAIN MENU"
 [connection signal="pressed" from="Pause Canvas/ColorRect/PauseBackButton" to="GameBoard" method="_on_pause_back_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveButton" to="GameBoard" method="_on_button_pressed"]
 [connection signal="pressed" from="Pause Canvas/LoadButton" to="GameBoard" method="_on_load_game_pressed"]
-[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]
 [connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_save_and_exit_button_pressed"]
+[connection signal="pressed" from="Pause Canvas/SaveAndExitButton" to="GameBoard" method="_on_button_2_pressed"]
 [connection signal="pressed" from="VictoryDefeat/Button" to="GameBoard" method="_on_exitto_menu_pressed"]
