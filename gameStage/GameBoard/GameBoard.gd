@@ -101,9 +101,6 @@ func _on_ally_turn_started():
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
-	if _defeatedEnemy.size() == 3:
-		_is_victory_defeat("VICTORY")
-		return
 	
 	for index in range(min(len(Profile.character_select), 3)):
 		for child in get_children():
@@ -168,6 +165,8 @@ func _get_ally_unit():
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
 				unit.position = grid.calculate_map_position(unit.cell)
 				unit.set_aura_color(Color(0, 0, 1, 1))
+			if unit.energy < 100:
+				unit.energy += 5
 			_units[unit.cell] = unit
 						
 #			unit.aura = Color(0, 0, 1, 1)
@@ -236,6 +235,24 @@ func _get_enemy_unit() -> Dictionary:
 	
 	first_enemy = true
 	return _enemyUnits
+
+
+func _add_defeated_unit(enemyUnit: Unit):
+	if _defeatedEnemy.is_empty():
+		_defeatedEnemy[enemyUnit.cell] = enemyUnit
+	else:
+		var isUnique = true
+		for unit_info in _defeatedEnemy.values():
+			var value = str(unit_info)
+			var unit_name = value.split(":")[0].strip_edges()
+			if enemyUnit.name == unit_name:
+				isUnique = false
+				break
+		if isUnique:
+			_defeatedEnemy[enemyUnit.cell] = enemyUnit
+	enemyUnit.death()
+	await get_tree().create_timer(0.5).timeout
+	enemyUnit.visible = false
 
 
 func _on_end_turn_pressed():
@@ -408,6 +425,7 @@ func _on_use_ultimate_pressed():
 				
 				if unit.hp <= 0:
 					unit.visible = false
+					_add_defeated_unit(unit)
 				
 					
 			
@@ -427,6 +445,9 @@ func _on_use_ultimate_pressed():
 	_deselect_active_unit()
 	_clear_active_unit()
 	Action = ""
+	if _defeatedEnemy.size() == 3:
+		_is_victory_defeat("VICTORY")
+		return
 				
 func _on_cancel():
 	CharacterChoice.visible = false
@@ -498,9 +519,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			attack(enemyUnit)
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 			if enemyUnit.hp <= 0:
-				enemyUnit.death()
-				await get_tree().create_timer(0.5).timeout
-				enemyUnit.visible = false
+				_add_defeated_unit(enemyUnit)
 			else:
 				await get_tree().create_timer(0.5).timeout
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
@@ -516,7 +535,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 				use_skill(selectedUnit, enemyUnit, _active_unit.skill)
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 				if enemyUnit.hp <= 0:
-					enemyUnit.visible = false
+					_add_defeated_unit(enemyUnit)
 				else:
 					await get_tree().create_timer(0.5).timeout
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
@@ -553,6 +572,8 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 		if _units.is_empty():
 			print("Can't select any more characters, please end turn")
 		return
+	
+
 	for index in range(min(len(Profile.character_select), 3)):
 		for child in get_children():
 			var unit := child as Unit
@@ -561,7 +582,9 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			update_unit_UI(unit, index)
 			
 	_on_choice_end()
-	#Action = ""
+	if _defeatedEnemy.size() == 3:
+		_is_victory_defeat("VICTORY")
+		return
 	
 
 # ...
@@ -790,7 +813,7 @@ func _save_game():
 	if file:
 		var fileContents = file.get_as_text()
 		file.close()
-
+		
 		# Construct the save data
 		var saveData: Dictionary = {
 			"username": Profile.profileList[idx],
@@ -1056,7 +1079,7 @@ func _on_exitto_menu_pressed():
 
 
 func _on_button_pressed():
-	_save_game() # Replace with function body.
+	_save_game() 
 
 
 func _on_save_and_exit_button_pressed():
