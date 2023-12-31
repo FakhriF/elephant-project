@@ -605,7 +605,7 @@ func _perform_enemy_turn() -> void:
 		else:
 			print("Tidak bisa bergerak")
 			await _delayed_enemy_movement(unit, _walkable_cells[randi_range(0, _walkable_cells.size() - 1)], move_delay)
-		_enemyUnits.erase(unit.cell) 
+		#_enemyUnits.erase(unit.cell) 
 	turnManager.advance_turn()
 	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
@@ -648,13 +648,13 @@ func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vecto
 		print("DISTANCE", distance)
 
 		if distance < nearest_distance:
-			print("DOES THIS EVER REACH?")
 			nearest_distance = distance
 			nearest_target = player_cell
 
 	# Adjust the nearest_target if it's occupied
 	if is_occupied(nearest_target):
 		nearest_target.x += 1
+
 
 	if nearest_target != Vector2.ZERO:
 		print("Selected Target:", nearest_target)
