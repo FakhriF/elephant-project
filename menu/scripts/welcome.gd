@@ -36,7 +36,7 @@ func saveGame(Username: Control):
 		file.store_line(jstr)
 
 		#Profile.profileList = []
-		#Profile.profileList.append(Username.get_text())  # Append username to profileList
+		Profile.profileList = Username.get_text()
 		Profile.gameProgress = "Profile " + str(i + 1)
 		i += 1  # Increment i
 		return true

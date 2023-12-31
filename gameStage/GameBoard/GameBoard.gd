@@ -807,16 +807,18 @@ func _save_game():
 		"Profile 3":
 			saveName = "res://savegame3.bin"
 			idx = 2
-
+	var username = Profile.profileList
+	print(Profile.profileList)
+	print(username)
 	var file = FileAccess.open(saveName, FileAccess.READ_WRITE)
-
+	
 	if file:
 		var fileContents = file.get_as_text()
 		file.close()
 		
 		# Construct the save data
 		var saveData: Dictionary = {
-			"username": Profile.profileList[idx],
+			"username": username,
 			"characterSelect": Profile.character_select,
 			"enemySelection": _currentEnemies,  
 			"gameData": {
