@@ -139,20 +139,6 @@ func _get_ally_unit():
 		var unit := child as Unit
 		if not unit:
 			continue
-		if (unit.name in Profile.character_select) and (unit.hp <= 0):
-			if _defeatedAlly.is_empty():
-				_defeatedAlly[unit.cell] = unit
-			else:
-				var isUnique = true
-				for unit_info in _defeatedAlly.values():
-					var value = str(unit_info)
-					var unit_name = value.split(":")[0].strip_edges()
-					if unit.name == unit_name:
-						isUnique = false
-						break
-				if isUnique:
-					_defeatedAlly[unit.cell] = unit
-			print(_defeatedAlly)
 #			if _defeatedAlly.size() == Profile.character_select.size():
 #				$"../CanvasLayer/BackgroundColor".visible = true
 #				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
@@ -237,31 +223,43 @@ func _get_enemy_unit() -> Dictionary:
 	return _enemyUnits
 
 
-func _add_defeated_unit(enemyUnit: Unit):
-	if _defeatedEnemy.is_empty():
-		_defeatedEnemy[enemyUnit.cell] = enemyUnit
-	else:
-		var isUnique = true
-		for unit_info in _defeatedEnemy.values():
-			var value = str(unit_info)
-			var unit_name = value.split(":")[0].strip_edges()
-			if enemyUnit.name == unit_name:
-				isUnique = false
-				break
-		if isUnique:
-			_defeatedEnemy[enemyUnit.cell] = enemyUnit
-	enemyUnit.death()
+func _add_defeated_unit(unitToAdd: Unit, type: String):
+	if type == "Enemy":
+		if _defeatedEnemy.is_empty():
+			_defeatedEnemy[unitToAdd.cell] = unitToAdd
+		else:
+			var isUnique = true
+			for unit_info in _defeatedEnemy.values():
+				var value = str(unit_info)
+				var unit_name = value.split(":")[0].strip_edges()
+				if unitToAdd.name == unit_name:
+					isUnique = false
+					break
+			if isUnique:
+				_defeatedEnemy[unitToAdd.cell] = unitToAdd
+	if type == "Ally":
+		if (unitToAdd.name in Profile.character_select) and (unitToAdd.hp <= 0):
+			if _defeatedAlly.is_empty():
+				_defeatedAlly[unitToAdd.cell] = unitToAdd
+			else:
+				var isUnique = true
+				for unit_info in _defeatedAlly.values():
+					var value = str(unit_info)
+					var unit_name = value.split(":")[0].strip_edges()
+					if unitToAdd.name == unit_name:
+						isUnique = false
+						break
+				if isUnique:
+					_defeatedAlly[unitToAdd.cell] = unitToAdd
+	unitToAdd.death()
 	await get_tree().create_timer(0.5).timeout
-	enemyUnit.visible = false
+	unitToAdd.visible = false
 
 
 func _on_end_turn_pressed():
 	$"../SkillMenu".visible = false
 	CharacterChoice.visible = false
 	#Cek apakah masih ada ally tersisa atau tidak (TEMP)
-	if _defeatedAlly.size() == 3:
-		_is_victory_defeat("DEFEAT")
-		return
 	_playerUnits.clear()
 	_units.clear()
 	_enemyUnits.clear()
@@ -424,8 +422,7 @@ func _on_use_ultimate_pressed():
 				enemy_info.visible = false
 				
 				if unit.hp <= 0:
-					unit.visible = false
-					_add_defeated_unit(unit)
+					_add_defeated_unit(unit, "Enemy")
 				
 					
 			
@@ -519,7 +516,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			attack(enemyUnit)
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 			if enemyUnit.hp <= 0:
-				_add_defeated_unit(enemyUnit)
+				_add_defeated_unit(enemyUnit, "Enemy")
 			else:
 				await get_tree().create_timer(0.5).timeout
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
@@ -535,7 +532,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 				use_skill(selectedUnit, enemyUnit, _active_unit.skill)
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 				if enemyUnit.hp <= 0:
-					_add_defeated_unit(enemyUnit)
+					_add_defeated_unit(enemyUnit, "Enemy")
 				else:
 					await get_tree().create_timer(0.5).timeout
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
@@ -618,7 +615,7 @@ func _perform_enemy_turn() -> void:
 				print("Enemy Turn: Enemy Attacked")
 				if (unit_target.hp <= 0):
 					unit_target.hp = 0
-					unit_target.visible = false
+					_add_defeated_unit(unit_target, "Ally")
 				_unit_overlay.clear()
 				_unit_path.stop()
 				continue
@@ -629,6 +626,9 @@ func _perform_enemy_turn() -> void:
 			print("Tidak bisa bergerak")
 			await _delayed_enemy_movement(unit, _walkable_cells[randi_range(0, _walkable_cells.size() - 1)], move_delay)
 		#_enemyUnits.erase(unit.cell) 
+	if _defeatedAlly.size() == 3:
+		_is_victory_defeat("DEFEAT")
+		return
 	turnManager.advance_turn()
 	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
