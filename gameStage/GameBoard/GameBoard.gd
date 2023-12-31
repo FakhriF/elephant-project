@@ -638,17 +638,19 @@ func _delayed_enemy_movement(unit, target, delay):
 
 
 func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vector2:
-	var nearest_distance = float("inf")
+	var nearest_distance = 99999999999999
 	var nearest_target: Vector2 = Vector2.ZERO
 
 	for player_unit in player_units.values():
 		var player_cell = player_unit.cell
 		var enemy_cell = enemy_unit.cell
 		var distance = enemy_cell.distance_to(player_cell)
+		print("DISTANCE", distance)
 
-#		if distance < nearest_distance:
-		nearest_distance = distance
-		nearest_target = player_cell
+		if distance < nearest_distance:
+			print("DOES THIS EVER REACH?")
+			nearest_distance = distance
+			nearest_target = player_cell
 
 	# Adjust the nearest_target if it's occupied
 	if is_occupied(nearest_target):
