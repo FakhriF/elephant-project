@@ -480,6 +480,8 @@ func _clear_active_unit() -> void:
 
 ## Selects or moves a unit based on where the cursor is.
 func _on_Cursor_accept_pressed(cell: Vector2) -> void:
+	if turnManager.currentTurn == "Enemy Turn":
+		return
 	if not _active_unit:
 		_select_unit(cell)
 		print("You Selected Unit")
