@@ -101,9 +101,6 @@ func _on_ally_turn_started():
 		$"../CanvasLayer/ColorRect".color = "BA5F6A"
 	_playerUnits = _get_ally_unit()
 	_enemyUnits = _get_enemy_unit()
-	if _defeatedEnemy.size() == 3:
-		_is_victory_defeat("VICTORY")
-		return
 	
 	for index in range(min(len(Profile.character_select), 3)):
 		for child in get_children():
@@ -142,20 +139,6 @@ func _get_ally_unit():
 		var unit := child as Unit
 		if not unit:
 			continue
-		if (unit.name in Profile.character_select) and (unit.hp <= 0):
-			if _defeatedAlly.is_empty():
-				_defeatedAlly[unit.cell] = unit
-			else:
-				var isUnique = true
-				for unit_info in _defeatedAlly.values():
-					var value = str(unit_info)
-					var unit_name = value.split(":")[0].strip_edges()
-					if unit.name == unit_name:
-						isUnique = false
-						break
-				if isUnique:
-					_defeatedAlly[unit.cell] = unit
-			print(_defeatedAlly)
 #			if _defeatedAlly.size() == Profile.character_select.size():
 #				$"../CanvasLayer/BackgroundColor".visible = true
 #				$"../CanvasLayer/BackgroundColor/Text".text = "DEFEAT"
@@ -168,6 +151,8 @@ func _get_ally_unit():
 				unit.cell = grid.calculate_grid_coordinates(unit.position)
 				unit.position = grid.calculate_map_position(unit.cell)
 				unit.set_aura_color(Color(0, 0, 1, 1))
+			if unit.energy < 100:
+				unit.energy += 5
 			_units[unit.cell] = unit
 						
 #			unit.aura = Color(0, 0, 1, 1)
@@ -238,13 +223,43 @@ func _get_enemy_unit() -> Dictionary:
 	return _enemyUnits
 
 
+func _add_defeated_unit(unitToAdd: Unit, type: String):
+	if type == "Enemy":
+		if _defeatedEnemy.is_empty():
+			_defeatedEnemy[unitToAdd.cell] = unitToAdd
+		else:
+			var isUnique = true
+			for unit_info in _defeatedEnemy.values():
+				var value = str(unit_info)
+				var unit_name = value.split(":")[0].strip_edges()
+				if unitToAdd.name == unit_name:
+					isUnique = false
+					break
+			if isUnique:
+				_defeatedEnemy[unitToAdd.cell] = unitToAdd
+	if type == "Ally":
+		if (unitToAdd.name in Profile.character_select) and (unitToAdd.hp <= 0):
+			if _defeatedAlly.is_empty():
+				_defeatedAlly[unitToAdd.cell] = unitToAdd
+			else:
+				var isUnique = true
+				for unit_info in _defeatedAlly.values():
+					var value = str(unit_info)
+					var unit_name = value.split(":")[0].strip_edges()
+					if unitToAdd.name == unit_name:
+						isUnique = false
+						break
+				if isUnique:
+					_defeatedAlly[unitToAdd.cell] = unitToAdd
+	unitToAdd.death()
+	await get_tree().create_timer(0.5).timeout
+	unitToAdd.visible = false
+
+
 func _on_end_turn_pressed():
 	$"../SkillMenu".visible = false
 	CharacterChoice.visible = false
 	#Cek apakah masih ada ally tersisa atau tidak (TEMP)
-	if _defeatedAlly.size() == 3:
-		_is_victory_defeat("DEFEAT")
-		return
 	_playerUnits.clear()
 	_units.clear()
 	_enemyUnits.clear()
@@ -407,7 +422,7 @@ func _on_use_ultimate_pressed():
 				enemy_info.visible = false
 				
 				if unit.hp <= 0:
-					unit.visible = false
+					_add_defeated_unit(unit, "Enemy")
 				
 					
 			
@@ -427,6 +442,9 @@ func _on_use_ultimate_pressed():
 	_deselect_active_unit()
 	_clear_active_unit()
 	Action = ""
+	if _defeatedEnemy.size() == 3:
+		_is_victory_defeat("VICTORY")
+		return
 				
 func _on_cancel():
 	CharacterChoice.visible = false
@@ -480,6 +498,8 @@ func _clear_active_unit() -> void:
 
 ## Selects or moves a unit based on where the cursor is.
 func _on_Cursor_accept_pressed(cell: Vector2) -> void:
+	if turnManager.currentTurn == "Enemy Turn":
+		return
 	if not _active_unit:
 		_select_unit(cell)
 		print("You Selected Unit")
@@ -496,9 +516,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			attack(enemyUnit)
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 			if enemyUnit.hp <= 0:
-				enemyUnit.death()
-				await get_tree().create_timer(0.5).timeout
-				enemyUnit.visible = false
+				_add_defeated_unit(enemyUnit, "Enemy")
 			else:
 				await get_tree().create_timer(0.5).timeout
 			$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
@@ -514,7 +532,7 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 				use_skill(selectedUnit, enemyUnit, _active_unit.skill)
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".value = enemyUnit.hp
 				if enemyUnit.hp <= 0:
-					enemyUnit.visible = false
+					_add_defeated_unit(enemyUnit, "Enemy")
 				else:
 					await get_tree().create_timer(0.5).timeout
 				$"../CanvasLayer/ColorRect2/Enemy Hp Bar".visible = false
@@ -551,6 +569,8 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 		if _units.is_empty():
 			print("Can't select any more characters, please end turn")
 		return
+	
+
 	for index in range(min(len(Profile.character_select), 3)):
 		for child in get_children():
 			var unit := child as Unit
@@ -559,7 +579,9 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 			update_unit_UI(unit, index)
 			
 	_on_choice_end()
-	#Action = ""
+	if _defeatedEnemy.size() == 3:
+		_is_victory_defeat("VICTORY")
+		return
 	
 
 # ...
@@ -593,7 +615,7 @@ func _perform_enemy_turn() -> void:
 				print("Enemy Turn: Enemy Attacked")
 				if (unit_target.hp <= 0):
 					unit_target.hp = 0
-					unit_target.visible = false
+					_add_defeated_unit(unit_target, "Ally")
 				_unit_overlay.clear()
 				_unit_path.stop()
 				continue
@@ -603,7 +625,10 @@ func _perform_enemy_turn() -> void:
 		else:
 			print("Tidak bisa bergerak")
 			await _delayed_enemy_movement(unit, _walkable_cells[randi_range(0, _walkable_cells.size() - 1)], move_delay)
-		_enemyUnits.erase(unit.cell) 
+		#_enemyUnits.erase(unit.cell) 
+	if _defeatedAlly.size() == 3:
+		_is_victory_defeat("DEFEAT")
+		return
 	turnManager.advance_turn()
 	$"../CanvasLayer/TurnCounter".text = "[center][b]Turn %s\n%s[/b][/center]" % [str(turnManager.turnCounter), turnManager.currentTurn]
 
@@ -636,21 +661,23 @@ func _delayed_enemy_movement(unit, target, delay):
 
 
 func calculate_enemy_target(enemy_unit: Unit, player_units: Dictionary) -> Vector2:
-	var nearest_distance = float("inf")
+	var nearest_distance = 99999999999999
 	var nearest_target: Vector2 = Vector2.ZERO
 
 	for player_unit in player_units.values():
 		var player_cell = player_unit.cell
 		var enemy_cell = enemy_unit.cell
 		var distance = enemy_cell.distance_to(player_cell)
+		print("DISTANCE", distance)
 
-#		if distance < nearest_distance:
-		nearest_distance = distance
-		nearest_target = player_cell
+		if distance < nearest_distance:
+			nearest_distance = distance
+			nearest_target = player_cell
 
 	# Adjust the nearest_target if it's occupied
 	if is_occupied(nearest_target):
 		nearest_target.x += 1
+
 
 	if nearest_target != Vector2.ZERO:
 		print("Selected Target:", nearest_target)
@@ -780,16 +807,18 @@ func _save_game():
 		"Profile 3":
 			saveName = "res://savegame3.bin"
 			idx = 2
-
+	var username = Profile.profileList
+	print(Profile.profileList)
+	print(username)
 	var file = FileAccess.open(saveName, FileAccess.READ_WRITE)
-
+	
 	if file:
 		var fileContents = file.get_as_text()
 		file.close()
-
+		
 		# Construct the save data
 		var saveData: Dictionary = {
-			"username": Profile.profileList[idx],
+			"username": username,
 			"characterSelect": Profile.character_select,
 			"enemySelection": _currentEnemies,  
 			"gameData": {
@@ -1052,7 +1081,7 @@ func _on_exitto_menu_pressed():
 
 
 func _on_button_pressed():
-	_save_game() # Replace with function body.
+	_save_game() 
 
 
 func _on_save_and_exit_button_pressed():

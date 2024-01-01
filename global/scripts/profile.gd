@@ -1,7 +1,7 @@
 extends Node
 
 
-var profileList = []
+var profileList
 
 var character_select = []
 
